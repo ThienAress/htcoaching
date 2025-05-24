@@ -1,3 +1,4 @@
+import "./Classes.css";
 function ClassCard({ image, title, desc, benefits }) {
   return (
     <div className="class-card">

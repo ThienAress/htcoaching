@@ -1,0 +1,21 @@
+.scrollToTopBtn-button {
+  position: fixed;
+  bottom: 30px;
+  right: 18px;
+  z-index: 9999;
+  border: none;
+  outline: none;
+  background: var(--secondary-color, #6c757d); /* fallback màu xám */
+  color: white;
+  cursor: pointer;
+  padding: 15px 20px;
+  border-radius: 999px;
+  font-size: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.scrollToTopBtn-button:hover {
+  background: var(--primary-color, #007bff); /* fallback màu xanh dương */
+  transform: translateY(-5px);
+}

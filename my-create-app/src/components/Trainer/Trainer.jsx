@@ -1,3 +1,4 @@
+import "./Trainer.css";
 function Trainer() {
   return (
     <section className="trainers" id="trainers">
@@ -14,7 +15,7 @@ function Trainer() {
           data-aos="flip-down"
           data-aos-duration="1000"
         >
-          <img src="/assets/images/class3.jpg" alt="Trainer" />
+          <img src="/images/class3.jpg" alt="Trainer" />
         </div>
         <div
           className="trainer-info"

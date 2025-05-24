@@ -1,3 +1,5 @@
+import "./Feedback.css";
+
 function FeedbackCard({
   beforeImg,
   afterImg,

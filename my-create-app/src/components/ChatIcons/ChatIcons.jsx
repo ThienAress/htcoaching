@@ -1,3 +1,4 @@
+import "./ChatIcon.css";
 function ChatIcons() {
   return (
     <div className="chat">
@@ -8,7 +9,7 @@ function ChatIcons() {
           rel="noopener noreferrer"
           className="zalo"
         >
-          <FaCommentDots />
+          <i className="fas fa-comment-dots"></i>
         </a>
         <a
           href="https://m.me/thienvo123456"
@@ -16,7 +17,7 @@ function ChatIcons() {
           rel="noopener noreferrer"
           className="messenger"
         >
-          <FaFacebookMessenger />
+          <i className="fas fa-comment-dots"></i>
         </a>
       </div>
     </div>

@@ -4,8 +4,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "./Hero.css";
 import { useEffect } from "react";
+import "./Hero.css";
 
 function Hero() {
   useEffect(() => {

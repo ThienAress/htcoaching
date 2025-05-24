@@ -1,3 +1,4 @@
+import "./Footer.css";
 function Footer() {
   return (
     <footer className="footer">
@@ -5,7 +6,7 @@ function Footer() {
         <div className="footer-content">
           <div className="footer-about">
             <img
-              src="images/logo.png"
+              src="images/logo.svg"
               alt="Elite Fitness"
               className="footer-logo"
             />

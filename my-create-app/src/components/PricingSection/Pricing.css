@@ -1,0 +1,128 @@
+.pricing {
+  padding: 60px 0;
+  background-color: #262626;
+}
+
+.pricing .section-title {
+  color: #ff3c3c;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pricing .section-subtitle {
+  padding-top: 0;
+  margin-bottom: 40px;
+}
+
+.section-title,
+.section-subtitle {
+  text-align: center;
+}
+
+.pricing-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pricing-card {
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 30px;
+  width: 300px;
+  color: #fff;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: #ff3c3c;
+  box-shadow: 0 0 15px rgba(255, 60, 60, 0.3);
+}
+
+.pricing-card.featured {
+  border: 2px solid #ff3c3c;
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  background: #ff3c3c;
+  color: #fff;
+  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 14px;
+  box-shadow: 0 0 10px rgba(255, 60, 60, 0.4);
+}
+
+.pricing-header h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.price span:first-child {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ff3c3c;
+}
+
+.price span:last-child {
+  font-size: 14px;
+  color: #999;
+}
+
+.pricing-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.pricing-features li {
+  padding: 8px 0;
+  border-bottom: 1px solid #444;
+  color: #eee;
+  font-size: 15px;
+}
+
+/* Buttons */
+.pricing .btn {
+  display: inline-block;
+  padding: 10px 24px;
+  text-align: center;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pricing .btn-primary {
+  background: #ff3c3c;
+  color: white;
+  border: none;
+}
+
+.pricing .btn-primary:hover {
+  background: #e60000;
+}
+
+.pricing .btn-outline {
+  background: transparent;
+  border: 2px solid #ff3c3c;
+  color: #ff3c3c;
+}
+
+.pricing .btn-outline:hover {
+  background: #ff3c3c;
+  color: white;
+}

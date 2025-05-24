@@ -1,5 +1,5 @@
 import ClassCard from "./ClassCard";
-
+import "./Classes.css";
 function Classes() {
   return (
     <section className="classes" id="classes">
@@ -12,7 +12,7 @@ function Classes() {
         </p>
         <div className="classes-grid" data-aos="flip-down">
           <ClassCard
-            image="/assets/images/class3.jpg"
+            image="images/class3.jpg"
             title="Personal Training"
             desc="Huấn luyện 1:1 giúp bạn theo sát tiến độ..."
             benefits={[
@@ -22,7 +22,7 @@ function Classes() {
             ]}
           />
           <ClassCard
-            image="/assets/images/class2.jpg"
+            image="images/class2.jpg"
             title="Cardio & HIIT"
             desc="Đốt cháy mỡ thừa, tăng nhịp tim..."
             benefits={[
@@ -32,7 +32,7 @@ function Classes() {
             ]}
           />
           <ClassCard
-            image="/assets/images/class4.jpg"
+            image="images/class4.jpg"
             title="Boxing"
             desc="Tăng sức bền, cải thiện phản xạ..."
             benefits={[

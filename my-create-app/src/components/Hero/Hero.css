@@ -12,6 +12,13 @@
   width: 100%;
 }
 
+.swiper-slide .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .swiper-slide {
   position: relative;
   display: flex;
@@ -119,4 +126,13 @@
 .hero .swiper-button-prev:after {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+@keyframes animate-gradient {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }

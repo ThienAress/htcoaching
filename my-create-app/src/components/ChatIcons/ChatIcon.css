@@ -1,0 +1,71 @@
+.chat-icons {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.chat-icons a {
+  width: 55px;
+  height: 55px;
+  background-color: #0084ff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.zalo {
+  background-color: #0084ff;
+}
+
+.messenger {
+  background-color: #00b2ff;
+}
+
+.chat-icons a:hover {
+  background-color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.chat-icons a i {
+  animation: pulseGlow 2s infinite;
+}
+.zalo,
+.messenger {
+  background-size: 300% 300%;
+  animation: gradientBG 6s ease infinite, glowBorder 2.5s ease-in-out infinite;
+}
+
+@keyframes glowBorder {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4),
+      0 0 16px rgba(144, 238, 144, 1);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.6),
+      0 0 28px rgba(144, 238, 144, 1);
+  }
+}
+
+/* Gradient nền động */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
