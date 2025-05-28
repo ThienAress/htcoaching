@@ -1,25 +1,5 @@
-/* === Responsive CSS: Mobile-first & Clean === */
-
-/* ≤480px: Small Mobile */
+/* =============== SMALL MOBILE (0-480px) =============== */
 @media (max-width: 480px) {
-  .hero h1,
-  h2,
-  .classes-title,
-  .section-title {
-    font-size: 1.6rem;
-  }
-
-  .hero p,
-  .classes-subtitle,
-  .feedback-body p,
-  .class-content p,
-  .class-benefits li,
-  .stat-text,
-  .price span:first-child,
-  .pricing-features li {
-    font-size: 0.9rem;
-  }
-
   .stat-number {
     font-size: 1.5rem;
   }
@@ -28,16 +8,6 @@
     font-size: 0.75rem;
     padding: 8px 14px;
     width: 100%;
-  }
-
-  .image-box {
-    height: 180px;
-  }
-
-  .info-left,
-  .info-right {
-    padding: 8px 12px;
-    font-size: 0.85rem;
   }
 
   .pricing-card {
@@ -54,8 +24,26 @@
   }
 }
 
-/* ≤768px: Mobile */
-@media (max-width: 768px) {
+/* =============== MOBILE FIRST (0-767px) =============== */
+@media (max-width: 767px) {
+  /* Typography */
+  .hero h1,
+  h2,
+  .classes-title,
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .hero p,
+  .classes-subtitle,
+  .feedback-body p,
+  .class-content p,
+  .class-benefits li,
+  .stat-text {
+    font-size: 0.9rem;
+  }
+
+  /* header */
   .navbar {
     display: none;
     position: fixed;
@@ -72,10 +60,8 @@
   }
 
   .navbar ul {
-    padding: 0 10px;
     flex-direction: column;
-    opacity: 1;
-    transform: translateY(0);
+    padding: 0 10px;
   }
 
   .menu-toggle {
@@ -88,258 +74,276 @@
     display: none;
   }
 
-  .hero {
-    height: auto;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    gap: 15px;
+  /* Hero section */
+  .hero .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: px;
+    text-align: center;
   }
 
   .about .container,
-  .contact-content {
-    flex-direction: column;
-  }
-
-  .customer h2 {
-    color: var(--light-color);
-  }
-  /* CLASS SECTION */
-  .classes {
-    padding: 40px 20px;
-  }
-
+  .contact-content,
   .classes-grid {
-    display: flex;
     flex-direction: column;
-    gap: 20px;
   }
 
-  .class-card {
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .class-image img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-bottom: 1px solid #eee;
-  }
-
-  .class-content {
-    padding: 20px;
-    text-align: left;
-  }
-
-  .class-content h3 {
-    font-size: 1.2rem;
-    color: #1a1a1a;
-    margin-bottom: 10px;
-  }
-
-  .class-content p {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 15px;
-  }
-
-  .class-benefits li {
-    font-size: 0.9rem;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .btn-outline {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 0.9rem;
-    padding: 10px 16px;
-    border-radius: 8px;
-    width: 100%;
+  /* About section */
+  .about .title,
+  .about .quote {
     text-align: center;
   }
 
-  /* PRICING SECTION */
-  .pricing {
-    padding: 40px 20px;
-  }
-
-  .pricing-grid {
+  /* Feedback Section */
+  .image-section {
     flex-direction: column;
-    align-items: stretch;
-    padding: 0 16px;
   }
 
-  .pricing-card {
-    width: 100% !important;
-    max-width: none !important;
-    border-radius: 16px;
-    padding: 24px;
-    background-color: #1e1e1e;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-    color: #fff;
-    position: relative;
-    text-align: center;
-    transition: transform 0.3s ease;
-    box-sizing: border-box;
-  }
-
-  .pricing-header h3 {
-    font-size: 1.375rem;
-  }
-
-  .price span:first-child,
-  .pricing-features li {
-    font-size: 0.875rem;
-  }
-
-  /* Hero swiper */
-  .hero .swiper-button-prev,
-  .hero .swiper-button-next {
-    visibility: hidden;
-  }
-
-  /* Footer */
-  .footer-content {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .footer-about {
-    grid-column: span 2;
-    text-align: center;
-  }
-
-  .newsletter-form input,
-  .newsletter-form button {
-    width: 100%;
+  .image-box {
+    aspect-ratio: 16/9; /* Tỉ lệ khác cho mobile nếu cần */
   }
 }
 
-/* ≤1024px: Tablet & Small Laptop */
-@media (max-width: 1024px) {
-  .navbar ul {
-    gap: 10px;
+.swiper-slide {
+  height: auto !important;
+  display: flex !important;
+}
+
+.feedback-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.feedback-body {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-wrapper {
+  margin-top: auto;
+}
+
+/* Pricing section */
+.pricing {
+  padding: 40px 0;
+}
+
+.pricing .section-title {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.pricing .section-subtitle {
+  margin-bottom: 30px;
+  font-size: 1rem;
+  padding: 0 15px;
+}
+
+.pricing-grid {
+  flex-direction: column;
+  gap: 20px;
+  padding: 0 15px;
+}
+
+.pricing-card {
+  width: 100%;
+  padding: 25px;
+  margin-bottom: 15px;
+}
+
+.pricing-badge {
+  top: -10px;
+  right: -10px;
+  padding: 5px 12px;
+  font-size: 12px;
+}
+
+.pricing-header h3 {
+  font-size: 1.3rem;
+}
+
+.price span:first-child {
+  font-size: 1.5rem;
+}
+
+.price span:last-child {
+  font-size: 0.8rem;
+}
+
+.pricing-features ul {
+  margin: 15px 0;
+}
+
+.pricing-features li {
+  font-size: 0.9rem;
+  padding: 6px 0;
+}
+
+.pricing .btn {
+  width: 100%;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+}
+
+/* Hide navigation arrows */
+.swiper-button-next,
+.swiper-button-prev {
+  visibility: hidden;
+}
+
+.chat-icons a:hover {
+  background-color: #0084ff;
+  transform: scale(1.1);
+}
+
+/* =============== IPAD PORTRAIT (768-834px) =============== */
+@media (min-width: 768px) and (max-width: 834px) {
+  /* Header */
+  .nav-cta {
+    display: none;
   }
 
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .hero p {
-    font-size: 1rem;
+  .navbar ul li a {
+    font-size: 0.6rem;
+    font-weight: 600;
   }
 
   .about .container {
     flex-direction: column;
-    text-align: center;
-    gap: 30px;
   }
 
-  .about-content,
-  .about-image,
-  .about-stats {
-    flex: 1 1 100%;
-  }
-
-  .classes-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .pricing-card {
-    width: 45%;
-  }
-
-  .footer-content {
-    gap: 30px;
-  }
-
-  .footer-links h3,
-  .footer-newsletter h3 {
-    font-size: 1.1rem;
-  }
-}
-
-/* 769px–1024px: Tablet only */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .navbar ul li a {
-    font-size: 1rem;
-  }
-
-  .navbar ul li {
-    margin-left: 15px;
-  }
-
-  .about-content .title {
-    font-size: 2.2rem;
-    text-align: center;
-  }
-
+  .about-content .title,
   .about-content .quote {
-    font-size: 1.4rem;
     text-align: center;
   }
 
-  .about-content .desc {
-    font-size: 1rem;
-    text-align: justify;
+  /* Feedback Section  */
+  .customer {
+    padding: 30px 0;
+  }
+
+  .customer h2 {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    padding: 0 10px;
   }
 
   .feedback-card {
-    padding: 8px;
+    padding: 20px;
+    border-radius: 10px;
   }
 
   .image-section {
-    height: 280px;
+    flex-direction: row;
+    height: 220px; /* thấp hơn desktop */
+  }
+
+  .image-box {
+    height: 100%;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .feedback-body {
+    padding: 15px;
+  }
+
+  .feedback-body h4 {
+    font-size: 1.2rem;
+  }
+
+  .feedback-body p {
+    font-size: 0.95rem;
+  }
+
+  .info-wrapper {
+    flex-direction: row;
+    margin-top: 10px;
   }
 }
 
-/* ≥1025px: Desktop */
-@media (min-width: 1025px) {
-  .about-content .title {
-    font-size: 2.5rem;
+/* =============== IPAD LANDSCAPE (835-1024px) =============== */
+@media (min-width: 835px) and (max-width: 1024px) {
+  .nav-cta {
+    display: none;
   }
 
+  .about .container {
+    flex-direction: column;
+  }
+
+  .about-content .title,
   .about-content .quote {
-    font-size: 1.5rem;
-    font-style: italic;
-    margin-bottom: 15px;
+    text-align: center;
   }
 
-  .about-content .desc {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    text-align: justify;
+  .image-section {
+    gap: 15px;
   }
 
-  .stat-number {
-    font-size: 2.2rem;
+  .image-box {
+    height: 300px;
+  }
+
+  .feedback-card {
+    padding: 50px;
+  }
+
+  .feedback-body h4 {
+    font-size: 1.3rem;
+  }
+
+  .info-left {
+    padding: 12px 15px;
+    font-size: 0.92rem;
+  }
+
+  .info-right {
+    padding: 12px 15px;
+    font-size: 0.92rem;
+  }
+
+  .customer .swiper-button-next,
+  .customer .swiper-button-prev {
+    width: 45px;
+    height: 45px;
   }
 }
 
-/* ≥1280px: Large desktop */
+/* =============== DESKTOP (1025px+) =============== */
+@media (min-width: 1025px) {
+  .image-section {
+    gap: 20px;
+    height: 500px;
+  }
+
+  .image-box {
+    height: 100%;
+    flex: 1;
+  }
+
+  .label {
+    font-size: 1.1rem;
+    bottom: 30px;
+  }
+}
+
+/* =============== LARGE DESKTOP (1280px+) =============== */
 @media (min-width: 1280px) {
-  .hero h1 {
-    font-size: 4rem;
-  }
-
-  .about-content .title {
-    font-size: 3rem;
-  }
-
-  .pricing-card {
-    max-width: 360px;
-  }
-
   .container {
     padding: 0 40px;
+  }
+
+  .image-box {
+    border-radius: 12px;
   }
 }

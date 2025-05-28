@@ -23,14 +23,6 @@
   transition: transform 0.2s ease;
 }
 
-.zalo {
-  background-color: #0084ff;
-}
-
-.messenger {
-  background-color: #00b2ff;
-}
-
 .chat-icons a:hover {
   background-color: var(--primary-color);
   transform: scale(1.1);

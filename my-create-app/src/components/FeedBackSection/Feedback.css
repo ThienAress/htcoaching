@@ -1,118 +1,133 @@
 .customer {
-  background: #1a1a1a; /* Nền tối */
+  padding: 40px 0;
+  background: #fff;
+}
+
+.customer .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 15px;
+}
+
+.customer h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+/* Swiper Slide */
+.swiper-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Feedback Card */
+.feedback-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #1a1a1a;
   background-image: radial-gradient(
     circle at 10% 20%,
     rgba(215, 38, 47, 0.1) 0%,
     transparent 20%
   );
-}
-
-.customer .container {
-  padding: 20px 0 30px; /* Top 20px, Bottom 30px là đủ */
-}
-h2 {
-  text-align: center;
-  font-size: 2.5rem;
-  color: var(--light-color);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.feedback-card {
-  background-color: #fff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   overflow: hidden;
-  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.feedback-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Section */
 .image-section {
   display: flex;
-  justify-content: space-between;
+  width: 100%;
   gap: 15px;
-  border-radius: 8px 12px 6px 4px;
-  position: relative;
-  height: 500px;
-  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .image-box {
-  position: relative;
   flex: 1;
-  border-radius: 10px;
+  position: relative;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  aspect-ratio: 4/3; /* Tỉ lệ 4:3 (có thể điều chỉnh) */
 }
 
 .image-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  object-position: center;
+  transition: transform 0.3s ease;
+}
+
+.image-box:hover img {
+  transform: scale(1.05); /* Hiệu ứng zoom nhẹ khi hover */
 }
 
 .label {
   position: absolute;
-  bottom: 30px;
-  left: 20px;
+  bottom: 15px;
+  left: 15px;
   background-color: #d32228;
-  color: white;
-  font-size: 1rem;
+  color: #fff;
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: 20px;
   text-transform: uppercase;
-  opacity: 0.9;
-  transition: bottom 0.4s;
   z-index: 2;
 }
 
-.image-box img {
-  transition: all 0.5s cubic-bezier(0.2, 0, 0.1, 1);
-}
-
-.image-box:hover img {
-  transform: scale(1.05);
-}
-
-.image-box:hover::after {
-  opacity: 1;
+/* Feedback Body */
+.feedback-body {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
 }
 
 .feedback-body h4 {
-  margin-top: 10px;
-  font-size: 1.5rem;
-  color: var(--black-color);
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 
 .feedback-body p {
-  margin-top: 5px;
-  font-size: 1.2rem;
-  color: var(--black-color);
+  margin: 0 0 10px 0;
+  font-size: 1rem;
   line-height: 1.5;
-  margin-bottom: 16px;
-  font-weight: 500;
 }
 
+/* Info Wrapper */
 .info-wrapper {
   display: flex;
-  width: fit-content;
-  overflow: hidden;
+  width: 100%;
+  margin-top: 15px;
+  background: #f8f8f8;
   border-radius: 8px;
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 .info-left {
-  position: relative;
+  flex: 1;
+  padding: 12px 15px;
   background-color: #f1f1f8;
-  color: var(--black-color);
-  padding: 12px 20px;
-  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
   clip-path: polygon(
     0 0,
     calc(100% - 10px) 0,
@@ -123,34 +138,42 @@ h2 {
 }
 
 .info-right {
+  flex: 1;
+  padding: 12px 15px;
   background-color: #d32228;
-  font-size: 1rem;
   color: #fff;
-  padding: 12px 20px;
-  margin-left: -10px; /* Để chồng lấn phần xiên */
+  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-left: -10px;
 }
 
-/* Swiper Navigation */
+.info-right strong {
+  font-weight: 700;
+}
+
+/* Swiper Buttons */
 .customer .swiper-button-next,
 .customer .swiper-button-prev {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--white-color);
   width: 50px;
   height: 50px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  transition: all 0.3s ease;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.3s ease;
+  z-index: 10;
 }
 
-/* Hover đẹp */
 .customer .swiper-button-next:hover,
 .customer .swiper-button-prev:hover {
-  background: var(--primary-color);
+  background: #d32228;
+  transform: translateY(-50%) scale(1.1);
 }
 
-/* Icon Swiper mặc định */
 .customer .swiper-button-next::after,
 .customer .swiper-button-prev::after {
   font-size: 1.5rem;

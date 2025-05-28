@@ -6,17 +6,17 @@ import "swiper/css/bundle";
 
 const feedbacks = [
   {
-    beforeImg: "/images/hero.jpg",
+    beforeImg: "/images/tu.jpg",
     afterImg: "/images/class2.jpg",
     name: "Nguyễn Thảo",
     age: "23",
-    job: "Giáo viên, 29 tuổi",
+    job: "Giáo viên",
     result: "-10kg",
     duration: "21 tuần",
     message: "Mình từng mất tự tin... Huấn luyện viên rất tận tâm!",
   },
   {
-    beforeImg: "/images/hero3.jpg",
+    beforeImg: "/images/nhi.jpg",
     afterImg: "/images/hero4.jpg",
     name: "Nguyễn Văn A",
     age: "30",
