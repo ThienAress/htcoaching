@@ -54,8 +54,15 @@ function Feedback() {
   return (
     <section className="customer" id="customer">
       <div className="container">
-        <h2>Câu chuyện thay đổi của khách hàng</h2>
-        <div className="swiper feedback-slider">
+        <h2 data-aos="fade-down" data-aos-duration="1500">
+          Câu chuyện thay đổi của khách hàng
+        </h2>
+        <div
+          className="swiper feedback-slider"
+          data-aos="fade-up"
+          data-aos-duration="1500"
+          data-aos-delay="200"
+        >
           <div className="swiper-wrapper">
             {feedbacks.map((fb, index) => (
               <FeedbackCard key={index} {...fb} />
