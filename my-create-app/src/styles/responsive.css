@@ -79,8 +79,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: px;
-    text-align: center;
+    padding: 5px;
   }
 
   .about .container,
@@ -192,7 +191,7 @@
 /* Hide navigation arrows */
 .swiper-button-next,
 .swiper-button-prev {
-  visibility: hidden;
+  display: none;
 }
 
 .chat-icons a:hover {
@@ -321,19 +320,51 @@
 
 /* =============== DESKTOP (1025px+) =============== */
 @media (min-width: 1025px) {
+  .feedback-card {
+    gap: 30px;
+    padding: 30px;
+  }
+
   .image-section {
+    flex: 1;
     gap: 20px;
-    height: 500px;
+    height: auto;
+    margin-bottom: 0;
   }
 
   .image-box {
-    height: 100%;
     flex: 1;
+    aspect-ratio: unset; /* bỏ fix aspect nếu gây lệch */
+    height: 100%;
+    min-height: 280px;
+    max-height: 650px;
   }
 
-  .label {
-    font-size: 1.1rem;
-    bottom: 30px;
+  .image-box img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  .feedback-body {
+    flex: 1;
+    padding: 0 20px;
+  }
+
+  .info-wrapper {
+    margin-top: 20px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: flex !important; /* hoặc block nếu bạn muốn */
   }
 }
 
