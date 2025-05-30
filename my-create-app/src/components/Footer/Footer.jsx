@@ -11,8 +11,8 @@ function Footer() {
               className="footer-logo"
             />
             <p>
-              Elite Fitness - Phòng tập cao cấp với tiêu chuẩn 5 sao, mang đến
-              cho bạn trải nghiệm tập luyện tốt nhất.
+              HTCOACHING – Rèn luyện bản lĩnh, nâng tầm phong cách, nơi hình thể
+              và tinh thần cùng toả sáng.
             </p>
             <div className="footer-social">
               <a href="https://www.facebook.com/thienvo123456">

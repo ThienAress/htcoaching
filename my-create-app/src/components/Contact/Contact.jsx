@@ -36,15 +36,15 @@ function Contact() {
         <div className="contact-info">
           <div className="info-item">
             <i className="fas fa-map-marker-alt"></i>
-            <p>123 Đường ABC, Quận 1, TP.HCM</p>
+            <p>Tùy vào phòng tập bạn chọn</p>
           </div>
           <div className="info-item">
             <i className="fas fa-phone-alt"></i>
-            <p>0901.234.567</p>
+            <p>0934.215.227</p>
           </div>
           <div className="info-item">
             <i className="fas fa-envelope"></i>
-            <p>info@elitefitness.com</p>
+            <p>hoangthiengym99@gmail.com</p>
           </div>
           <div className="info-item">
             <i className="fas fa-clock"></i>
