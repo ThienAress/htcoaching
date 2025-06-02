@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -14,32 +14,30 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Trang chủ */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Header />
-              <Hero />
-              <About />
-              <Trainer />
-              <Feedback />
-              <Classes />
-              <Pricing />
-              <Contact />
-              <Footer />
-              <ScrollToTop />
-              <ChatIcons />
-            </>
-          }
-        />
+    <Routes>
+      {/* Trang chủ */}
+      <Route
+        path="/"
+        element={
+          <>
+            <Header />
+            <Hero />
+            <About />
+            <Trainer />
+            <Feedback />
+            <Classes />
+            <Pricing />
+            <Contact />
+            <Footer />
+            <ScrollToTop />
+            <ChatIcons />
+          </>
+        }
+      />
 
-        {/* Trang đăng ký */}
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-    </BrowserRouter>
+      {/* Trang đăng ký */}
+      <Route path="/register" element={<RegisterPage />} />
+    </Routes>
   );
 }
 
