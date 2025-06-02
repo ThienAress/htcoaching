@@ -198,7 +198,6 @@
 .payment-container {
   flex-direction: column;
   padding: 1rem;
-  margin: 0 10px;
 }
 
 .payment-left,
