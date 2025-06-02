@@ -1,0 +1,129 @@
+.checkout-container {
+  display: flex;
+  gap: 40px;
+  padding: 50px 10%;
+  background-color: #f9f9f9;
+  flex-wrap: wrap;
+}
+
+.checkout-left {
+  flex: 2;
+  min-width: 300px;
+}
+
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.checkout-form label {
+  color: var(--black-color);
+  font-weight: 600;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+  resize: none;
+}
+
+.checkout-form input:focus,
+.checkout-form textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.checkout-left h2 {
+  margin-bottom: 10px;
+  color: var(--black-color);
+}
+.checkout-right {
+  flex: 1;
+  background: #fff;
+  padding: 25px;
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  min-width: 260px;
+}
+
+.order-summary p {
+  margin: 8px 0;
+  font-size: 15px;
+  color: var(--black-color);
+  font-weight: 500;
+}
+
+.order-summary hr {
+  margin: 12px 0;
+  color: var(--gray-color);
+}
+
+.order-button {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+  background-size: 400% auto;
+  background-position: 0% 50%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background-position 1.2s ease-in-out, transform 0.3s ease;
+  letter-spacing: 0.5px;
+  z-index: 0;
+}
+
+.order-button:hover {
+  background-position: 100% 50%;
+  transform: scale(1.02);
+}
+
+/* Shine hiệu ứng ánh sáng trượt */
+.order-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  animation: none;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Kích hoạt ánh sáng khi hover */
+.order-button:hover::after {
+  animation: shine 1.5s infinite;
+}
+
+.note {
+  font-size: 1rem;
+  color: var(--black-color);
+  margin-top: 15px;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

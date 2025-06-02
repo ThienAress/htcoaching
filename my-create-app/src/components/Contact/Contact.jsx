@@ -18,8 +18,8 @@ function Contact() {
               <input type="tel" placeholder="Số điện thoại" required />
             </div>
             <div className="form-group">
-              <select required>
-                <option value="" disabled selected>
+              <select required defaultValue="">
+                <option value="" disabled>
                   Chọn gói tập quan tâm
                 </option>
                 <option value="basic">Gói cơ bản</option>

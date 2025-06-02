@@ -188,6 +188,19 @@
   font-size: 0.85rem;
 }
 
+/* RegisterPage */
+.checkout-left h2 {
+  font-size: 1.5rem;
+}
+
+/* FooterMinimal */
+.footer-contact {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
 /* Hide navigation arrows */
 .swiper-button-next,
 .swiper-button-prev {

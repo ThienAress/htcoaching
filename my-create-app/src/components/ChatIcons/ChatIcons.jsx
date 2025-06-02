@@ -65,13 +65,13 @@ function ChatIcons() {
               gradientTransform="matrix(1 0 0 -1 0 50)"
               gradientUnits="userSpaceOnUse"
             >
-              <stop offset="0" stop-color="#1292ff"></stop>
-              <stop offset=".079" stop-color="#2982ff"></stop>
-              <stop offset=".23" stop-color="#4e69ff"></stop>
-              <stop offset=".351" stop-color="#6559ff"></stop>
-              <stop offset=".428" stop-color="#6d53ff"></stop>
-              <stop offset=".754" stop-color="#df47aa"></stop>
-              <stop offset=".946" stop-color="#ff6257"></stop>
+              <stop offset="0" stopColor="#1292ff"></stop>
+              <stop offset=".079" stopColor="#2982ff"></stop>
+              <stop offset=".23" stopColor="#4e69ff"></stop>
+              <stop offset=".351" stopColor="#6559ff"></stop>
+              <stop offset=".428" stopColor="#6d53ff"></stop>
+              <stop offset=".754" stopColor="#df47aa"></stop>
+              <stop offset=".946" stopColor="#ff6257"></stop>
             </radialGradient>
             <path
               fill="url(#8O3wK6b5ASW2Wn6hRCB5xa_YFbzdUk7Q3F8_gr1)"

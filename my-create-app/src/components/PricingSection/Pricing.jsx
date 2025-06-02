@@ -1,5 +1,50 @@
 import "./Pricing.css";
+import { useNavigate } from "react-router-dom";
+
 function Pricing() {
+  const navigate = useNavigate();
+
+  const handleRegister = (plan) => {
+    navigate("/register", { state: { selectedPackage: plan } });
+  };
+
+  const plans = [
+    {
+      title: "Cơ bản",
+      price: "1.500.000đ",
+      features: [
+        "Truy cập phòng tập",
+        "Lớp nhóm cơ bản",
+        "Không có PT cá nhân",
+        "Tư vấn dinh dưỡng cơ bản",
+      ],
+      buttonClass: "btn-outline",
+    },
+    {
+      title: "Nâng cao",
+      price: "2.500.000đ",
+      features: [
+        "Truy cập phòng tập",
+        "Tất cả lớp nhóm",
+        "2 buổi PT/tháng",
+        "Tư vấn dinh dưỡng",
+      ],
+      featured: true,
+      buttonClass: "btn-primary",
+    },
+    {
+      title: "VIP",
+      price: "5.000.000đ",
+      features: [
+        "Truy cập không giới hạn",
+        "Tất cả lớp nhóm",
+        "PT cá nhân không giới hạn",
+        "Tư vấn dinh dưỡng chuyên sâu",
+      ],
+      buttonClass: "btn-outline",
+    },
+  ];
+
   return (
     <section id="pricing" className="pricing">
       <div className="container">
@@ -28,45 +73,7 @@ function Pricing() {
           data-aos-duration="1000"
           data-aos-delay="1300"
         >
-          {[
-            {
-              title: "Cơ bản",
-              price: "1.500.000đ",
-              features: [
-                "Truy cập phòng tập",
-                "Lớp nhóm cơ bản",
-                "Không có PT cá nhân",
-                "Tư vấn dinh dưỡng cơ bản",
-              ],
-              buttonClass: "btn-outline",
-              link: "finance.html",
-            },
-            {
-              title: "Nâng cao",
-              price: "2.500.000đ",
-              features: [
-                "Truy cập phòng tập",
-                "Tất cả lớp nhóm",
-                "2 buổi PT/tháng",
-                "Tư vấn dinh dưỡng",
-              ],
-              featured: true,
-              buttonClass: "btn-primary",
-              link: "#",
-            },
-            {
-              title: "VIP",
-              price: "5.000.000đ",
-              features: [
-                "Truy cập không giới hạn",
-                "Tất cả lớp nhóm",
-                "PT cá nhân không giới hạn",
-                "Tư vấn dinh dưỡng chuyên sâu",
-              ],
-              buttonClass: "btn-outline",
-              link: "#",
-            },
-          ].map((plan, index) => (
+          {plans.map((plan, index) => (
             <div
               className={`pricing-card ${plan.featured ? "featured" : ""}`}
               key={index}
@@ -86,9 +93,12 @@ function Pricing() {
                   ))}
                 </ul>
               </div>
-              <a href={plan.link} className={`btn ${plan.buttonClass}`}>
+              <button
+                onClick={() => handleRegister(plan)}
+                className={`btn ${plan.buttonClass}`}
+              >
                 Đăng ký ngay
-              </a>
+              </button>
             </div>
           ))}
         </div>
@@ -96,4 +106,5 @@ function Pricing() {
     </section>
   );
 }
+
 export default Pricing;
