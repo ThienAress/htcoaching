@@ -15,7 +15,7 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 function App() {
   return (
     <Routes>
-      {/* Trang chủ */}
+      {/* Route cho trang chủ */}
       <Route
         path="/"
         element={
@@ -35,7 +35,7 @@ function App() {
         }
       />
 
-      {/* Trang đăng ký */}
+      {/* Route riêng cho trang đăng ký */}
       <Route path="/register" element={<RegisterPage />} />
     </Routes>
   );
