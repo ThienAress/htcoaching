@@ -11,6 +11,7 @@ import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ChatIcons from "./components/ChatIcons/ChatIcons";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
+import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 
 function App() {
   return (
@@ -35,8 +36,11 @@ function App() {
         }
       />
 
-      {/* Route riêng cho trang đăng ký */}
+      {/* Trang đăng kí */}
       <Route path="/register" element={<RegisterPage />} />
+
+      {/* Trang thanh toán */}
+      <Route path="/payment" element={<PaymentPage />} />
     </Routes>
   );
 }

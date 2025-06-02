@@ -193,6 +193,57 @@
   font-size: 1.5rem;
 }
 
+/* payment */
+
+.payment-container {
+  flex-direction: column;
+  padding: 1rem;
+  margin: 0 10px;
+}
+
+.payment-left,
+.payment-right {
+  padding: 1rem;
+  border: none;
+  width: 100%;
+}
+
+.payment-left {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.qr-image {
+  width: 200px;
+  height: 200px;
+}
+
+.payment-left h2,
+.payment-right h2 {
+  font-size: 1.5rem;
+}
+
+.bank-info,
+.info-block,
+.order-details {
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.payment-instructions {
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+.btn-confirm {
+  font-size: 0.95rem;
+  padding: 10px 16px;
+}
+
+.order-details table td {
+  font-size: 0.9rem;
+}
+
 /* FooterMinimal */
 .footer-contact {
   display: flex;

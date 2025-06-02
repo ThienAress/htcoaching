@@ -119,6 +119,13 @@
   margin-top: 15px;
 }
 
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
 @keyframes shine {
   0% {
     transform: translateX(-100%);
