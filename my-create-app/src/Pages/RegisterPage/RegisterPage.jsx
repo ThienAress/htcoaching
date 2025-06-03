@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./RegisterPage.css";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
+import ChatIcon from "../../components/ChatIcons/ChatIcons";
 
 function RegisterPage() {
   const { state } = useLocation();
@@ -30,6 +31,11 @@ function RegisterPage() {
     // ✅ Email: đúng định dạng @gmail.com
     if (!formData.email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
       newErrors.email = "Email phải đúng định dạng @gmail.com";
+    }
+
+    // ✅ Thông tin bổ sung: ít nhất 8 ký tự
+    if (!formData.note.trim() || formData.note.length < 8) {
+      newErrors.note = "Thông tin bổ sung phải có ít nhất 8 ký tự";
     }
 
     setErrors(newErrors);
@@ -98,6 +104,7 @@ function RegisterPage() {
                 setFormData({ ...formData, note: e.target.value })
               }
             />
+            {errors.note && <span className="error">{errors.note}</span>}
             <button type="submit" className="order-button">
               ĐẶT HÀNG
             </button>
@@ -124,6 +131,10 @@ function RegisterPage() {
         </div>
       </div>
 
+      {/* Chat Icons */}
+      <ChatIcon />
+
+      {/* FooterMinimal */}
       <FooterMinimal />
     </>
   );

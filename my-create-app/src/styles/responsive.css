@@ -96,170 +96,152 @@
 
   /* Feedback Section */
   .image-section {
+    flex-direction: row;
+    height: 300px;
+  }
+
+  .feedback-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .feedback-body {
+    flex: 1;
+    padding: 10px;
+    display: flex;
     flex-direction: column;
   }
 
-  .image-box {
-    aspect-ratio: 16/9; /* Tỉ lệ khác cho mobile nếu cần */
+  /* Pricing section */
+  .pricing {
+    padding: 40px 0;
   }
-}
 
-.swiper-slide {
-  height: auto !important;
-  display: flex !important;
-}
+  .pricing .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
 
-.feedback-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+  .pricing .section-subtitle {
+    margin-bottom: 30px;
+    font-size: 1rem;
+    padding: 0 15px;
+  }
 
-.feedback-body {
-  flex: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
+  .pricing-grid {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 15px;
+  }
 
-.info-wrapper {
-  margin-top: auto;
-}
+  .pricing-card {
+    width: 100%;
+    padding: 25px;
+    margin-bottom: 15px;
+  }
 
-/* Pricing section */
-.pricing {
-  padding: 40px 0;
-}
+  .pricing-badge {
+    top: -10px;
+    right: -10px;
+    padding: 5px 12px;
+    font-size: 12px;
+  }
 
-.pricing .section-title {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
+  .pricing-header h3 {
+    font-size: 1.3rem;
+  }
 
-.pricing .section-subtitle {
-  margin-bottom: 30px;
-  font-size: 1rem;
-  padding: 0 15px;
-}
+  .price span:first-child {
+    font-size: 1.5rem;
+  }
 
-.pricing-grid {
-  flex-direction: column;
-  gap: 20px;
-  padding: 0 15px;
-}
+  .price span:last-child {
+    font-size: 0.8rem;
+  }
 
-.pricing-card {
-  width: 100%;
-  padding: 25px;
-  margin-bottom: 15px;
-}
+  .pricing-features ul {
+    margin: 15px 0;
+  }
 
-.pricing-badge {
-  top: -10px;
-  right: -10px;
-  padding: 5px 12px;
-  font-size: 12px;
-}
+  .pricing-features li {
+    font-size: 0.9rem;
+    padding: 6px 0;
+  }
 
-.pricing-header h3 {
-  font-size: 1.3rem;
-}
+  .pricing .btn {
+    width: 100%;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+  }
 
-.price span:first-child {
-  font-size: 1.5rem;
-}
+  /* RegisterPage */
+  .checkout-left h2 {
+    font-size: 1.5rem;
+  }
 
-.price span:last-child {
-  font-size: 0.8rem;
-}
+  /* payment */
+  .payment-container {
+    flex-direction: column;
+    padding: 10px;
+  }
 
-.pricing-features ul {
-  margin: 15px 0;
-}
+  .payment-left,
+  .payment-right {
+    padding: 1rem;
+    border: none;
+    width: 100%;
+  }
 
-.pricing-features li {
-  font-size: 0.9rem;
-  padding: 6px 0;
-}
+  .payment-left {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1.5rem;
+  }
 
-.pricing .btn {
-  width: 100%;
-  padding: 8px 20px;
-  font-size: 0.85rem;
-}
+  .qr-image {
+    width: 200px;
+    height: 200px;
+  }
 
-/* RegisterPage */
-.checkout-left h2 {
-  font-size: 1.5rem;
-}
+  .payment-left h2,
+  .payment-right h2 {
+    font-size: 1.5rem;
+  }
 
-/* payment */
+  .bank-info,
+  .info-block,
+  .order-details {
+    padding: 1rem;
+    border-radius: 6px;
+  }
 
-.payment-container {
-  flex-direction: column;
-  padding: 1rem;
-}
+  .payment-instructions {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
 
-.payment-left,
-.payment-right {
-  padding: 1rem;
-  border: none;
-  width: 100%;
-}
+  .btn-confirm {
+    font-size: 0.95rem;
+    padding: 10px 16px;
+  }
 
-.payment-left {
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 1.5rem;
-}
+  .order-details table td {
+    font-size: 0.9rem;
+  }
 
-.qr-image {
-  width: 200px;
-  height: 200px;
-}
+  /* FooterMinimal */
+  .footer-contact {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.payment-left h2,
-.payment-right h2 {
-  font-size: 1.5rem;
-}
-
-.bank-info,
-.info-block,
-.order-details {
-  padding: 1rem;
-  border-radius: 6px;
-}
-
-.payment-instructions {
-  padding: 1rem;
-  font-size: 0.9rem;
-}
-
-.btn-confirm {
-  font-size: 0.95rem;
-  padding: 10px 16px;
-}
-
-.order-details table td {
-  font-size: 0.9rem;
-}
-
-/* FooterMinimal */
-.footer-contact {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Hide navigation arrows */
-.swiper-button-next,
-.swiper-button-prev {
-  display: none;
-}
-
-.chat-icons a:hover {
-  background-color: #0084ff;
-  transform: scale(1.1);
+  /* Hide navigation arrows */
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
 }
 
 /* =============== IPAD PORTRAIT (768-834px) =============== */
@@ -301,7 +283,7 @@
 
   .image-section {
     flex-direction: row;
-    height: 220px; /* thấp hơn desktop */
+    height: 500px;
   }
 
   .image-box {
@@ -353,7 +335,7 @@
   }
 
   .image-box {
-    height: 300px;
+    height: 700px;
   }
 
   .feedback-card {
@@ -383,51 +365,10 @@
 
 /* =============== DESKTOP (1025px+) =============== */
 @media (min-width: 1025px) {
-  .feedback-card {
-    gap: 30px;
-    padding: 30px;
-  }
-
-  .image-section {
-    flex: 1;
-    gap: 20px;
-    height: auto;
-    margin-bottom: 0;
-  }
-
-  .image-box {
-    flex: 1;
-    aspect-ratio: unset; /* bỏ fix aspect nếu gây lệch */
-    height: 100%;
-    min-height: 280px;
-    max-height: 650px;
-  }
-
-  .image-box img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-
-  .feedback-body {
-    flex: 1;
-    padding: 0 20px;
-  }
-
-  .info-wrapper {
-    margin-top: 20px;
-  }
-
   .pricing-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 30px;
-  }
-
-  .swiper-button-next,
-  .swiper-button-prev {
-    display: flex !important; /* hoặc block nếu bạn muốn */
   }
 }
 

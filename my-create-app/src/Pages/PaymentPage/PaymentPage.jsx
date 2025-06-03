@@ -2,6 +2,9 @@ import React from "react";
 import "./PaymentPage.css";
 import { useLocation } from "react-router-dom";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
+import ChatIcon from "../../components/ChatIcons/ChatIcons";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../firebase";
 
 function PaymentPage() {
   const { state } = useLocation();
@@ -12,9 +15,27 @@ function PaymentPage() {
     return <p>Thiếu thông tin thanh toán hoặc gói tập.</p>;
   }
 
+  const handleConfirmPayment = async () => {
+    try {
+      await addDoc(collection(db, "orders"), {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        note: formData.note,
+        packageTitle: selectedPackage.title,
+        packagePrice: selectedPackage.price,
+        timestamp: Timestamp.now(),
+      });
+      alert("Xác nhận thanh toán thành công!");
+    } catch (error) {
+      console.error("Lỗi khi ghi dữ liệu:", error);
+      alert("Đã có lỗi khi xác nhận thanh toán.");
+    }
+  };
+
   return (
     <>
-      <div className="payment-container">
+      <div className="payment-container container">
         <div className="payment-left">
           <h2>QUÉT QR THANH TOÁN</h2>
           <img
@@ -27,7 +48,6 @@ function PaymentPage() {
             <h4>THÔNG TIN CHUYỂN KHOẢN</h4>
             <p>Hỗ trợ Ví điện tử MoMo/ZaloPay</p>
             <p>Hoặc ứng dụng ngân hàng để chuyển khoản nhanh 24/7</p>
-
             <p>
               <strong>Tên tài khoản:</strong> Võ Hoàng Thiện
             </p>
@@ -50,23 +70,23 @@ function PaymentPage() {
             <h3>HƯỚNG DẪN THANH TOÁN</h3>
             <ul>
               <li>
-                <strong>Bước 1</strong>: Mở ví điện tử/Ngân hàng
+                <strong>Bước 1:</strong> Mở ví điện tử/Ngân hàng
               </li>
               <li>
-                <strong>Bước 2</strong>: Chọn{" "}
+                <strong>Bước 2:</strong> Chọn{" "}
                 <i className="fa-solid fa-qrcode"></i> quét mã
               </li>
               <li>
-                <strong>Bước 3</strong>: Vui lòng ghi đúng nội dung như trên
+                <strong>Bước 3:</strong> Ghi đúng nội dung chuyển khoản
               </li>
               <li>
-                <strong>Bước 4</strong>: Chụp lại màn hình chuyển khoản thành
+                <strong>Bước 4:</strong> Chụp lại màn hình chuyển khoản thành
                 công
               </li>
             </ul>
             <p>
-              Vui lòng nhập chính xác nội dung, thanh toán xong bạn vui lòng đợi
-              trong ít phút sẽ có tư vấn viên liên hệ với mình ạ
+              Vui lòng ghi đúng nội dung và đợi tư vấn viên xác nhận trong ít
+              phút!
             </p>
           </div>
         </div>
@@ -92,7 +112,7 @@ function PaymentPage() {
 
           <div className="order-details">
             <h4>CHI TIẾT ĐƠN HÀNG</h4>
-            <table style={{ width: "100%", marginTop: "1rem" }}>
+            <table>
               <tbody>
                 <tr>
                   <td>
@@ -103,7 +123,7 @@ function PaymentPage() {
                   </td>
                 </tr>
                 <tr>
-                  <td>{selectedPackage.title} </td>
+                  <td>{selectedPackage.title}</td>
                   <td style={{ textAlign: "right" }}>
                     {selectedPackage.price}
                   </td>
@@ -120,9 +140,7 @@ function PaymentPage() {
                   <td>
                     <strong>Phương thức thanh toán:</strong>
                   </td>
-                  <td style={{ textAlign: "right" }}>
-                    Thanh toán chuyển khoản
-                  </td>
+                  <td style={{ textAlign: "right" }}>Chuyển khoản</td>
                 </tr>
                 <tr>
                   <td>
@@ -136,10 +154,13 @@ function PaymentPage() {
             </table>
           </div>
 
-          <button className="btn-confirm">Xác nhận đã thanh toán</button>
+          <button className="btn-confirm" onClick={handleConfirmPayment}>
+            Xác nhận đã thanh toán
+          </button>
         </div>
       </div>
 
+      <ChatIcon />
       <FooterMinimal />
     </>
   );

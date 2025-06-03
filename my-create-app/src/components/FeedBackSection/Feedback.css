@@ -30,6 +30,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 30px;
   background: #1a1a1a;
   background-image: radial-gradient(
     circle at 10% 20%,
@@ -55,7 +56,6 @@
   position: relative;
   overflow: hidden;
   border-radius: 10px;
-  aspect-ratio: 4/3; /* Tỉ lệ 4:3 (có thể điều chỉnh) */
 }
 
 .image-box img {

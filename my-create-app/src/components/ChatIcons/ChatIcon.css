@@ -24,7 +24,7 @@
 }
 
 .chat-icons a:hover {
-  background-color: var(--primary-color);
+  background-color: #0084ff;
   transform: scale(1.1);
 }
 
