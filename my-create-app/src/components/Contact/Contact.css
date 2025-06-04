@@ -82,3 +82,73 @@
   color: #e53935;
   font-size: 22px;
 }
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Popup contact form */
+/* Popup overlay */
+.contact-success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Popup content */
+.contact .popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact .popup-content {
+  background: #ffffff;
+  padding: 30px 40px;
+  border-radius: 14px;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  animation: zoomIn 0.4s ease;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h3 {
+  color: var(--gray-color);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.popup-content p {
+  font-size: 1rem;
+  color: var(--black-color);
+  margin-bottom: 0.5rem;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

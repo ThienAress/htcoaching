@@ -202,7 +202,10 @@ function PaymentPage() {
       {showSuccess && (
         <div className="popup-overlay">
           <div className="popup-content">
-            <h3>✅ Cảm ơn bạn đã đặt hàng thành công!</h3>
+            <h3>
+              <i class="fa-solid fa-check"></i> Cảm ơn bạn đã đặt hàng thành
+              công!
+            </h3>
             <p>
               Tư vấn viên sẽ liên hệ với mình trong thời gian sớm nhất
               <br /> Hệ thống sẽ tự động quay về trang chủ trong:{" "}
