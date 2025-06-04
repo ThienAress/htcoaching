@@ -98,7 +98,7 @@ function RegisterPage() {
             <label>Thông tin bổ sung</label>
             <textarea
               rows={4}
-              placeholder="Ghi chú nếu có (ví dụ thời gian tập, địa điểm mong muốn...)"
+              placeholder="Ghi chú bắt buộc (ví dụ thời gian tập, địa điểm mong muốn, để lại link fb or zalo để bên mình tiện trao đổi.....)"
               value={formData.note}
               onChange={(e) =>
                 setFormData({ ...formData, note: e.target.value })

@@ -1,15 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./PaymentPage.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
 import ChatIcon from "../../components/ChatIcons/ChatIcons";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  getDocs,
+  Timestamp,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 
 function PaymentPage() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const formData = state?.formData;
   const selectedPackage = state?.selectedPackage;
+
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    if (showSuccess) {
+      document.body.classList.add("popup-active");
+
+      const countdownInterval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev === 1) {
+            clearInterval(countdownInterval);
+            navigate("/");
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => {
+        clearInterval(countdownInterval);
+        document.body.classList.remove("popup-active");
+      };
+    }
+  }, [showSuccess]);
 
   if (!formData || !selectedPackage) {
     return <p>Thiếu thông tin thanh toán hoặc gói tập.</p>;
@@ -17,7 +48,17 @@ function PaymentPage() {
 
   const handleConfirmPayment = async () => {
     try {
-      await addDoc(collection(db, "orders"), {
+      const ordersRef = collection(db, "orders");
+
+      // Lấy tất cả đơn hàng hiện có
+      const snapshot = await getDocs(ordersRef);
+      const donHangCount = snapshot.size; // Đếm số lượng đơn hàng
+
+      // Tạo ID mới kiểu don_hang_1, don_hang_2, ...
+      const newId = `don_hang_${donHangCount + 1}`;
+
+      // Ghi đơn hàng mới với ID custom
+      await setDoc(doc(db, "orders", newId), {
         name: formData.name,
         phone: formData.phone,
         email: formData.email,
@@ -25,8 +66,10 @@ function PaymentPage() {
         packageTitle: selectedPackage.title,
         packagePrice: selectedPackage.price,
         timestamp: Timestamp.now(),
+        status: "pending",
       });
-      alert("Xác nhận thanh toán thành công!");
+
+      setShowSuccess(true);
     } catch (error) {
       console.error("Lỗi khi ghi dữ liệu:", error);
       alert("Đã có lỗi khi xác nhận thanh toán.");
@@ -43,7 +86,6 @@ function PaymentPage() {
             alt="QR Thanh toán Vietcombank"
             className="qr-image"
           />
-
           <div className="bank-info">
             <h4>THÔNG TIN CHUYỂN KHOẢN</h4>
             <p>Hỗ trợ Ví điện tử MoMo/ZaloPay</p>
@@ -65,7 +107,6 @@ function PaymentPage() {
               {selectedPackage.title}
             </p>
           </div>
-
           <div className="payment-instructions">
             <h3>HƯỚNG DẪN THANH TOÁN</h3>
             <ul>
@@ -73,15 +114,13 @@ function PaymentPage() {
                 <strong>Bước 1:</strong> Mở ví điện tử/Ngân hàng
               </li>
               <li>
-                <strong>Bước 2:</strong> Chọn{" "}
-                <i className="fa-solid fa-qrcode"></i> quét mã
+                <strong>Bước 2:</strong> Quét mã QR
               </li>
               <li>
                 <strong>Bước 3:</strong> Ghi đúng nội dung chuyển khoản
               </li>
               <li>
-                <strong>Bước 4:</strong> Chụp lại màn hình chuyển khoản thành
-                công
+                <strong>Bước 4:</strong> Chụp màn hình chuyển khoản thành công
               </li>
             </ul>
             <p>
@@ -112,7 +151,7 @@ function PaymentPage() {
 
           <div className="order-details">
             <h4>CHI TIẾT ĐƠN HÀNG</h4>
-            <table>
+            <table style={{ width: "100%", marginTop: "1rem" }}>
               <tbody>
                 <tr>
                   <td>
@@ -159,6 +198,19 @@ function PaymentPage() {
           </button>
         </div>
       </div>
+
+      {showSuccess && (
+        <div className="popup-overlay">
+          <div className="popup-content">
+            <h3>✅ Cảm ơn bạn đã đặt hàng thành công!</h3>
+            <p>
+              Tư vấn viên sẽ liên hệ với mình trong thời gian sớm nhất
+              <br /> Hệ thống sẽ tự động quay về trang chủ trong:{" "}
+              <strong>{countdown}s</strong>.
+            </p>
+          </div>
+        </div>
+      )}
 
       <ChatIcon />
       <FooterMinimal />
