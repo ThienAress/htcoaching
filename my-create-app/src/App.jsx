@@ -5,6 +5,7 @@ import About from "./components/About/About";
 import Trainer from "./components/Trainer/Trainer";
 import Feedback from "./components/FeedBackSection/Feedback";
 import Classes from "./components/ClassSection/Classes";
+import Tools from "./components/Tools/Tools";
 import Pricing from "./components/PricingSection/Pricing";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
@@ -27,6 +28,7 @@ function App() {
             <Trainer />
             <Feedback />
             <Classes />
+            <Tools />
             <Pricing />
             <Contact />
             <Footer />

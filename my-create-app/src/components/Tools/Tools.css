@@ -1,0 +1,64 @@
+.tools {
+  padding: 60px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.tools .container {
+  background-image: url("../../assets/images/hero.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.tools-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 60px 20px;
+  margin: 60px 20px;
+  border-radius: 16px;
+  text-align: center;
+  color: white;
+}
+
+/* Title */
+.tools .tools-title {
+  color: #ff2c2c;
+  margin-bottom: 40px;
+}
+
+/* CTA Card */
+.tool-highlight {
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 40px 30px;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tool-highlight:hover {
+  transform: translateY(-5px);
+}
+
+.tool-content h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.tool-content p {
+  font-size: 1rem;
+  color: #dddddd;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.tool-content .btn {
+  font-size: 1rem;
+  padding: 12px 28px;
+  border-radius: 999px;
+}

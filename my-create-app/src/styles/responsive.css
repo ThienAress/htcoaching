@@ -395,10 +395,6 @@
 
 /* =============== LARGE DESKTOP (1280px+) =============== */
 @media (min-width: 1280px) {
-  .container {
-    padding: 0 40px;
-  }
-
   .image-box {
     border-radius: 12px;
   }
