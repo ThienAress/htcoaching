@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./PaymentPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
+import HeaderMinimal from "../../components/Header/HeaderMinimal";
 import ChatIcon from "../../components/ChatIcons/ChatIcons";
 import {
   collection,
@@ -78,6 +79,7 @@ function PaymentPage() {
 
   return (
     <>
+      <HeaderMinimal />
       <div className="payment-container container">
         <div className="payment-left">
           <h2>QUÉT QR THANH TOÁN</h2>

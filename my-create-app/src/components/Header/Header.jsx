@@ -68,7 +68,7 @@ function Header() {
           </ul>
         </nav>
         <div className="nav-cta">
-          <a href="#pricing" className="btn">
+          <a href="#pricing" className="btn btn-primary">
             Đăng ký ngay
           </a>
         </div>

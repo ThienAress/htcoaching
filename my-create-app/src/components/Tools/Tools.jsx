@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Tools.css";
 const Tools = () => {
   return (
@@ -9,13 +10,13 @@ const Tools = () => {
 
           <div className="tool-highlight">
             <div className="tool-content">
-              <h3>Đo lượng calo đốt cháy mỗi ngày (TDEE)</h3>
+              <h3>Đo lượng mức tiêu thụ năng lượng mỗi ngày (TDEE)</h3>
               <p>
                 Khám phá lượng calo cơ thể bạn đốt mỗi ngày để tối ưu hóa việc
                 tăng/giảm cân một cách khoa học.
               </p>
               <a href="/tdee-calculator" className="btn btn-primary">
-                Bắt đầu ngay
+                Khám phá ngay
               </a>
             </div>
           </div>

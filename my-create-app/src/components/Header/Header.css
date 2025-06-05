@@ -70,22 +70,6 @@
   width: 100%;
 }
 
-.nav-cta .btn {
-  margin-left: 30px;
-  background-color: transparent;
-  color: var(--white-color);
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--white-color);
-  border-radius: 999px;
-  font-weight: 500;
-  transition: 0.3s ease;
-}
-
-.nav-cta .btn:hover {
-  background-color: var(--white-color);
-  color: var(--black-color);
-}
-
 .menu-toggle {
   display: none;
   color: var(--white-color);

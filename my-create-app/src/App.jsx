@@ -13,6 +13,7 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ChatIcons from "./components/ChatIcons/ChatIcons";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
+import TdeeCalculator from "./Pages/TdeeCalculator/TdeeCalculator";
 
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
 
       {/* Trang thanh toán */}
       <Route path="/payment" element={<PaymentPage />} />
+
+      {/* Trang tính tdee */}
+      <Route path="/tdee-calculator" element={<TdeeCalculator />} />
     </Routes>
   );
 }

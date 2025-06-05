@@ -123,6 +123,24 @@
     flex-direction: column;
   }
 
+  /* Tools */
+  .tools-title {
+    font-size: 2rem;
+  }
+
+  .tool-content h3 {
+    font-size: 1.4rem;
+  }
+
+  .tool-content p {
+    font-size: 1rem;
+  }
+
+  .tool-content .btn {
+    width: 100%;
+    padding: 12px;
+  }
+
   /* Pricing section */
   .pricing {
     padding: 40px 0;

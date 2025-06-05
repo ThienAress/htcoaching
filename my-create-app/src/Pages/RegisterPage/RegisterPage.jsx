@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./RegisterPage.css";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
+import HeaderMinimal from "../../components/Header/HeaderMinimal";
 import ChatIcon from "../../components/ChatIcons/ChatIcons";
 
 function RegisterPage() {
@@ -57,6 +58,7 @@ function RegisterPage() {
 
   return (
     <>
+      <HeaderMinimal />
       <div className="checkout-container">
         <div className="checkout-left">
           <h2>THÔNG TIN THANH TOÁN</h2>

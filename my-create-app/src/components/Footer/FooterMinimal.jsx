@@ -4,8 +4,6 @@ const FooterMinimal = () => {
   return (
     <footer className="footer-minimal">
       <div className="container">
-        <img src="/images/logo.svg" alt="Logo" className="footer-logo" />
-
         <p className="footer-slogan">
           "Không có body đỉnh trong vùng an toàn.
           <br /> Hoặc là thay đổi – hoặc là mãi như cũ."

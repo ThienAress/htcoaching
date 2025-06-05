@@ -17,7 +17,7 @@
 .tools-overlay {
   background-color: rgba(0, 0, 0, 0.6);
   padding: 60px 20px;
-  margin: 60px 20px;
+  margin: 60px 0;
   border-radius: 16px;
   text-align: center;
   color: white;
