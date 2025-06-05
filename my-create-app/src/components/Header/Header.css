@@ -1,4 +1,3 @@
-/* Header */
 .header {
   position: fixed;
   top: 0;
@@ -6,6 +5,8 @@
   z-index: 1000;
   background: linear-gradient(45deg, #f39c12, #1a1a1a);
   transition: 0.3s ease;
+  height: 100px;
+  overflow-x: hidden;
 }
 
 .header.scrolled {
@@ -15,15 +16,28 @@
 }
 
 .header .container {
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.logo {
+  overflow: hidden;
 }
 
 .logo img {
-  height: 120px;
-  width: auto;
+  height: 60px;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.navbar {
+  display: flex;
 }
 
 .navbar ul {

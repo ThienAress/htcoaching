@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+
 import "./Header.css";
 
 function Header() {
@@ -25,7 +26,7 @@ function Header() {
     <header className="header">
       <div className="container">
         <a href="#" className="logo">
-          <img src="/images/logo.svg" alt="HTCOACHING Logo" />
+          <img src="./images/logo.svg" alt="htcoaching logo" />
         </a>
         <nav className={`navbar ${menuOpen ? "active" : ""}`}>
           <ul>
@@ -75,6 +76,8 @@ function Header() {
           <i className="fas fa-bars"></i>
         </div>
       </div>
+
+      <div></div>
     </header>
   );
 }

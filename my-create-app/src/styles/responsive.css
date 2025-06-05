@@ -1,5 +1,9 @@
 /* =============== SMALL MOBILE (0-480px) =============== */
 @media (max-width: 480px) {
+  .logo img {
+    height: 40px;
+  }
+
   .stat-number {
     font-size: 1.5rem;
   }
@@ -47,12 +51,13 @@
   .navbar {
     display: none;
     position: fixed;
-    top: 97px;
+    top: 100px;
     left: 0;
-    width: 100%;
+    width: 100vw;
     background: linear-gradient(to bottom, #f39c12, #1a1a1a);
     padding: 20px 0;
     z-index: 999;
+    overflow-x: hidden;
   }
 
   .navbar.active {
@@ -61,19 +66,24 @@
 
   .navbar ul {
     flex-direction: column;
-    padding: 0 10px;
+    padding: 0 15px;
   }
 
   .menu-toggle {
     display: flex;
     width: 40px;
     height: 40px;
+    justify-content: center;
+    align-items: center;
   }
 
   .nav-cta {
     display: none;
   }
 
+  .logo img {
+    height: 40px;
+  }
   /* Hero section */
   .hero .btn {
     display: flex;
@@ -253,7 +263,10 @@
 
   .navbar ul li a {
     font-size: 0.6rem;
-    font-weight: 600;
+  }
+
+  .logo img {
+    height: 50px;
   }
 
   .about .container {
@@ -319,6 +332,14 @@
 @media (min-width: 835px) and (max-width: 1024px) {
   .nav-cta {
     display: none;
+  }
+
+  .logo img {
+    height: 55px;
+  }
+
+  .navbar ul li a {
+    font-size: 0.9rem;
   }
 
   .about .container {
