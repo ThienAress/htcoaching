@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
 import HeaderMinimal from "../../components/Header/HeaderMinimal";
 import Contact from "../../components/Contact/Contact";
+import ChatIcon from "../../components/ChatIcons/ChatIcons";
+import ScrollToTop from "../../components/ScrollToTop/ScrollToTop";
 import TdeeForm from "./TdeeForm";
 import TdeeResultBox from "./TdeeResultBox";
 import MacroTable from "./MacroTable";
@@ -183,7 +185,7 @@ const TdeeCalculator = () => {
                     {" "}
                     Đạm (Protein), Tinh bột (Carb), Chất béo (Fat)
                   </strong>
-                  . Bạn muốn mình tính giúp không?
+                  . Bạn muốn mình tính giúp dựa trên thông số trên không?
                 </p>
                 <button onClick={calculateMacro} className="btn btn-primary">
                   Xem kết quả
@@ -202,6 +204,8 @@ const TdeeCalculator = () => {
         </div>
       </section>
       <Contact />
+      <ChatIcon />
+      <ScrollToTop />
       <FooterMinimal />
     </>
   );

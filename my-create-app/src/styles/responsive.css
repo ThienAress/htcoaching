@@ -18,6 +18,23 @@
     padding: 20px;
   }
 
+  .club-title {
+    font-size: 1.5rem;
+  }
+
+  .club-content {
+    padding: 16px;
+  }
+
+  .club-name {
+    font-size: 1rem;
+  }
+
+  .club-address,
+  .club-phone {
+    font-size: 0.9rem;
+  }
+
   .footer-content {
     grid-template-columns: 1fr;
     text-align: center;
@@ -48,6 +65,10 @@
   }
 
   /* header */
+  .header-section {
+    padding: 0 20px;
+  }
+
   .navbar {
     display: none;
     position: fixed;
@@ -82,7 +103,7 @@
   }
 
   .logo img {
-    height: 40px;
+    height: 50px;
   }
   /* Hero section */
   .hero .btn {
@@ -257,6 +278,10 @@
     font-size: 0.9rem;
   }
 
+  .club-grid {
+    grid-template-columns: 1fr;
+  }
+
   /* FooterMinimal */
   .footer-contact {
     display: flex;
@@ -344,6 +369,10 @@
     flex-direction: row;
     margin-top: 10px;
   }
+
+  .club-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* =============== IPAD LANDSCAPE (835-1024px) =============== */
@@ -404,6 +433,11 @@
 
 /* =============== DESKTOP (1025px+) =============== */
 @media (min-width: 1025px) {
+  .header-section {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
   .pricing-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;

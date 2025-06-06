@@ -15,12 +15,11 @@
   box-shadow: var(--box-shadow);
 }
 
-.header .container {
+.header .header-section {
   height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
   overflow-x: hidden;
   box-sizing: border-box;
 }

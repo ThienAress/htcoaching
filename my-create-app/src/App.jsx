@@ -14,6 +14,7 @@ import ChatIcons from "./components/ChatIcons/ChatIcons";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 import TdeeCalculator from "./Pages/TdeeCalculator/TdeeCalculator";
+import Club from "./Pages/Club/Club";
 
 function App() {
   return (
@@ -47,6 +48,9 @@ function App() {
 
       {/* Trang tính tdee */}
       <Route path="/tdee-calculator" element={<TdeeCalculator />} />
+
+      {/* Trang CLB */}
+      <Route path="/club" element={<Club />} />
     </Routes>
   );
 }

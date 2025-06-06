@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import "./Header.css";
 
@@ -24,7 +25,7 @@ function Header() {
 
   return (
     <header className="header">
-      <div className="container">
+      <div className="header-section">
         <a href="#" className="logo">
           <img src="./images/logo.svg" alt="htcoaching logo" />
         </a>
@@ -63,6 +64,11 @@ function Header() {
             <li>
               <a href="#contact" onClick={handleLinkClick}>
                 Liên hệ
+              </a>
+            </li>
+            <li>
+              <a href="/club" onClick={handleLinkClick}>
+                CLB
               </a>
             </li>
           </ul>
