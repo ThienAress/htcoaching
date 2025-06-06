@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
 import HeaderMinimal from "../../components/Header/HeaderMinimal";
 import Contact from "../../components/Contact/Contact";
+import TdeeForm from "./TdeeForm";
+import TdeeResultBox from "./TdeeResultBox";
+import MacroTable from "./MacroTable";
 import "./TdeeCalculator.css";
 
 const TdeeCalculator = () => {
@@ -26,8 +29,14 @@ const TdeeCalculator = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (!name) return;
+
     if (["height", "weight", "age", "bodyfat"].includes(name) && value < 0)
       return;
+
+    if (name === "goal" && form.goal && form.goal !== value) {
+      setGoalNotice(true);
+    }
+
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
@@ -81,6 +90,8 @@ const TdeeCalculator = () => {
     setAdjustedCalories(Math.round(adjusted));
     setMacroSet(null);
     setGoalNotice(false);
+
+    setGoalNotice(false);
   };
 
   const handleReset = () => {
@@ -132,189 +143,33 @@ const TdeeCalculator = () => {
           <h2 className="tdee-title">
             ĐO LƯỢNG CALO ĐỐT CHÁY TRONG 1 NGÀY TDEE
           </h2>
-          <form
-            className="tdee-form"
-            onSubmit={handleSubmit}
-            onReset={handleReset}
-          >
-            <div className="form-grid">
-              <div className="form-group">
-                <label>Giới tính:</label>
-                <select
-                  name="gender"
-                  value={form.gender}
-                  onChange={handleChange}
-                >
-                  <option value="">------</option>
-                  <option value="Nam">Nam</option>
-                  <option value="Nữ">Nữ</option>
-                </select>
-                {errors.gender && (
-                  <p className="error-message">{errors.gender}</p>
-                )}
-              </div>
-              <div className="form-group">
-                <label>Chiều cao (cm):</label>
-                <input
-                  type="number"
-                  name="height"
-                  min="0"
-                  value={form.height}
-                  onChange={handleChange}
-                />
-                {errors.height && (
-                  <p className="error-message">{errors.height}</p>
-                )}
-              </div>
-              <div className="form-group">
-                <label>Cân nặng (kg):</label>
-                <input
-                  type="number"
-                  name="weight"
-                  min="0"
-                  value={form.weight}
-                  onChange={handleChange}
-                />
-                {errors.weight && (
-                  <p className="error-message">{errors.weight}</p>
-                )}
-              </div>
-              <div className="form-group">
-                <label>Tuổi:</label>
-                <input
-                  type="number"
-                  name="age"
-                  min="0"
-                  value={form.age}
-                  onChange={handleChange}
-                />
-                {errors.age && <p className="error-message">{errors.age}</p>}
-              </div>
-              <div className="form-group">
-                <label>Hệ số vận động:</label>
-                <select
-                  name="activity"
-                  value={form.activity}
-                  onChange={handleChange}
-                >
-                  <option value="">-- Chọn mức độ --</option>
-                  <option value="1.2">Ít vận động</option>
-                  <option value="1.375">Vận động nhẹ (1–3 buổi/tuần)</option>
-                  <option value="1.55">Vận động vừa (3–5 buổi/tuần)</option>
-                  <option value="1.725">Vận động nhiều (6–7 buổi/tuần)</option>
-                  <option value="1.9">Vận động rất nhiều (2 buổi/ngày)</option>
-                </select>
-                {errors.activity && (
-                  <p className="error-message">{errors.activity}</p>
-                )}
-              </div>
-              <div className="form-group">
-                <label>Tính theo:</label>
-                <select
-                  name="formula"
-                  value={form.formula}
-                  onChange={handleChange}
-                >
-                  <option value="">-- Chọn công thức --</option>
-                  <option value="Mifflin-St Jeor">Mifflin-St Jeor</option>
-                  <option value="Katch-McArdle">Katch-McArdle</option>
-                </select>
-                {errors.formula && (
-                  <p className="error-message">{errors.formula}</p>
-                )}
-              </div>
-              {form.formula === "Katch-McArdle" && (
-                <div className="form-group">
-                  <label>Body Fat (%):</label>
-                  <input
-                    type="number"
-                    name="bodyfat"
-                    min="0"
-                    value={form.bodyfat}
-                    onChange={handleChange}
-                  />
-                  {errors.bodyfat && (
-                    <p className="error-message">{errors.bodyfat}</p>
-                  )}
-                </div>
-              )}
-              <div className="form-group">
-                <label>Mục tiêu của bạn:</label>
-                <select
-                  name="goal"
-                  value={form.goal}
-                  onChange={(e) => {
-                    const prev = form.goal;
-                    handleChange(e);
-                    if (prev && prev !== e.target.value) setGoalNotice(true);
-                    else setGoalNotice(false);
-                  }}
-                >
-                  <option value="">-- Chọn mục tiêu --</option>
-                  <option value="gain">Tăng cơ</option>
-                  <option value="lose">Giảm mỡ</option>
-                  <option value="maintain">Duy trì</option>
-                </select>
-                {errors.goal && <p className="error-message">{errors.goal}</p>}
-                {goalNotice && (
-                  <p className="goal-notice">
-                    Bạn đã thay đổi mục tiêu. Hãy bấm lại vào nút "Xem kết quả"
-                    để xem kết quả mới.
-                  </p>
-                )}
-              </div>
-            </div>
-            <div className="form-actions">
-              <button type="submit" className="btn btn-primary">
-                Xem kết quả
-              </button>
-              <button type="reset" className="btn btn-outline">
-                Đặt lại
-              </button>
-            </div>
-
-            {tdee && bmr && (
-              <div className="tdee-result-box">
-                <div className="result-card">
-                  <h4>TDEE của bạn:</h4>
-                  <div className="value">
-                    {tdee} <span>kcal/ngày</span>
-                  </div>
-                </div>
-                <div className="result-card">
-                  <h4>BMR của bạn:</h4>
-                  <div className="value">
-                    {bmr} <span>kcal/ngày</span>
-                  </div>
-                </div>
-                <div className="result-card">
-                  <h4>
-                    Lượng calories cần thiết (
-                    {form.goal === "gain"
-                      ? "tăng cân"
-                      : form.goal === "lose"
-                      ? "giảm mỡ"
-                      : "duy trì"}
-                    ):
-                  </h4>
-                  <div className="value">
-                    {adjustedCalories} <span>kcal/ngày</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </form>
-
+          <TdeeForm
+            form={form}
+            errors={errors}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            handleReset={handleReset}
+            goalNotice={goalNotice}
+            setGoalNotice={setGoalNotice}
+          />
+          {tdee && bmr && (
+            <TdeeResultBox
+              tdee={tdee}
+              bmr={bmr}
+              adjustedCalories={adjustedCalories}
+              goal={form.goal}
+            />
+          )}
           {adjustedCalories && (
             <>
               <div className="tdee-description">
                 <h3>TDEE là gì?</h3>
                 <p>
-                  TDEE (Total Daily Energy Expenditure) là tổng năng lượng bạn
-                  tiêu hao trong một ngày, bao gồm các hoạt động sống cơ bản
-                  (BMR), vận động và tiêu hao do tiêu hóa thức ăn. Biết được
-                  TDEE giúp bạn điều chỉnh chế độ ăn và luyện tập để đạt được
-                  mục tiêu.
+                  <strong>TDEE (Total Daily Energy Expenditure)</strong> là tổng
+                  năng lượng bạn tiêu hao trong một ngày, bao gồm các hoạt động
+                  sống cơ bản (BMR), vận động và tiêu hao do tiêu hóa thức ăn.
+                  Biết được TDEE giúp bạn điều chỉnh chế độ ăn và luyện tập để
+                  đạt được mục tiêu.
                 </p>
               </div>
 
@@ -322,49 +177,24 @@ const TdeeCalculator = () => {
                 <h3>2. Lịch ăn cụ thể sẽ như thế nào?</h3>
                 <p>
                   Khi đã biết được tổng năng lượng bạn cần, bước tiếp theo là
-                  xác định các chất đa lượng (macros): Đạm (Protein), Tinh bột
-                  (Carb), Chất béo (Fat). Bạn muốn mình tính giúp không?
+                  xác định các chất đa lượng <strong>(macros)</strong> bao gồm
+                  có:{" "}
+                  <strong>
+                    {" "}
+                    Đạm (Protein), Tinh bột (Carb), Chất béo (Fat)
+                  </strong>
+                  . Bạn muốn mình tính giúp không?
                 </p>
                 <button onClick={calculateMacro} className="btn btn-primary">
                   Xem kết quả
                 </button>
                 {macroSet && (
-                  <>
-                    <p className="macro-note">
-                      Đây là lượng calories mình đã điều chỉnh từ TDEE ban đầu
-                      của bạn là <strong>{tdee}</strong> kcal thành lượng
-                      calories cần thiết để{" "}
-                      <strong>
-                        {form.goal === "gain"
-                          ? "tăng cân"
-                          : form.goal === "lose"
-                          ? "giảm cân"
-                          : "duy trì cân nặng"}
-                      </strong>{" "}
-                      là <strong>{adjustedCalories}</strong> kcal. Lượng
-                      calories mình điều chỉnh là <strong>300kcal</strong>
-                    </p>
-
-                    <div className="macro-table">
-                      {Object.entries(macroSet).map(([goal, values]) => (
-                        <div className="macro-card" key={goal}>
-                          <h4>{goal}</h4>
-                          <div className="macro-row">
-                            <strong>{values.protein}g</strong>
-                            <span>Protein</span>
-                          </div>
-                          <div className="macro-row">
-                            <strong>{values.fat}g</strong>
-                            <span>Fat</span>
-                          </div>
-                          <div className="macro-row">
-                            <strong>{values.carb}g</strong>
-                            <span>Carbs</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </>
+                  <MacroTable
+                    macroSet={macroSet}
+                    tdee={tdee}
+                    adjustedCalories={adjustedCalories}
+                    goal={form.goal}
+                  />
                 )}
               </div>
             </>
