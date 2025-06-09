@@ -188,7 +188,7 @@ const TdeeCalculator = () => {
                   . Bạn muốn mình tính giúp dựa trên thông số trên không?
                 </p>
                 <button onClick={calculateMacro} className="btn btn-primary">
-                  Xem kết quả
+                  Tính toán macro
                 </button>
                 {macroSet && (
                   <MacroTable

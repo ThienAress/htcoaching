@@ -278,6 +278,14 @@
     font-size: 0.9rem;
   }
 
+  .club .club-title {
+    font-size: 2rem;
+  }
+
+  .club .club-desc {
+    font-size: 0.9rem;
+  }
+
   .club-grid {
     grid-template-columns: 1fr;
   }

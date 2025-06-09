@@ -7,8 +7,15 @@
 .club .club-title {
   text-align: center;
   color: #454545;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-weight: 700;
+}
+
+.club .club-desc {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 /* Grid layout */
@@ -64,4 +71,27 @@
 .club-address i,
 .club-phone i {
   color: #d70000;
+}
+
+.club-filter {
+  margin: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.club-filter select {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.club-filter select:hover {
+  border-color: #007bff;
 }
