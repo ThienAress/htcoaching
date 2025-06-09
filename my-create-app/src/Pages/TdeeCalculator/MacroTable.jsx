@@ -16,7 +16,7 @@ const MacroTable = ({ macroSet, tdee, adjustedCalories, goal }) => {
         Đây là lượng calories mình đã điều chỉnh từ TDEE ban đầu của bạn là{" "}
         <strong>{tdee}</strong> kcal thành lượng calories cần thiết để{" "}
         <strong>{goalText}</strong> là <strong>{adjustedCalories}</strong> kcal.
-        Theo dõi và thay đổi cho phù hợp bạn nhé.
+        Theo dõi và thay đổi theo tuần cho phù hợp bạn nhé.
       </p>
 
       <div className="macro-table">

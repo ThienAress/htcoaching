@@ -165,7 +165,7 @@ const TdeeCalculator = () => {
           {adjustedCalories && (
             <>
               <div className="tdee-description">
-                <h3>TDEE là gì?</h3>
+                <h3>1. TDEE là gì?</h3>
                 <p>
                   <strong>TDEE (Total Daily Energy Expenditure)</strong> là tổng
                   năng lượng bạn tiêu hao trong một ngày, bao gồm các hoạt động

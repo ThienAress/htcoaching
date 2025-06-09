@@ -9,26 +9,32 @@ import "./Club.css";
 const clubs = [
   {
     name: "WAYSTATION TRƯƠNG VĂN HẢI",
-    address: "52 Thành Thái, Phường 12, Quận 1, Hồ Chí Minh",
-    phone: "1900633638",
+    address: "6 Trương Văn Hải, Tăng Nhơn Phú B, Quận 9, Hồ Chí Minh",
+    mail: "hoangthiengym99@gmai.com",
     image: "/images/class1.jpg",
   },
   {
     name: "WAYSTATION DÂN CHỦ",
-    address: "119 Phổ Quang, Phường 09, Quận 2, Hồ Chí Minh",
-    phone: "1900633638",
+    address: "56F Dân Chủ, Bình Thọ, Thủ Đức, Hồ Chí Minh",
+    mail: "hoangthiengym99@gmai.com",
     image: "/images/class2.jpg",
   },
   {
     name: "WAYSTATION HIỆP BÌNH",
-    address: "34-35 Bến Vân Đồn, Phường 12, Quận 3, Hồ Chí Minh",
-    phone: "1900633638",
+    address: "135 Hiệp Bình, Hiệp Bình Chánh, Thủ Đức, Hồ Chí Minh",
+    mail: "hoangthiengym99@gmai.com",
     image: "/images/class3.jpg",
   },
   {
     name: "WAYSTATION QL13",
-    address: "34-35 Bến Vân Đồn, Phường 12, Quận 4, Hồ Chí Minh",
-    phone: "1900633638",
+    address: "361 Quốc Lộ 13, Hiệp Bình Phước, Thủ Đức, Hồ Chí Minh",
+    mail: "hoangthiengym99@gmai.com",
+    image: "/images/class3.jpg",
+  },
+  {
+    name: "Chung Cư Flora Novia",
+    address: "1452 Phạm Văn Đồng, Linh Tây, Thủ Đức, Hồ Chí Minh",
+    mail: "hoangthiengym99@gmai.com",
     image: "/images/class3.jpg",
   },
 ];
@@ -94,7 +100,7 @@ const Club = () => {
                     <i className="fas fa-map-marker-alt"></i> {club.address}
                   </p>
                   <p className="club-phone">
-                    <i className="fas fa-phone-alt"></i> {club.phone}
+                    <i class="fa-solid fa-envelope"></i> {club.mail}
                   </p>
                 </div>
               </div>
