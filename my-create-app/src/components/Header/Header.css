@@ -3,16 +3,13 @@
   top: 0;
   width: 100%;
   z-index: 1000;
-  background: linear-gradient(45deg, #f39c12, #1a1a1a);
-  transition: 0.3s ease;
   height: 100px;
   overflow-x: hidden;
+  box-shadow: none;
 }
 
 .header.scrolled {
-  background-color: var(--black-color);
-  padding: 15px 0;
-  box-shadow: var(--box-shadow);
+  background: linear-gradient(45deg, #f39c12, #1a1a1a);
 }
 
 .header .header-section {

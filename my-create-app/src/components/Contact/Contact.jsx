@@ -188,9 +188,8 @@ function Contact() {
                 <option value="" disabled>
                   Chọn gói tập quan tâm
                 </option>
-                <option value="Gói cơ bản">Gói cơ bản</option>
-                <option value="Gói nâng cao">Gói nâng cao</option>
-                <option value="Gói VIP">Gói VIP</option>
+                <option value="Gói cơ bản">ONLINE</option>
+                <option value="Gói nâng cao">1-1</option>
               </select>
               {errors.package && (
                 <span className="error">{errors.package}</span>

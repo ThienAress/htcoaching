@@ -19,9 +19,6 @@
 .about-image {
   flex: 1;
   width: 100%;
-  max-width: 100%;
-  aspect-ratio: 16 / 9;
-  height: auto;
   overflow: hidden;
   border-radius: 10px;
   box-shadow: var(--box-shadow);

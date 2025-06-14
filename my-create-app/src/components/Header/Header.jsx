@@ -1,41 +1,38 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import "./Header.css";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Đóng menu khi scroll
+  // Theo dõi sự kiện cuộn
   useEffect(() => {
     const handleScroll = () => {
       if (menuOpen) {
         setMenuOpen(false);
       }
+
+      // Ngay khi cuộn là đổi background (scrollY > 0)
+      setIsScrolled(window.scrollY > 0);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [menuOpen]);
 
-  // Đóng menu khi click vào link
   const handleLinkClick = () => {
     setMenuOpen(false);
   };
 
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? "scrolled" : ""}`}>
       <div className="header-section">
         <a href="#" className="logo">
-          <img src="./images/logo.svg" alt="htcoaching logo" />
+          <img src="./images/logo.svg" alt="htcoaching-logo" />
         </a>
+
         <nav className={`navbar ${menuOpen ? "active" : ""}`}>
           <ul>
-            <li>
-              <a href="#home" onClick={handleLinkClick}>
-                Trang chủ
-              </a>
-            </li>
             <li>
               <a href="#about" onClick={handleLinkClick}>
                 Giới thiệu
@@ -73,17 +70,17 @@ function Header() {
             </li>
           </ul>
         </nav>
+
         <div className="nav-cta">
           <a href="#pricing" className="btn btn-primary">
             Đăng ký ngay
           </a>
         </div>
+
         <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           <i className="fas fa-bars"></i>
         </div>
       </div>
-
-      <div></div>
     </header>
   );
 }

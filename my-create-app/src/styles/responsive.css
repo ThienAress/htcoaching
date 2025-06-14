@@ -65,6 +65,10 @@
   }
 
   /* header */
+  .header {
+    background: linear-gradient(45deg, #f39c12, #1a1a1a);
+  }
+
   .header-section {
     padding: 0 20px;
   }
@@ -308,6 +312,14 @@
 /* =============== IPAD PORTRAIT (768-834px) =============== */
 @media (min-width: 768px) and (max-width: 834px) {
   /* Header */
+  .header {
+    background: linear-gradient(45deg, #f39c12, #1a1a1a);
+  }
+
+  .header-section {
+    padding: 0 20px;
+  }
+
   .nav-cta {
     display: none;
   }
@@ -385,6 +397,14 @@
 
 /* =============== IPAD LANDSCAPE (835-1024px) =============== */
 @media (min-width: 835px) and (max-width: 1024px) {
+  .header {
+    background: linear-gradient(45deg, #f39c12, #1a1a1a);
+  }
+
+  .header-section {
+    padding: 0 30px;
+  }
+
   .nav-cta {
     display: none;
   }
