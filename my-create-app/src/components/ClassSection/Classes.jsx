@@ -37,7 +37,7 @@ function Classes() {
             image="images/class4.jpg"
             title="Boxing"
             desc="Tăng sức bền, cải thiện phản xạ và giải phóng căng thẳng với
-                những bài tập đầy năng lượng."
+                những bài tập đầy năng lượng cao."
             benefits={[
               "Đốt mỡ, săn chắc toàn thân",
               "Nâng cao phản xạ và sự tự tin",
