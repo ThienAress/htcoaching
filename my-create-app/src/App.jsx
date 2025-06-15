@@ -11,6 +11,7 @@ import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ChatIcons from "./components/ChatIcons/ChatIcons";
+import Login from "./Pages/Login/Login";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 import TdeeCalculator from "./Pages/TdeeCalculator/TdeeCalculator";
@@ -39,6 +40,9 @@ function App() {
           </>
         }
       />
+
+      {/* Trang đăng nhập */}
+      <Route path="/login" element={<Login />} />
 
       {/* Trang đăng kí */}
       <Route path="/register" element={<RegisterPage />} />

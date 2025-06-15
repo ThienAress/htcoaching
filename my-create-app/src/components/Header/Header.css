@@ -66,6 +66,10 @@
   width: 100%;
 }
 
+.header .nav-cta .btn {
+  border-radius: 0;
+}
+
 .menu-toggle {
   display: none;
   color: var(--white-color);

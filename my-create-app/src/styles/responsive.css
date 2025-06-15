@@ -294,6 +294,33 @@
     grid-template-columns: 1fr;
   }
 
+  /* Login */
+  .login-container {
+    padding: 30px;
+  }
+
+  .login-header h2 {
+    font-size: 1.375rem;
+  }
+
+  .form-group input {
+    padding: 12px 10px 4px 10px;
+    font-size: 0.875rem;
+  }
+
+  .btn-login {
+    padding: 14px;
+    font-size: 0.875rem;
+  }
+
+  .login-header .logo {
+    height: 50px;
+  }
+
+  .login-footer {
+    font-size: 0.75rem;
+  }
+
   /* FooterMinimal */
   .footer-contact {
     display: flex;

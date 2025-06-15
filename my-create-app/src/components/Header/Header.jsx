@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
@@ -70,11 +71,10 @@ function Header() {
             </li>
           </ul>
         </nav>
-
         <div className="nav-cta">
-          <a href="#pricing" className="btn btn-primary">
-            Đăng ký ngay
-          </a>
+          <Link to="/login" className="btn btn-primary">
+            Đăng nhập
+          </Link>
         </div>
 
         <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
