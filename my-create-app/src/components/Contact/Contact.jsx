@@ -46,7 +46,7 @@ function Contact() {
     if (!formData.name || formData.name.trim().length < 8) {
       newErrors.name = "Họ tên phải có ít nhất 8 ký tự";
     }
-    if (!formData.email.match(/^[\w.+\-]+@gmail\.com$/)) {
+    if (!formData.email.match(/^[\w.+-]+@gmail\.com$/)) {
       newErrors.email = "Email phải đúng định dạng @gmail.com";
     }
     if (!formData.phone.match(/^\d{10}$/)) {

@@ -1,5 +1,4 @@
-/* Layout */
-.signup-fullscreen {
+Layout .signup-fullscreen {
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -81,20 +80,20 @@
 }
 
 /* Form */
-.signup-form {
+.signup-container .signup-form {
   transition: var(--transition);
 }
 
-.signup-form.form-focused {
+.signup-container .signup-form.form-focused {
   transform: translateY(-5px);
 }
 
-.form-group {
+.signup-container .form-group {
   position: relative;
   margin-bottom: 20px;
 }
 
-.form-group input {
+.signup-container .form-group input {
   width: 100%;
   padding: 15px 10px 5px 10px;
   background: rgba(255, 255, 255, 0.05);
@@ -107,12 +106,12 @@
   border-radius: 4px;
 }
 
-.form-group input:focus {
+.signup-container .form-group input:focus {
   background: rgba(255, 255, 255, 0.1);
   border-bottom-color: var(--primary-color);
 }
 
-.form-group label {
+.signup-container .form-group label {
   position: absolute;
   top: 15px;
   left: 5px;
@@ -124,8 +123,8 @@
   border-radius: 4px;
 }
 
-.form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
+.signup-container .form-group input:focus + label,
+.signup-container .form-group input:not(:placeholder-shown) + label {
   top: -10px;
   left: 10px;
   font-size: 0.75rem;
@@ -135,7 +134,7 @@
   z-index: 2;
 }
 
-.input-border {
+.signup-container .input-border {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -146,7 +145,7 @@
   z-index: 1;
 }
 
-.form-group input:focus ~ .input-border {
+.signup-container .form-group input:focus ~ .input-border {
   width: 100%;
 }
 
@@ -310,16 +309,4 @@
 
 .btn-signup:hover {
   animation: pulse 1s infinite;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .signup-container {
-    margin: 20px;
-    padding: 30px;
-  }
-
-  .signup-header h2 {
-    font-size: 1.5rem;
-  }
 }

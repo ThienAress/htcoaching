@@ -78,20 +78,20 @@
   font-weight: 500;
 }
 
-.login-form {
+.login-container .login-form {
   transition: var(--transition);
 }
 
-.login-form.form-focused {
+.login-container .login-form.form-focused {
   transform: translateY(-5px);
 }
 
-.form-group {
+.login-container .form-group {
   position: relative;
   margin-bottom: 25px;
 }
 
-.form-group input {
+.login-container .form-group input {
   width: 100%;
   padding: 15px 10px 5px 10px;
   background: rgba(255, 255, 255, 0.05);
@@ -104,12 +104,12 @@
   border-radius: 4px;
 }
 
-.form-group input:focus {
+.login-container .form-group input:focus {
   background: rgba(255, 255, 255, 0.1);
   border-bottom-color: var(--primary-color);
 }
 
-.form-group label {
+.login-container .form-group label {
   position: absolute;
   top: 15px;
   left: 5px;
@@ -121,8 +121,8 @@
   border-radius: 4px;
 }
 
-.form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
+.login-container .form-group input:focus + label,
+.login-container .form-group input:not(:placeholder-shown) + label {
   top: -10px;
   left: 10px;
   font-size: 0.75rem;
@@ -132,7 +132,7 @@
   z-index: 2;
 }
 
-.input-border {
+.login-container .input-border {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -143,7 +143,7 @@
   z-index: 1;
 }
 
-.form-group input:focus ~ .input-border {
+.login-container .form-group input:focus ~ .input-border {
   width: 100%;
 }
 
