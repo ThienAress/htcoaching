@@ -1,6 +1,11 @@
 // firebase.js
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"; //  thao tác với database
+import { getFirestore } from "firebase/firestore";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAnNHSSws5H0-sKOxsTUMgv3saAblCRQbY",
@@ -13,6 +18,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app); //   lưu dữ liệu đơn hàng
+const db = getFirestore(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
-export { db };
+export { db, auth, googleProvider, facebookProvider };

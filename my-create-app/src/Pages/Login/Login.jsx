@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
+import { Link } from "react-router-dom";
+import { auth, googleProvider, facebookProvider } from "../../firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,6 +29,27 @@ const Login = () => {
     console.log("Password:", password);
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log("Google login:", result.user);
+      alert(`Chào mừng ${result.user.displayName}!`);
+    } catch (error) {
+      console.error("Google login failed:", error);
+    }
+  };
+
+  // Đăng nhập với Facebook
+  const handleFacebookLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, facebookProvider);
+      console.log("Facebook login:", result.user);
+      alert(`Chào mừng ${result.user.displayName}!`);
+    } catch (error) {
+      console.error("Facebook login failed:", error);
+    }
+  };
+
   return (
     <div className="login-fullscreen">
       <div className="bg-slideshow">
@@ -49,9 +73,9 @@ const Login = () => {
               />
             </a>
             <h2>
-              WELCOME TO <span>HTCOACHING</span>
+              CHÀO BẠN ĐẾN VỚI <span>HTCOACHING</span>
             </h2>
-            <p>Push your limits with us</p>
+            <p>Hãy đi đến giới hạn của bản thân cùng với mình</p>
           </div>
 
           <form
@@ -60,7 +84,7 @@ const Login = () => {
           >
             <div className="form-group">
               <input
-                type="email"
+                type="text"
                 id="email"
                 placeholder=" "
                 value={email}
@@ -69,7 +93,7 @@ const Login = () => {
                 onBlur={() => setIsFocused(false)}
                 required
               />
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">Tài khoản</label>
               <span className="input-border"></span>
             </div>
 
@@ -84,13 +108,13 @@ const Login = () => {
                 onBlur={() => setIsFocused(false)}
                 required
               />
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Mật khẩu</label>
               <span className="input-border"></span>
             </div>
 
             <button type="submit" className="btn-login">
               GET STARTED
-              <span className="arrow-icon">→</span>
+              <i className="fa-solid fa-arrow-right arrow-icon"></i>
             </button>
           </form>
 
@@ -99,31 +123,33 @@ const Login = () => {
           </div>
 
           <div className="social-login">
-            <button className="social-btn google">
+            <button className="social-btn google" onClick={handleGoogleLogin}>
               <span className="icon">
                 <i className="fab fa-google"></i>
               </span>
-              Continue with Google
+              Đăng nhập bằng Google
             </button>
-            <button className="social-btn facebook">
+            <button
+              className="social-btn facebook"
+              onClick={handleFacebookLogin}
+            >
               <span className="icon">
                 <i className="fab fa-facebook-f"></i>
               </span>
-              Continue with Facebook
+              Đăng nhập bằng Facebook
             </button>
           </div>
-
           <div className="login-footer">
             <p>
-              New member? <a href="/signup">Sign up now</a>
+              Bạn là người mới? <Link to="/signup">Đăng kí ngay</Link>
             </p>
             <a href="/forgot-password" className="forgot-password">
-              Forgot password?
+              Quên mật khẩu?
             </a>
-            <a href="/" className="login-back">
-              <i class="fa-solid fa-house"></i>
+            <Link to="/" className="login-back">
+              <i className="fa-solid fa-house"></i>
               Về trang chủ
-            </a>
+            </Link>
           </div>
         </div>
       </div>

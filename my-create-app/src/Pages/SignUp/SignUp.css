@@ -1,4 +1,5 @@
-.login-fullscreen {
+/* Layout */
+.signup-fullscreen {
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -26,7 +27,7 @@
   opacity: 1;
 }
 
-.login-overlay {
+.signup-overlay {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -37,7 +38,7 @@
   z-index: 1;
 }
 
-.login-container {
+.signup-container {
   background: var(--secondary);
   border-radius: 16px;
   padding: 50px;
@@ -49,17 +50,18 @@
   animation: fadeIn 0.8s ease-out;
 }
 
-.login-header {
+/* Header */
+.signup-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
-.login-header .logo {
+.signup-header .logo {
   height: 60px;
   margin-bottom: 20px;
 }
 
-.login-header h2 {
+.signup-header h2 {
   font-size: 1.75rem;
   font-weight: 800;
   color: var(--light-color);
@@ -68,27 +70,28 @@
   margin-bottom: 10px;
 }
 
-.login-header h2 span {
+.signup-header h2 span {
   color: var(--primary-color);
 }
 
-.login-header p {
+.signup-header p {
   font-size: 0.875rem;
   color: #aaa;
   font-weight: 500;
 }
 
-.login-form {
+/* Form */
+.signup-form {
   transition: var(--transition);
 }
 
-.login-form.form-focused {
+.signup-form.form-focused {
   transform: translateY(-5px);
 }
 
 .form-group {
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .form-group input {
@@ -115,7 +118,7 @@
   left: 5px;
   color: #aaa;
   font-size: 0.875rem;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   pointer-events: none;
   padding: 0 5px;
   border-radius: 4px;
@@ -147,7 +150,7 @@
   width: 100%;
 }
 
-.btn-login {
+.btn-signup {
   width: 100%;
   padding: 16px;
   background: var(--primary-color);
@@ -159,15 +162,15 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 20px;
   box-shadow: 0 4px 15px rgba(255, 95, 31, 0.3);
 }
 
-.btn-login:hover {
+.btn-signup:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 7px 20px rgba(255, 95, 31, 0.4);
@@ -178,14 +181,15 @@
   transition: transform 0.3s ease;
 }
 
-.btn-login:hover .arrow-icon {
+.btn-signup:hover .arrow-icon {
   transform: translateX(5px);
 }
 
+/* Divider */
 .divider {
   display: flex;
   align-items: center;
-  margin: 25px 0;
+  margin: 20px 0;
   color: rgba(255, 255, 255, 0.3);
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -202,7 +206,8 @@
   padding: 0 10px;
 }
 
-.social-login {
+/* Social Buttons */
+.social-signup {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -215,7 +220,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -243,47 +248,43 @@
   font-size: 1rem;
 }
 
-.login-footer {
+/* Footer */
+.signup-footer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 25px;
   text-align: center;
   font-size: 0.8125rem;
   color: rgba(255, 255, 255, 0.6);
 }
 
-.login-footer a {
+.signup-footer a {
   color: var(--primary-color);
   font-weight: 600;
   transition: color 0.3s ease;
 }
 
-.login-footer a:hover {
+.signup-footer a:hover {
   color: var(--light-color);
 }
 
-.forgot-password {
-  display: block;
-  margin-top: 5px;
-  font-size: 0.75rem;
-}
-
-.login-footer .login-back {
-  margin-top: 5px;
-  color: var(--light-color);
+.signup-back {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
+  margin-top: 10px;
+  color: var(--light-color);
   transition: color 0.3s ease;
 }
 
-.login-footer .login-back:hover {
-  color: var(--gray-color);
+.signup-back:hover {
+  color: #aaa;
 }
 
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -307,6 +308,18 @@
   }
 }
 
-.btn-login:hover {
+.btn-signup:hover {
   animation: pulse 1s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .signup-container {
+    margin: 20px;
+    padding: 30px;
+  }
+
+  .signup-header h2 {
+    font-size: 1.5rem;
+  }
 }
