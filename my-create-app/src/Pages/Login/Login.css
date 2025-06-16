@@ -235,10 +235,6 @@
   background: var(--google);
 }
 
-.social-btn.facebook:hover {
-  background: var(--facebook);
-}
-
 .social-btn .icon {
   font-size: 1rem;
 }

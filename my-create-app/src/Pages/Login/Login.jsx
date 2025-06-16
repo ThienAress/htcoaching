@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
-import { auth, googleProvider, facebookProvider } from "../../firebase";
+import { Link, useNavigate } from "react-router-dom";
+import { auth, googleProvider, db } from "../../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [currentBg, setCurrentBg] = useState(0);
-
+  const navigate = useNavigate();
   const backgrounds = [
     "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
     "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
@@ -32,21 +33,25 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log("Google login:", result.user);
-      alert(`Chào mừng ${result.user.displayName}!`);
+      const user = result.user;
+
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          createdAt: new Date(),
+        });
+      }
+
+      alert(`Chào mừng ${user.displayName}!`);
+      navigate("/"); // chuyển về trang chủ
     } catch (error) {
       console.error("Google login failed:", error);
-    }
-  };
-
-  // Đăng nhập với Facebook
-  const handleFacebookLogin = async () => {
-    try {
-      const result = await signInWithPopup(auth, facebookProvider);
-      console.log("Facebook login:", result.user);
-      alert(`Chào mừng ${result.user.displayName}!`);
-    } catch (error) {
-      console.error("Facebook login failed:", error);
     }
   };
 
@@ -128,15 +133,6 @@ const Login = () => {
                 <i className="fab fa-google"></i>
               </span>
               Đăng nhập bằng Google
-            </button>
-            <button
-              className="social-btn facebook"
-              onClick={handleFacebookLogin}
-            >
-              <span className="icon">
-                <i className="fab fa-facebook-f"></i>
-              </span>
-              Đăng nhập bằng Facebook
             </button>
           </div>
           <div className="login-footer">
