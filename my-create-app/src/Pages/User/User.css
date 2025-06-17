@@ -1,4 +1,5 @@
 .user-control {
+  position: relative;
   z-index: 9999;
 }
 
@@ -42,7 +43,7 @@
 /* Dropdown menu */
 .dropdown-menu {
   position: absolute;
-  top: 52px;
+  top: 55px;
   right: 0;
   background: white;
   border-radius: 12px;

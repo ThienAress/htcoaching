@@ -6,7 +6,6 @@
   height: 100px;
   overflow-x: hidden;
   box-shadow: none;
-  background: linear-gradient(45deg, #f39c12, #1a1a1a);
 }
 
 .header.scrolled {
@@ -36,6 +35,7 @@
 
 .navbar {
   display: flex;
+  transition: var(--transition);
 }
 
 .navbar ul {
@@ -107,4 +107,26 @@
 
 .menu-user {
   margin-top: 20px;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+/* Điều chỉnh dropdown user */
+.desktop-user .dropdown-menu {
+  position: fixed;
+  top: 90px;
+  right: 270px;
+  z-index: 1001;
+}
+
+.mobile-user .dropdown-menu {
+  position: static;
+  width: 100%;
+}
+
+/* Đảm bảo dropdown không bị ẩn sau các phần tử khác */
+.user-control {
+  z-index: 1001;
 }

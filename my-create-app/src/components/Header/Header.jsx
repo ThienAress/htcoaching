@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import User from "../../Pages/User/User";
 import "./Header.css";
@@ -6,58 +6,126 @@ import "./Header.css";
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const headerRef = useRef(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+      const currentScrollY = window.scrollY;
+
+      // Kiểm tra scroll direction
+      if (Math.abs(currentScrollY - lastScrollY.current) > 50) {
+        // Ngưỡng scroll
+        if (currentScrollY > lastScrollY.current && menuOpen) {
+          // Scroll xuống và menu đang mở -> đóng menu
+          setMenuOpen(false);
+        }
+        lastScrollY.current = currentScrollY;
+      }
+
+      setIsScrolled(currentScrollY > 0);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, [menuOpen]); // Thêm menuOpen vào dependencies
+
+  // Đóng menu khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Thêm hiệu ứng khi mở menu mobile
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   return (
-    <header className={`header ${isScrolled ? "scrolled" : ""}`}>
+    <header
+      ref={headerRef}
+      className={`header ${isScrolled ? "scrolled" : ""} ${
+        menuOpen ? "menu-open" : ""
+      }`}
+    >
       <div className="header-section">
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={() => setMenuOpen(false)}>
           <img src="/images/logo.svg" alt="HT Coaching" />
         </Link>
 
         <nav className={`navbar ${menuOpen ? "active" : ""}`}>
           <ul>
             <li>
-              <a href="#about">Giới thiệu</a>
+              <a href="/" onClick={() => setMenuOpen(false)}>
+                Trang chủ
+              </a>
             </li>
             <li>
-              <a href="#trainers">Huấn luyện viên</a>
+              <a href="#about" onClick={() => setMenuOpen(false)}>
+                Giới thiệu
+              </a>
             </li>
             <li>
-              <a href="#customer">Feedback</a>
+              <a href="#trainers" onClick={() => setMenuOpen(false)}>
+                Huấn luyện viên
+              </a>
             </li>
             <li>
-              <a href="#classes">Chương trình đào tạo</a>
+              <a href="#customer" onClick={() => setMenuOpen(false)}>
+                Feedback
+              </a>
             </li>
             <li>
-              <a href="#pricing">Gói tập</a>
+              <a href="#classes" onClick={() => setMenuOpen(false)}>
+                Chương trình đào tạo
+              </a>
             </li>
             <li>
-              <a href="#contact">Liên hệ</a>
+              <a href="#pricing" onClick={() => setMenuOpen(false)}>
+                Gói tập
+              </a>
             </li>
             <li>
-              <Link to="/club">CLB</Link>
+              <a href="#contact" onClick={() => setMenuOpen(false)}>
+                Liên hệ
+              </a>
+            </li>
+            <li>
+              <Link to="/club" onClick={() => setMenuOpen(false)}>
+                CLB
+              </Link>
             </li>
           </ul>
-          {/* Hiển thị User component trong menu di động */}
+
           <div className="mobile-user">
-            <User />
+            <User onToggle={() => setMenuOpen(false)} />
           </div>
         </nav>
 
-        {/* Hiển thị User component ở chế độ desktop */}
         <div className="desktop-user">
           <User />
         </div>
 
-        <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-          <i className="fas fa-bars"></i>
+        <div
+          className="menu-toggle"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? "Đóng menu" : "Mở menu"}
+        >
+          <i className={`fas ${menuOpen ? "fa-times" : "fa-bars"}`}></i>
         </div>
       </div>
     </header>

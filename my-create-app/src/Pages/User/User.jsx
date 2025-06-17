@@ -11,20 +11,26 @@ const User = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [photoURL, setPhotoURL] = useState("");
 
   useEffect(() => {
-    const fetchDisplayName = async () => {
-      if (user?.providerData[0]?.providerId === "password") {
-        const docRef = doc(db, "usersSignin", user.uid);
-        const docSnap = await getDoc(docRef);
+    const fetchUserInfo = async () => {
+      if (!user) return;
+
+      if (user.providerData[0]?.providerId === "password") {
+        const docSnap = await getDoc(doc(db, "usersSignin", user.uid));
         if (docSnap.exists()) {
-          setDisplayName(docSnap.data().username);
+          const data = docSnap.data();
+          setDisplayName(data.username);
+          setPhotoURL(data.photoURL || user.photoURL || "/default-avatar.png");
         }
       } else {
-        setDisplayName(user.displayName);
+        setDisplayName(user.displayName || "Người dùng");
+        setPhotoURL(user.photoURL || "/default-avatar.png");
       }
     };
-    if (user) fetchDisplayName();
+
+    fetchUserInfo();
   }, [user]);
 
   const handleToggle = () => setIsOpen(!isOpen);
@@ -42,14 +48,19 @@ const User = () => {
       setUploading(true);
       const avatarRef = ref(storage, `avatars/${user.uid}`);
       await uploadBytes(avatarRef, file);
-      const photoURL = await getDownloadURL(avatarRef);
+      const url = await getDownloadURL(avatarRef);
 
-      await updateProfile(user, { photoURL });
-      await updateDoc(doc(db, "usersSignin", user.uid), { photoURL });
+      await updateProfile(user, { photoURL: url });
 
-      window.location.reload(); // Refresh để cập nhật ảnh
+      // Nếu tài khoản thường → cập nhật Firestore
+      if (user.providerData[0]?.providerId === "password") {
+        await updateDoc(doc(db, "usersSignin", user.uid), { photoURL: url });
+      }
+
+      setPhotoURL(url);
+      setIsOpen(false);
     } catch (err) {
-      console.error("Lỗi khi upload avatar:", err);
+      console.error("Lỗi upload avatar:", err);
     } finally {
       setUploading(false);
     }
@@ -60,7 +71,7 @@ const User = () => {
       {user ? (
         <div className="dropdown-wrapper">
           <div className="user-avatar" onClick={handleToggle}>
-            <img src={user.photoURL || "/default-avatar.png"} alt="avatar" />
+            <img src={photoURL} alt="avatar" />
             <i className={`fas fa-chevron-down ${isOpen ? "rotate" : ""}`}></i>
           </div>
           {isOpen && (
