@@ -1,7 +1,4 @@
 .user-control {
-  position: fixed;
-  top: 27px;
-  right: 50px;
   z-index: 9999;
 }
 
@@ -49,7 +46,7 @@
   right: 0;
   background: white;
   border-radius: 12px;
-  padding: 16px;
+  padding: 5px 16px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
   min-width: 200px;
   animation: fadeIn 0.2s ease-out;
@@ -111,6 +108,7 @@
   text-align: center;
   transition: var(--transition);
 }
+
 .upload-btn:hover {
   background: #e64d00;
 }

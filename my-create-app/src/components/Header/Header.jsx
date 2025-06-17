@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import User from "../../Pages/User/User";
 import "./Header.css";
 
 function Header() {
@@ -9,12 +10,10 @@ function Header() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
-      if (menuOpen) setMenuOpen(false);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [menuOpen]);
-
+  }, []);
   return (
     <header className={`header ${isScrolled ? "scrolled" : ""}`}>
       <div className="header-section">
@@ -46,7 +45,16 @@ function Header() {
               <Link to="/club">CLB</Link>
             </li>
           </ul>
+          {/* Hiển thị User component trong menu di động */}
+          <div className="mobile-user">
+            <User />
+          </div>
         </nav>
+
+        {/* Hiển thị User component ở chế độ desktop */}
+        <div className="desktop-user">
+          <User />
+        </div>
 
         <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           <i className="fas fa-bars"></i>

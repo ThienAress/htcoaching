@@ -6,6 +6,7 @@
   height: 100px;
   overflow-x: hidden;
   box-shadow: none;
+  background: linear-gradient(45deg, #f39c12, #1a1a1a);
 }
 
 .header.scrolled {
@@ -15,10 +16,11 @@
 .header .header-section {
   height: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   overflow-x: hidden;
   box-sizing: border-box;
+  padding: 0 20px;
 }
 
 .logo {
@@ -75,4 +77,34 @@
   color: var(--white-color);
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+.dropdown-menu-full {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 999;
+}
+
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.menu-user {
+  margin-top: 20px;
 }

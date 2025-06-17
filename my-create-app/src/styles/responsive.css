@@ -109,6 +109,35 @@
   .logo img {
     height: 50px;
   }
+
+  .user-control {
+    position: static;
+  }
+
+  .dropdown-menu {
+    position: static; /* Đặt lại vị trí để dropdown hiển thị trong luồng bình thường */
+    box-shadow: none; /* Xóa shadow để phù hợp với menu di động */
+    background: transparent; /* Làm nền trong suốt để hòa hợp với menu */
+    border: none; /* Xóa viền */
+  }
+
+  .user-info {
+    color: var(--white-color);
+  }
+
+  .user-info strong {
+    color: var(--white-color);
+  }
+
+  .desktop-user {
+    display: none;
+  }
+
+  .mobile-user {
+    padding: 15px;
+    margin-top: 10px;
+  }
+
   /* Hero section */
   .hero .btn {
     display: flex;
@@ -295,10 +324,6 @@
   }
 
   /* Login */
-  .login-container {
-    padding: 30px;
-  }
-
   .login-header h2 {
     font-size: 1.375rem;
   }
@@ -345,10 +370,6 @@
 
   .header-section {
     padding: 0 20px;
-  }
-
-  .nav-cta {
-    display: none;
   }
 
   .navbar ul li a {
@@ -497,6 +518,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 30px;
+  }
+
+  .mobile-user {
+    display: none;
+  }
+
+  .desktop-user {
+    display: block;
   }
 }
 

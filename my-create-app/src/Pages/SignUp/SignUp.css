@@ -283,15 +283,14 @@ Layout .signup-fullscreen {
   animation: pulse 1s infinite;
 }
 
-.signup-fullscreen .error {
+.signup-fullscreen .error-msg {
   color: #e74c3c;
   font-size: 0.85rem;
   margin-top: 5px;
 }
-.center {
-  text-align: center;
-}
 
+.signup-fullscreen .error-msg:hover {
+}
 /* Animations */
 @keyframes fadeIn {
   from {
