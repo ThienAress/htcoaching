@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth, googleProvider, db } from "../../firebase";
-import { signInWithPopup } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
-  const [currentBg, setCurrentBg] = useState(0);
   const navigate = useNavigate();
+
+  const [input, setInput] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({ username: "", password: "" });
+  const [currentBg, setCurrentBg] = useState(0);
+
   const backgrounds = [
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
-    "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
-    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1950&q=80",
+    "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1950&q=80",
+    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1950&q=80",
   ];
 
   useEffect(() => {
@@ -24,10 +32,33 @@ const Login = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+    const { username, password } = input;
+
+    try {
+      const usersRef = collection(db, "usersSignin");
+      const q = query(usersRef, where("username", "==", username));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        setErrors({ username: "Tài khoản không tồn tại", password: "" });
+        return;
+      }
+
+      const userData = querySnapshot.docs[0].data();
+      const email = userData.email;
+
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/");
+    } catch {
+      setErrors({ username: "", password: "Mật khẩu không đúng" });
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -35,10 +66,12 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
+      const userRef = doc(db, "usersSignin", user.uid);
+      const q = await getDocs(
+        query(collection(db, "usersSignin"), where("uid", "==", user.uid))
+      );
 
-      if (!userSnap.exists()) {
+      if (q.empty) {
         await setDoc(userRef, {
           uid: user.uid,
           name: user.displayName,
@@ -48,10 +81,10 @@ const Login = () => {
         });
       }
 
-      alert(`Chào mừng ${user.displayName}!`);
-      navigate("/"); // chuyển về trang chủ
+      navigate("/");
     } catch (error) {
       console.error("Google login failed:", error);
+      alert("Đăng nhập Google thất bại. Vui lòng thử lại.");
     }
   };
 
@@ -83,42 +116,41 @@ const Login = () => {
             <p>Hãy đi đến giới hạn của bản thân cùng với mình</p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className={`login-form ${isFocused ? "form-focused" : ""}`}
-          >
+          <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
               <input
                 type="text"
-                id="email"
+                name="username"
                 placeholder=" "
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+                value={input.username}
+                onChange={handleChange}
                 required
               />
-              <label htmlFor="email">Tài khoản</label>
+              <label>Tài khoản</label>
               <span className="input-border"></span>
+              {errors.username && (
+                <p className="error-text">{errors.username}</p>
+              )}
             </div>
 
             <div className="form-group">
               <input
                 type="password"
-                id="password"
+                name="password"
                 placeholder=" "
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
+                value={input.password}
+                onChange={handleChange}
                 required
               />
-              <label htmlFor="password">Mật khẩu</label>
+              <label>Mật khẩu</label>
               <span className="input-border"></span>
+              {errors.password && (
+                <p className="error-text">{errors.password}</p>
+              )}
             </div>
 
             <button type="submit" className="btn-login">
-              GET STARTED
+              ĐĂNG NHẬP NGAY{" "}
               <i className="fa-solid fa-arrow-right arrow-icon"></i>
             </button>
           </form>
@@ -135,17 +167,14 @@ const Login = () => {
               Đăng nhập bằng Google
             </button>
           </div>
+
           <div className="login-footer">
             <p>
-              Bạn là người mới? <Link to="/signup">Đăng kí ngay</Link>
+              Bạn là người mới? <a href="/signup">Đăng kí ngay</a>
             </p>
-            <a href="/forgot-password" className="forgot-password">
-              Quên mật khẩu?
+            <a href="/" className="login-back">
+              <i className="fa-solid fa-house"></i> Về trang chủ
             </a>
-            <Link to="/" className="login-back">
-              <i className="fa-solid fa-house"></i>
-              Về trang chủ
-            </Link>
           </div>
         </div>
       </div>

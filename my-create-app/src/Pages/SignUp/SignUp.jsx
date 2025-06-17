@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { auth, db } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
 const SignUp = () => {
@@ -9,13 +13,15 @@ const SignUp = () => {
     password: "",
     confirmPassword: "",
   });
-  const [isFocused, setIsFocused] = useState(false);
+
+  const [errors, setErrors] = useState({});
   const [currentBg, setCurrentBg] = useState(0);
+  const navigate = useNavigate();
 
   const backgrounds = [
-    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
-    "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
-    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80",
+    "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1950&q=80",
+    "https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=1950&q=80",
+    "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1950&q=80",
   ];
 
   useEffect(() => {
@@ -27,16 +33,61 @@ const SignUp = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error
   };
 
-  const handleSubmit = (e) => {
+  const validate = () => {
+    const newErrors = {};
+    const nameRegex = /^.{8,}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    const usernameRegex = /^.{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}$/;
+
+    if (!nameRegex.test(formData.fullName)) {
+      newErrors.fullName = "Họ và tên phải ít nhất 8 ký tự";
+    }
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Email phải là @gmail.com hợp lệ";
+    }
+    if (!usernameRegex.test(formData.username)) {
+      newErrors.username = "Tài khoản phải ít nhất 8 ký tự";
+    }
+    if (!passwordRegex.test(formData.password)) {
+      newErrors.password =
+        "Mật khẩu phải ít nhất 8 ký tự, có 1 chữ in hoa & 1 ký tự đặc biệt";
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Mật khẩu không khớp";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Xử lý đăng ký ở đây
-    console.log("Form data:", formData);
+    if (!validate()) return;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+
+      await setDoc(doc(db, "usersSignin", userCredential.user.uid), {
+        uid: userCredential.user.uid,
+        name: formData.fullName,
+        username: formData.username,
+        email: formData.email,
+        createdAt: new Date(),
+      });
+
+      navigate("/login");
+    } catch (error) {
+      alert("Đăng ký thất bại: " + error.message);
+    }
   };
 
   return (
@@ -69,120 +120,57 @@ const SignUp = () => {
 
           <form
             onSubmit={handleSubmit}
-            className={`signup-form ${isFocused ? "form-focused" : ""}`}
+            autoComplete="off"
+            className="signup-form"
           >
-            <div className="form-group">
-              <input
-                type="text"
-                id="fullName"
-                name="fullName"
-                placeholder=" "
-                value={formData.fullName}
-                onChange={handleChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                required
-              />
-              <label htmlFor="fullName">Họ và tên</label>
-              <span className="input-border"></span>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder=" "
-                value={formData.email}
-                onChange={handleChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                required
-              />
-              <label htmlFor="email">Email</label>
-              <span className="input-border"></span>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder=" "
-                value={formData.username}
-                onChange={handleChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                required
-              />
-              <label htmlFor="username">Tài khoản</label>
-              <span className="input-border"></span>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder=" "
-                value={formData.password}
-                onChange={handleChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                required
-              />
-              <label htmlFor="password">Mật khẩu</label>
-              <span className="input-border"></span>
-            </div>
-
-            <div className="form-group">
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                placeholder=" "
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                required
-              />
-              <label htmlFor="confirmPassword">Nhập lại mật khẩu</label>
-              <span className="input-border"></span>
-            </div>
+            {[
+              "fullName",
+              "email",
+              "username",
+              "password",
+              "confirmPassword",
+            ].map((field) => (
+              <div className="form-group" key={field}>
+                <input
+                  type={
+                    field.toLowerCase().includes("password")
+                      ? "password"
+                      : "text"
+                  }
+                  name={field}
+                  placeholder=" "
+                  autoComplete="off"
+                  value={formData[field]}
+                  onChange={handleChange}
+                  required
+                />
+                <label htmlFor={field}>
+                  {
+                    {
+                      fullName: "Họ và tên",
+                      email: "Email",
+                      username: "Tài khoản",
+                      password: "Mật khẩu",
+                      confirmPassword: "Nhập lại mật khẩu",
+                    }[field]
+                  }
+                </label>
+                <span className="input-border"></span>
+                {errors[field] && <p className="error-msg">{errors[field]}</p>}
+              </div>
+            ))}
 
             <button type="submit" className="btn-signup">
-              ĐĂNG KÝ
-              <i className="fa-solid fa-arrow-right arrow-icon"></i>
+              ĐĂNG KÝ <i className="fa-solid fa-arrow-right arrow-icon"></i>
             </button>
           </form>
 
-          <div className="divider">
-            <span>HOẶC</span>
-          </div>
-
-          <div className="social-signup">
-            <button className="social-btn google">
-              <span className="icon">
-                <i className="fab fa-google"></i>
-              </span>
-              Continue with Google
-            </button>
-            <button className="social-btn facebook">
-              <span className="icon">
-                <i className="fab fa-facebook-f"></i>
-              </span>
-              Continue with Facebook
-            </button>
-          </div>
-
           <div className="signup-footer">
             <p>
-              Already a member? <a href="/login">Login now</a>
+              Đã có tài khoản? <a href="/login">Đăng nhập ngay</a>
             </p>
             <a href="/" className="signup-back">
-              <i className="fa-solid fa-house"></i>
-              Về trang chủ
+              <i className="fa-solid fa-house"></i> Về trang chủ
             </a>
           </div>
         </div>

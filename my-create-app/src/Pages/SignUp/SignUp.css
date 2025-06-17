@@ -239,10 +239,6 @@ Layout .signup-fullscreen {
   background: var(--google);
 }
 
-.social-btn.facebook:hover {
-  background: var(--facebook);
-}
-
 .social-btn .icon {
   font-size: 1rem;
 }
@@ -283,6 +279,19 @@ Layout .signup-fullscreen {
   color: #aaa;
 }
 
+.btn-signup:hover {
+  animation: pulse 1s infinite;
+}
+
+.signup-fullscreen .error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+.center {
+  text-align: center;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
@@ -305,8 +314,4 @@ Layout .signup-fullscreen {
   100% {
     transform: scale(1);
   }
-}
-
-.btn-signup:hover {
-  animation: pulse 1s infinite;
 }

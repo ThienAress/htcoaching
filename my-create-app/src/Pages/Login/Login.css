@@ -280,6 +280,12 @@
   color: var(--gray-color);
 }
 
+.error-text {
+  font-size: 0.8rem;
+  color: #e74c3c;
+  margin-top: 4px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
