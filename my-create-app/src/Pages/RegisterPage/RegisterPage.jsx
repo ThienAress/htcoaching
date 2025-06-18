@@ -1,3 +1,4 @@
+// ✅ RegisterPage.jsx
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./RegisterPage.css";
@@ -9,6 +10,7 @@ function RegisterPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const selectedPackage = state?.selectedPackage;
+  const planMode = state?.planMode || "";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,35 +23,30 @@ function RegisterPage() {
 
   const validateForm = () => {
     const newErrors = {};
-    // ✅ Họ tên: ít nhất 8 ký tự
     if (!formData.name.trim() || formData.name.length < 8) {
       newErrors.name = "Họ và tên phải có ít nhất 8 ký tự";
     }
-    // ✅ Số điện thoại: đúng 10 chữ số
     if (!formData.phone.match(/^[0-9]{10}$/)) {
       newErrors.phone = "Số điện thoại phải đúng 10 chữ số";
     }
-    // ✅ Email: đúng định dạng @gmail.com
     if (!formData.email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
       newErrors.email = "Email phải đúng định dạng @gmail.com";
     }
-
-    // ✅ Thông tin bổ sung: ít nhất 8 ký tự
     if (!formData.note.trim() || formData.note.length < 8) {
       newErrors.note = "Thông tin bổ sung phải có ít nhất 8 ký tự";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     navigate("/payment", {
       state: {
         formData,
         selectedPackage,
+        planMode,
       },
     });
   };
@@ -107,6 +104,7 @@ function RegisterPage() {
               }
             />
             {errors.note && <span className="error">{errors.note}</span>}
+
             <button type="submit" className="order-button">
               ĐẶT HÀNG
             </button>
@@ -117,7 +115,10 @@ function RegisterPage() {
           <h3>ĐƠN HÀNG CỦA BẠN</h3>
           <div className="order-summary">
             <p>
-              Sản phẩm: <strong>{selectedPackage.title}</strong>
+              Sản phẩm:{" "}
+              <strong>
+                {planMode} ({selectedPackage.title})
+              </strong>
             </p>
             <p>Tạm tính: {selectedPackage.price}</p>
             <hr />
@@ -132,11 +133,7 @@ function RegisterPage() {
           </p>
         </div>
       </div>
-
-      {/* Chat Icons */}
       <ChatIcon />
-
-      {/* FooterMinimal */}
       <FooterMinimal />
     </>
   );

@@ -52,7 +52,6 @@ const User = () => {
 
       await updateProfile(user, { photoURL: url });
 
-      // Nếu tài khoản thường → cập nhật Firestore
       if (user.providerData[0]?.providerId === "password") {
         await updateDoc(doc(db, "usersSignin", user.uid), { photoURL: url });
       }
@@ -71,7 +70,14 @@ const User = () => {
       {user ? (
         <div className="dropdown-wrapper">
           <div className="user-avatar" onClick={handleToggle}>
-            <img src={photoURL} alt="avatar" />
+            <img
+              src={photoURL || "/default-avatar.png"}
+              alt="avatar"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = "/default-avatar.png";
+              }}
+            />
             <i className={`fas fa-chevron-down ${isOpen ? "rotate" : ""}`}></i>
           </div>
           {isOpen && (

@@ -1,3 +1,4 @@
+/* === Tổng thể === */
 .pricing {
   padding: 60px 0;
   background-color: #262626;
@@ -8,25 +9,148 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center;
 }
 
 .pricing .section-subtitle {
-  padding-top: 0;
+  color: #aaa;
+  text-align: center;
   margin-bottom: 40px;
 }
 
-.section-title,
-.section-subtitle {
-  text-align: center;
+/* === Mode Selection === */
+.mode-selection-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 30px 0 40px;
+  flex-wrap: wrap;
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+}
+
+.mode-toggle {
+  position: relative;
+  width: 240px;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #222;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.mode-toggle input[type="radio"] {
+  display: none;
+}
+
+.mode-label {
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.left-label {
+  left: 0;
+}
+
+.right-label {
+  right: 0;
+}
+
+.mode-slider {
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  background: linear-gradient(45deg, #ff3c3c, #ff6b6b);
+  border-radius: 25px;
+  transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 1;
+}
+
+.mode-slider.hidden {
+  opacity: 0;
+}
+
+.mode-slider.left-active {
+  left: 0;
+  clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
+}
+
+.mode-slider.right-active {
+  left: 120px;
+  clip-path: polygon(10% 0, 100% 0, 100% 100%, 10% 100%, 0% 50%);
+}
+
+.mode-toggle input[type="radio"]:checked + .mode-label {
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* === Trial button === */
+.trial-toggle-btn {
+  padding: 12px 24px;
+  height: 50px;
+  border-radius: 25px;
+  background: #222;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.trial-toggle-btn.active {
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff3c3c, #ff6b6b);
+  box-shadow: 0 0 10px rgba(255, 60, 60, 0.5);
+  transform: translateY(-2px);
+}
+
+.trial-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* === Pricing content === */
+.pricing-content {
+  width: 100%;
+}
+
+.trial-card-center {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .pricing-grid {
   display: flex;
-  gap: 30px;
   justify-content: center;
+  gap: 30px;
   flex-wrap: wrap;
 }
 
+/* === Pricing Card === */
 .pricing-card {
   background: #1a1a1a;
   border: 2px solid #333;
@@ -35,6 +159,9 @@
   color: #fff;
   transition: all 0.3s ease;
   position: relative;
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
 }
 
 .pricing-card:hover {
@@ -92,135 +219,27 @@
   font-size: 15px;
 }
 
-/* Buttons */
-.pricing .btn {
-  display: inline-block;
-  padding: 10px 24px;
-  text-align: center;
-  border-radius: 30px;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.pricing .btn-primary {
-  background: #ff3c3c;
-  color: white;
-  border: none;
-}
-
-.pricing .btn-primary:hover {
-  background: #e60000;
-}
-
-.pricing .btn-outline {
-  background: transparent;
-  border: 2px solid #ff3c3c;
-  color: #ff3c3c;
-}
-
-.pricing .btn-outline:hover {
-  background: #ff3c3c;
-  color: white;
-}
-
-/* Mode Toggle Switch */
-/* Mode Toggle Switch */
-.mode-switcher {
-  display: flex;
-  justify-content: center;
-  margin: 30px 0 40px;
-}
-
-.mode-toggle {
-  position: relative;
-  width: 240px;
-  height: 50px;
-  border-radius: 25px;
-  background-color: #222;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.mode-toggle input[type="radio"] {
-  display: none;
-}
-
-.mode-label {
-  position: absolute;
-  top: 0;
-  width: 120px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
-  z-index: 2;
-  transition: all 0.3s ease;
-}
-
-.left-label {
-  left: 0;
-}
-
-.right-label {
-  right: 0;
-}
-
-.mode-slider {
-  position: absolute;
-  top: 0;
-  width: 120px;
-  height: 100%;
-  background: linear-gradient(45deg, #ff3c3c, #ff6b6b);
-  border-radius: 25px;
-  transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-  z-index: 1;
-}
-
-.mode-slider.left-active {
-  left: 0;
-  clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%);
-}
-
-.mode-slider.right-active {
-  left: 120px;
-  clip-path: polygon(10% 0, 100% 0, 100% 100%, 10% 100%, 0% 50%);
-}
-
-.mode-toggle input[type="radio"]:checked + .mode-label {
-  color: white;
-  font-weight: bold;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-}
-
-/* Nút Đăng ký ngay - Tốc độ chậm hơn */
+/* === Buttons (RIÊNG cho Pricing) === */
 .pricing-btn {
   position: relative;
   display: block;
   width: 100%;
   padding: 15px 0;
   border: none;
-  border-radius: 6px;
   font-weight: bold;
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 1px;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.6s ease; /* Tăng thời gian transition tổng thể */
+  transition: all 0.6s ease;
   z-index: 1;
 }
 
 .btn-text {
   position: relative;
   z-index: 2;
-  transition: color 0.4s ease; /* Thêm transition cho chữ */
+  transition: color 0.4s ease;
 }
 
 .btn-hover-effect {
@@ -229,43 +248,37 @@
   left: 0;
   width: 100%;
   height: 100%;
-  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1); /* Làm chậm và mượt hơn */
+  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
   z-index: 1;
 }
 
-/* Primary button */
-.pricing-btn.btn-primary {
-  background: #ff3c3c;
-  color: white;
-}
-
-.pricing-btn.btn-primary .btn-hover-effect {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
-}
-
-/* Outline button */
-.pricing-btn.btn-outline {
+/* === Pricing Outline Button === */
+.pricing-btn.pricing-outline-btn {
   background: transparent;
   color: #ff3c3c;
   border: 2px solid #ff3c3c;
 }
 
-.pricing-btn.btn-outline .btn-hover-effect {
+.pricing-btn.pricing-outline-btn .btn-hover-effect {
   background: #ff3c3c;
-  transition: all 0.7s ease-out; /* Riêng cho outline chậm hơn chút */
 }
 
-.pricing-btn.btn-outline:hover {
+.pricing-btn.pricing-outline-btn:hover {
   color: white;
   border-color: transparent;
 }
 
-/* Hiệu ứng hover */
-.pricing-btn:hover .btn-hover-effect {
-  top: 0;
+/* === Pricing Primary Button === */
+.pricing-btn.pricing-primary-btn {
+  background: #ff3c3c;
+  color: white;
 }
 
-/* Featured card button */
-.pricing-card.featured .pricing-btn.btn-primary .btn-hover-effect {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.15), transparent);
+.pricing-btn.pricing-primary-btn .btn-hover-effect {
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent);
+}
+
+/* === Hover Common for all Pricing Buttons === */
+.pricing-btn:hover .btn-hover-effect {
+  top: 0;
 }

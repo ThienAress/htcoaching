@@ -34,7 +34,7 @@ const SignUp = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // clear error
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validate = () => {
@@ -91,88 +91,90 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-fullscreen">
-      <div className="bg-slideshow">
+    <div className="signup-page">
+      {/* Background Slideshow */}
+      <div className="signup-backgrounds">
         {backgrounds.map((bg, index) => (
           <div
             key={index}
-            className={`bg-slide ${index === currentBg ? "active" : ""}`}
+            className={`signup-bg ${index === currentBg ? "active" : ""}`}
             style={{ backgroundImage: `url(${bg})` }}
           />
         ))}
       </div>
 
+      {/* Overlay */}
       <div className="signup-overlay">
+        {/* Signup Container */}
         <div className="signup-container">
-          <div className="signup-header">
-            <a href="/">
+          {/* Header */}
+          <header className="signup-header">
+            <a href="/" className="logo-link">
               <img
                 src="./images/logo.svg"
                 alt="HT Coaching Logo"
                 className="logo"
               />
             </a>
-            <h2>
-              JOIN <span>HTCOACHING</span>
-            </h2>
-            <p>Start your fitness journey with us</p>
-          </div>
+            <h1 className="signup-title">
+              JOIN <span className="highlight">HTCOACHING</span>
+            </h1>
+            <p className="signup-subtitle">
+              Start your fitness journey with us
+            </p>
+          </header>
 
-          <form
-            onSubmit={handleSubmit}
-            autoComplete="off"
-            className="signup-form"
-          >
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="signup-form">
             {[
-              "fullName",
-              "email",
-              "username",
-              "password",
-              "confirmPassword",
+              { id: "fullName", label: "Họ và tên", type: "text" },
+              { id: "email", label: "Email", type: "email" },
+              { id: "username", label: "Tài khoản", type: "text" },
+              { id: "password", label: "Mật khẩu", type: "password" },
+              {
+                id: "confirmPassword",
+                label: "Nhập lại mật khẩu",
+                type: "password",
+              },
             ].map((field) => (
-              <div className="form-group" key={field}>
-                <input
-                  type={
-                    field.toLowerCase().includes("password")
-                      ? "password"
-                      : "text"
-                  }
-                  name={field}
-                  placeholder=" "
-                  autoComplete="off"
-                  value={formData[field]}
-                  onChange={handleChange}
-                  required
-                />
-                <label htmlFor={field}>
-                  {
-                    {
-                      fullName: "Họ và tên",
-                      email: "Email",
-                      username: "Tài khoản",
-                      password: "Mật khẩu",
-                      confirmPassword: "Nhập lại mật khẩu",
-                    }[field]
-                  }
-                </label>
-                <span className="input-border"></span>
-                {errors[field] && <p className="error-msg">{errors[field]}</p>}
+              <div className="form-field" key={field.id}>
+                <div className="input-container">
+                  <input
+                    type={field.type}
+                    id={field.id}
+                    name={field.id}
+                    value={formData[field.id]}
+                    onChange={handleChange}
+                    className={`form-input ${errors[field.id] ? "error" : ""}`}
+                    placeholder=" "
+                    autoComplete="off"
+                    required
+                  />
+                  <label htmlFor={field.id} className="input-label">
+                    {field.label}
+                  </label>
+                  <span className="input-border"></span>
+                </div>
+                {errors[field.id] && (
+                  <p className="error-message">{errors[field.id]}</p>
+                )}
               </div>
             ))}
 
-            <button type="submit" className="btn-signup">
-              ĐĂNG KÝ <i className="fa-solid fa-arrow-right arrow-icon"></i>
+            <button type="submit" className="submit-button">
+              ĐĂNG KÝ <i className="fas fa-arrow-right arrow-icon"></i>
             </button>
           </form>
 
-          <div className="signup-footer">
-            <p>
+          {/* Footer */}
+          <footer className="signup-footer">
+            <p className="login-link">
               Đã có tài khoản? <a href="/login">Đăng nhập ngay</a>
             </p>
-            <a href="/" className="signup-back">
-              <i className="fa-solid fa-house"></i> Về trang chủ
+            <a href="/" className="home-link">
+              <i className="fas fa-home"></i> Về trang chủ
             </a>
-          </div>
+          </footer>
         </div>
       </div>
     </div>

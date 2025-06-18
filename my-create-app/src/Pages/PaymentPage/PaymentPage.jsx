@@ -12,15 +12,26 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useUser } from "../../UserContent/UserContext";
 
 function PaymentPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { user } = useUser();
+
   const formData = state?.formData;
   const selectedPackage = state?.selectedPackage;
+  const planMode = state?.planMode;
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [countdown, setCountdown] = useState(5);
+
+  useEffect(() => {
+    if (!user) {
+      alert("Bạn cần đăng nhập để tiếp tục.");
+      navigate("/login");
+    }
+  }, []);
 
   useEffect(() => {
     if (showSuccess) {
@@ -43,29 +54,26 @@ function PaymentPage() {
     }
   }, [showSuccess]);
 
-  if (!formData || !selectedPackage) {
+  if (!formData || !selectedPackage || !planMode) {
     return <p>Thiếu thông tin thanh toán hoặc gói tập.</p>;
   }
 
   const handleConfirmPayment = async () => {
     try {
       const ordersRef = collection(db, "orders");
-
-      // Lấy tất cả đơn hàng hiện có
       const snapshot = await getDocs(ordersRef);
-      const donHangCount = snapshot.size; // Đếm số lượng đơn hàng
-
-      // Tạo ID mới kiểu don_hang_1, don_hang_2, ...
+      const donHangCount = snapshot.size;
       const newId = `don_hang_${donHangCount + 1}`;
 
-      // Ghi đơn hàng mới với ID custom
       await setDoc(doc(db, "orders", newId), {
+        uid: user?.uid || null,
         name: formData.name,
         phone: formData.phone,
         email: formData.email,
         note: formData.note,
         packageTitle: selectedPackage.title,
         packagePrice: selectedPackage.price,
+        planMode: planMode,
         timestamp: Timestamp.now(),
         status: "pending",
       });
@@ -105,10 +113,11 @@ function PaymentPage() {
               <strong>Số tiền:</strong> {selectedPackage.price}
             </p>
             <p>
-              <strong>Nội dung:</strong> {formData.name} +{" "}
-              {selectedPackage.title}
+              <strong>Nội dung:</strong> {formData.name} + {planMode} (
+              {selectedPackage.title})
             </p>
           </div>
+
           <div className="payment-instructions">
             <h3>HƯỚNG DẪN THANH TOÁN</h3>
             <ul>
@@ -153,42 +162,34 @@ function PaymentPage() {
 
           <div className="order-details">
             <h4>CHI TIẾT ĐƠN HÀNG</h4>
-            <table style={{ width: "100%", marginTop: "1rem" }}>
+            <table>
               <tbody>
                 <tr>
                   <td>
                     <strong>SẢN PHẨM</strong>
                   </td>
-                  <td style={{ textAlign: "right" }}>
+                  <td className="text-right">
                     <strong>TỔNG</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td>{selectedPackage.title}</td>
-                  <td style={{ textAlign: "right" }}>
-                    {selectedPackage.price}
-                  </td>
-                </tr>
-                <tr>
                   <td>
-                    <strong>Tổng số phụ:</strong>
+                    {planMode} ({selectedPackage.title})
                   </td>
-                  <td style={{ textAlign: "right" }}>
-                    {selectedPackage.price}
-                  </td>
+                  <td className="text-right">{selectedPackage.price}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Phương thức thanh toán:</strong>
                   </td>
-                  <td style={{ textAlign: "right" }}>Chuyển khoản</td>
+                  <td className="text-right">Chuyển khoản</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Tổng cộng:</strong>
                   </td>
-                  <td style={{ textAlign: "right", fontWeight: "bold" }}>
-                    {selectedPackage.price}
+                  <td className="text-right">
+                    <strong>{selectedPackage.price}</strong>
                   </td>
                 </tr>
               </tbody>
@@ -205,12 +206,13 @@ function PaymentPage() {
         <div className="popup-overlay">
           <div className="popup-content">
             <h3>
-              <i class="fa-solid fa-check"></i> Cảm ơn bạn đã đặt hàng thành
+              <i className="fa-solid fa-check"></i> Cảm ơn bạn đã đặt hàng thành
               công!
             </h3>
             <p>
-              Tư vấn viên sẽ liên hệ với mình trong thời gian sớm nhất
-              <br /> Hệ thống sẽ tự động quay về trang chủ trong:{" "}
+              Tư vấn viên sẽ liên hệ với bạn trong thời gian sớm nhất.
+              <br />
+              Hệ thống sẽ tự động quay về trang chủ trong:{" "}
               <strong>{countdown}s</strong>.
             </p>
           </div>
