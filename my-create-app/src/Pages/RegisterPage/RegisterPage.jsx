@@ -1,25 +1,29 @@
-// ✅ RegisterPage.jsx
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./RegisterPage.css";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
 import HeaderMinimal from "../../components/Header/HeaderMinimal";
 import ChatIcon from "../../components/ChatIcons/ChatIcons";
+import { useUser } from "../../UserContent/UserContext";
 
 function RegisterPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const selectedPackage = state?.selectedPackage;
-  const planMode = state?.planMode || "";
+  const planMode = state?.planMode;
+  const { user } = useUser();
 
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
     note: "",
+    location: "WAYSTATION DÂN CHỦ",
+    schedule: [],
   });
 
   const [errors, setErrors] = useState({});
+  const [newSchedule, setNewSchedule] = useState({ day: "", time: "" });
 
   const validateForm = () => {
     const newErrors = {};
@@ -35,23 +39,46 @@ function RegisterPage() {
     if (!formData.note.trim() || formData.note.length < 8) {
       newErrors.note = "Thông tin bổ sung phải có ít nhất 8 ký tự";
     }
+    if (formData.schedule.length === 0) {
+      newErrors.schedule = "Vui lòng thêm ít nhất 1 thời gian tập luyện.";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const handleAddSchedule = () => {
+    if (!newSchedule.day || !newSchedule.time) return;
+    setFormData({
+      ...formData,
+      schedule: [...formData.schedule, newSchedule],
+    });
+    setNewSchedule({ day: "", time: "" });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+
     navigate("/payment", {
       state: {
-        formData,
+        formData: {
+          ...formData,
+          uid: user?.uid || null,
+        },
         selectedPackage,
         planMode,
       },
     });
   };
 
-  if (!selectedPackage) return <p>Không có gói tập nào được chọn.</p>;
+  if (!selectedPackage || !planMode)
+    return <p>Không có gói tập nào được chọn.</p>;
+
+  const timeOptions = Array.from({ length: 17 }, (_, i) => {
+    const hour = 7 + i;
+    return `${hour.toString().padStart(2, "0")}:00`;
+  });
 
   return (
     <>
@@ -94,6 +121,69 @@ function RegisterPage() {
             />
             {errors.email && <span className="error">{errors.email}</span>}
 
+            <label>Phòng tập mình đang dạy *</label>
+            <select
+              value={formData.location}
+              onChange={(e) =>
+                setFormData({ ...formData, location: e.target.value })
+              }
+            >
+              <option value="">-- Chọn phòng tập --</option>
+              <option>WAYSTATION DÂN CHỦ</option>
+              <option>WAYSTATION TRƯƠNG VĂN HẢI</option>
+              <option>WAYSTATION HIỆP BÌNH</option>
+              <option>WAYSTATION QL13</option>
+              <option>Chung Cư Flora Novia</option>
+            </select>
+
+            <label>Thời gian tập luyện của bạn *</label>
+            <div className="schedule-input-row">
+              <select
+                value={newSchedule.day}
+                onChange={(e) =>
+                  setNewSchedule((prev) => ({ ...prev, day: e.target.value }))
+                }
+              >
+                <option value="">-- Chọn ngày --</option>
+                <option>Thứ 2</option>
+                <option>Thứ 3</option>
+                <option>Thứ 4</option>
+                <option>Thứ 5</option>
+                <option>Thứ 6</option>
+                <option>Thứ 7</option>
+                <option>Chủ nhật</option>
+              </select>
+              <select
+                value={newSchedule.time}
+                onChange={(e) =>
+                  setNewSchedule((prev) => ({ ...prev, time: e.target.value }))
+                }
+              >
+                <option value="">-- Chọn giờ --</option>
+                {timeOptions.map((t) => (
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAddSchedule}
+                className="order-button"
+                style={{ maxWidth: "180px" }}
+              >
+                + Thêm thời gian
+              </button>
+            </div>
+            {formData.schedule.map((item, i) => (
+              <div key={i} className="schedule-display">
+                - {item.day} lúc {item.time}
+              </div>
+            ))}
+            {errors.schedule && (
+              <span className="error">{errors.schedule}</span>
+            )}
+
             <label>Thông tin bổ sung</label>
             <textarea
               rows={4}
@@ -133,6 +223,7 @@ function RegisterPage() {
           </p>
         </div>
       </div>
+
       <ChatIcon />
       <FooterMinimal />
     </>

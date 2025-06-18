@@ -51,6 +51,43 @@
   min-width: 260px;
 }
 
+.checkout-form select,
+.checkout-form input[type="time"] {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.checkout-form select:focus,
+.checkout-form input[type="time"]:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.schedule-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.schedule-input-row select {
+  flex: 1;
+  min-width: 150px;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.schedule-display {
+  margin-left: 8px;
+  margin-bottom: 5px;
+  color: var(--black-color);
+}
+
 .order-summary p {
   margin: 8px 0;
   font-size: 15px;

@@ -12,26 +12,16 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useUser } from "../../UserContent/UserContext";
 
 function PaymentPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { user } = useUser();
-
   const formData = state?.formData;
   const selectedPackage = state?.selectedPackage;
   const planMode = state?.planMode;
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [countdown, setCountdown] = useState(5);
-
-  useEffect(() => {
-    if (!user) {
-      alert("Bạn cần đăng nhập để tiếp tục.");
-      navigate("/login");
-    }
-  }, []);
 
   useEffect(() => {
     if (showSuccess) {
@@ -66,14 +56,16 @@ function PaymentPage() {
       const newId = `don_hang_${donHangCount + 1}`;
 
       await setDoc(doc(db, "orders", newId), {
-        uid: user?.uid || null,
+        uid: formData.uid || null,
         name: formData.name,
         phone: formData.phone,
         email: formData.email,
+        location: formData.location,
+        schedule: formData.schedule,
         note: formData.note,
         packageTitle: selectedPackage.title,
         packagePrice: selectedPackage.price,
-        planMode: planMode,
+        planMode,
         timestamp: Timestamp.now(),
         status: "pending",
       });
@@ -113,11 +105,10 @@ function PaymentPage() {
               <strong>Số tiền:</strong> {selectedPackage.price}
             </p>
             <p>
-              <strong>Nội dung:</strong> {formData.name} + {planMode} (
-              {selectedPackage.title})
+              <strong>Nội dung:</strong> {formData.name} +{" "}
+              {selectedPackage.title}
             </p>
           </div>
-
           <div className="payment-instructions">
             <h3>HƯỚNG DẪN THANH TOÁN</h3>
             <ul>
@@ -153,6 +144,19 @@ function PaymentPage() {
             <p>
               <strong>Email:</strong> {formData.email}
             </p>
+            <p>
+              <strong>Phòng tập:</strong> {formData.location}
+            </p>
+            <div>
+              <strong>Lịch tập luyện:</strong>
+              <ul>
+                {formData.schedule.map((item, i) => (
+                  <li key={i}>
+                    {item.day} - {item.time}
+                  </li>
+                ))}
+              </ul>
+            </div>
             {formData.note && (
               <p>
                 <strong>Ghi chú:</strong> {formData.note}
@@ -188,8 +192,8 @@ function PaymentPage() {
                   <td>
                     <strong>Tổng cộng:</strong>
                   </td>
-                  <td className="text-right">
-                    <strong>{selectedPackage.price}</strong>
+                  <td className="text-right" style={{ fontWeight: "bold" }}>
+                    {selectedPackage.price}
                   </td>
                 </tr>
               </tbody>
@@ -210,9 +214,8 @@ function PaymentPage() {
               công!
             </h3>
             <p>
-              Tư vấn viên sẽ liên hệ với bạn trong thời gian sớm nhất.
-              <br />
-              Hệ thống sẽ tự động quay về trang chủ trong:{" "}
+              Tư vấn viên sẽ liên hệ với mình trong thời gian sớm nhất
+              <br /> Hệ thống sẽ tự động quay về trang chủ trong:{" "}
               <strong>{countdown}s</strong>.
             </p>
           </div>
