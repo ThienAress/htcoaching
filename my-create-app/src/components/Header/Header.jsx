@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import User from "../../Pages/User/User";
 import "./Header.css";
+import { useAdminCheck } from "../../hook/useAdminCheck";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,7 +18,6 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Đóng menu khi click ra ngoài
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
@@ -29,7 +29,6 @@ function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Thêm hiệu ứng khi mở menu mobile
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -42,6 +41,8 @@ function Header() {
     };
   }, [menuOpen]);
 
+  const { isAdmin, loading } = useAdminCheck();
+  if (loading) return null;
   return (
     <header
       ref={headerRef}
@@ -96,6 +97,15 @@ function Header() {
                 CLB
               </Link>
             </li>
+
+            {/* ✅ Chỉ admin mới thấy mục quản trị */}
+            {isAdmin && (
+              <li>
+                <Link to="/admin" onClick={() => setMenuOpen(false)}>
+                  Quản trị
+                </Link>
+              </li>
+            )}
           </ul>
 
           <div className="mobile-user">

@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Alert, Typography, Card } from "antd";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
-const AdminLogin = ({ onLoginSuccess }) => {
+const AdminLogin = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onFinish = async ({ email, password }) => {
     setLoading(true);
     setError("");
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -19,13 +23,25 @@ const AdminLogin = ({ onLoginSuccess }) => {
         password
       );
       const user = userCredential.user;
-      if (user.email === "admin@gmail.com") {
-        onLoginSuccess();
+
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+
+        if (data.role === "admin") {
+          // ✅ chuyển hướng vào admin dashboard
+          navigate("/admin/orders");
+        } else {
+          setError("Tài khoản không có quyền truy cập admin.");
+        }
       } else {
-        setError("Tài khoản không có quyền truy cập admin.");
+        setError("Không tìm thấy thông tin người dùng trong Firestore.");
       }
-    } catch {
-      setError("Email hoặc mật khẩu không chính xác");
+    } catch (err) {
+      console.error("Login failed:", err);
+      setError("Email hoặc mật khẩu không chính xác.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +85,7 @@ const AdminLogin = ({ onLoginSuccess }) => {
             name="email"
             rules={[{ required: true, message: "Vui lòng nhập email" }]}
           >
-            <Input placeholder="admin" />
+            <Input placeholder="admin@gmail.com" />
           </Form.Item>
 
           <Form.Item

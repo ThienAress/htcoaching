@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -17,15 +17,16 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 import TdeeCalculator from "./Pages/TdeeCalculator/TdeeCalculator";
 import Club from "./Pages/Club/Club";
+import AdminLogin from "./Pages/Admin/AdminLogin";
 import AdminLayout from "./Pages/Admin/AdminLayout";
 import OrdersPage from "./Pages/Admin/OrdersPage";
 import UsersPage from "./Pages/Admin/UsersPage";
 import ContactsPage from "./Pages/Admin/ContactsPage";
+import ProtectedAdminRoute from "./Pages/Admin/ProtectedAdminRoute";
 
 function App() {
   return (
     <Routes>
-      {/* Route cho trang chủ */}
       <Route
         path="/"
         element={
@@ -45,27 +46,34 @@ function App() {
           </>
         }
       />
-
-      {/* Trang đăng nhập */}
+      {/* Trang login */}
       <Route path="/login" element={<Login />} />
 
-      {/* Trang đăng kí */}
+      {/* Trang signup */}
       <Route path="/signup" element={<SingUp />} />
 
-      {/* Trang nhập thông tin thanh toán */}
+      {/* Trang register */}
       <Route path="/register" element={<RegisterPage />} />
 
-      {/* Trang thanh toán */}
+      {/* Trang payment */}
       <Route path="/payment" element={<PaymentPage />} />
 
-      {/* Trang tính tdee */}
+      {/* Trang calculator */}
       <Route path="/tdee-calculator" element={<TdeeCalculator />} />
 
-      {/* Trang CLB */}
+      {/* Trang club */}
       <Route path="/club" element={<Club />} />
 
-      {/* Admin */}
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route path="/admin-login" element={<AdminLogin />} />
+      {/* Trang admin có bảo vệ quyền */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedAdminRoute>
+            <AdminLayout />
+          </ProtectedAdminRoute>
+        }
+      >
         <Route path="orders" element={<OrdersPage />} />
         <Route path="users" element={<UsersPage />} />
         <Route path="contacts" element={<ContactsPage />} />
