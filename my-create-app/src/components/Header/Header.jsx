@@ -7,28 +7,15 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const headerRef = useRef(null);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Kiểm tra scroll direction
-      if (Math.abs(currentScrollY - lastScrollY.current) > 50) {
-        // Ngưỡng scroll
-        if (currentScrollY > lastScrollY.current && menuOpen) {
-          // Scroll xuống và menu đang mở -> đóng menu
-          setMenuOpen(false);
-        }
-        lastScrollY.current = currentScrollY;
-      }
-
-      setIsScrolled(currentScrollY > 0);
+      setIsScrolled(window.scrollY > 0);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [menuOpen]); // Thêm menuOpen vào dependencies
+  }, []);
 
   // Đóng menu khi click ra ngoài
   useEffect(() => {

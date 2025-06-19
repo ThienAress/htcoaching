@@ -122,7 +122,8 @@ body.menu-open {
 }
 
 .mobile-user .dropdown-menu {
-  position: static;
+  position: absolute;
+  top: 92%;
   width: 100%;
 }
 

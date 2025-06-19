@@ -56,6 +56,12 @@ function RegisterPage() {
     setNewSchedule({ day: "", time: "" });
   };
 
+  const handleRemoveSchedule = (index) => {
+    const updated = [...formData.schedule];
+    updated.splice(index, 1);
+    setFormData({ ...formData, schedule: updated });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -178,6 +184,13 @@ function RegisterPage() {
             {formData.schedule.map((item, i) => (
               <div key={i} className="schedule-display">
                 - {item.day} lúc {item.time}
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSchedule(i)}
+                  className="remove-btn"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
               </div>
             ))}
             {errors.schedule && (
@@ -187,7 +200,7 @@ function RegisterPage() {
             <label>Thông tin bổ sung</label>
             <textarea
               rows={4}
-              placeholder="Ghi chú bắt buộc (ví dụ thời gian tập, địa điểm mong muốn, để lại link fb or zalo để bên mình tiện trao đổi nha...)"
+              placeholder="Ghi chú bắt buộc (ví dụ: địa điểm mong muốn, để lại link fb or zalo để bên mình tiện trao đổi nha...)"
               value={formData.note}
               onChange={(e) =>
                 setFormData({ ...formData, note: e.target.value })

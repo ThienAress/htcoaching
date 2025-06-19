@@ -17,6 +17,10 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 import TdeeCalculator from "./Pages/TdeeCalculator/TdeeCalculator";
 import Club from "./Pages/Club/Club";
+import AdminLayout from "./Pages/Admin/AdminLayout";
+import OrdersPage from "./Pages/Admin/OrdersPage";
+import UsersPage from "./Pages/Admin/UsersPage";
+import ContactsPage from "./Pages/Admin/ContactsPage";
 
 function App() {
   return (
@@ -59,6 +63,13 @@ function App() {
 
       {/* Trang CLB */}
       <Route path="/club" element={<Club />} />
+
+      {/* Admin */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="orders" element={<OrdersPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="contacts" element={<ContactsPage />} />
+      </Route>
     </Routes>
   );
 }
