@@ -1,4 +1,3 @@
-/* === Tổng thể === */
 .pricing {
   padding: 60px 0;
   background-color: #262626;
@@ -281,4 +280,8 @@
 /* === Hover Common for all Pricing Buttons === */
 .pricing-btn:hover .btn-hover-effect {
   top: 0;
+}
+
+.register-discount {
+  color: red;
 }

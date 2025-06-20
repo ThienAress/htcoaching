@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Button, Tag, message } from "antd";
 import { db } from "../../firebase";
 import { collection, updateDoc, doc, onSnapshot } from "firebase/firestore";
+import dayjs from "dayjs";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -9,10 +10,13 @@ const OrdersPage = () => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "orders"), (snapshot) => {
-      const ordersData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      const ordersData = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+        };
+      });
       setOrders(ordersData);
       setLoading(false);
     });
@@ -91,6 +95,15 @@ const OrdersPage = () => {
         ) : (
           <Tag color="blue">Đã xác nhận</Tag>
         ),
+    },
+    {
+      title: "Thời gian",
+      dataIndex: "timestamp",
+      key: "timestamp",
+      render: (timestamp) =>
+        timestamp?.toDate
+          ? dayjs(timestamp.toDate()).format("DD/MM/YYYY HH:mm:ss")
+          : "Chưa có",
     },
   ];
 

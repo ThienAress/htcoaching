@@ -1,6 +1,7 @@
+// UserContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
 const UserContext = createContext();
@@ -14,16 +15,37 @@ export const UserProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
         const uid = firebaseUser.uid;
-        const userRef = doc(db, "users", uid);
-        const userSnap = await getDoc(userRef);
 
-        if (userSnap.exists()) {
-          const data = userSnap.data();
+        try {
+          const adminRef = doc(db, "admin", uid);
+          const adminSnap = await getDoc(adminRef);
 
-          setUser(firebaseUser);
-          setUserRole(data.role || null);
-        } else {
-          console.warn("⚠️ Không tìm thấy document trong Firestore.");
+          if (adminSnap.exists()) {
+            const data = adminSnap.data();
+            console.log("✅ Admin đăng nhập:", data);
+            setUser(firebaseUser);
+            setUserRole(data.role || "admin");
+          } else {
+            console.warn("⚠️ Không tìm thấy user trong 'admin' → tạo mới");
+
+            const newAdmin = {
+              uid: firebaseUser.uid,
+              name:
+                firebaseUser.displayName ||
+                firebaseUser.email?.split("@")[0] ||
+                "Người dùng",
+              email: firebaseUser.email || "",
+              photoURL: firebaseUser.photoURL || "",
+              createdAt: new Date(),
+              role: "admin",
+            };
+
+            await setDoc(adminRef, newAdmin);
+            setUser(firebaseUser);
+            setUserRole("admin");
+          }
+        } catch (error) {
+          console.error("❌ Lỗi khi lấy hoặc tạo admin từ Firestore:", error);
           setUser(firebaseUser);
           setUserRole(null);
         }

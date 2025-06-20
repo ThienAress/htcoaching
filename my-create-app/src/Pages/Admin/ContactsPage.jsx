@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { db } from "../../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import dayjs from "dayjs";
 
 function ContactsPage() {
   const [contacts, setContacts] = useState([]);
@@ -48,6 +49,15 @@ function ContactsPage() {
       title: "Gói quan tâm",
       dataIndex: "package",
       key: "package",
+    },
+    {
+      title: "Thời gian",
+      dataIndex: "dateTime",
+      key: "dateTime",
+      render: (timestamp) =>
+        timestamp?.toDate
+          ? dayjs(timestamp.toDate()).format("DD/MM/YYYY HH:mm:ss")
+          : "Chưa có",
     },
   ];
 

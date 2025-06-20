@@ -23,6 +23,7 @@ import OrdersPage from "./Pages/Admin/OrdersPage";
 import UsersPage from "./Pages/Admin/UsersPage";
 import ContactsPage from "./Pages/Admin/ContactsPage";
 import ProtectedAdminRoute from "./Pages/Admin/ProtectedAdminRoute";
+import PromotionPopup from "./Pages/PromotionPopup/PromotionPopup";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Footer />
             <ChatIcons />
             <ScrollToTop />
+            <PromotionPopup />
           </>
         }
       />
@@ -64,7 +66,9 @@ function App() {
       {/* Trang club */}
       <Route path="/club" element={<Club />} />
 
+      {/* Login Admin */}
       <Route path="/admin-login" element={<AdminLogin />} />
+
       {/* Trang admin có bảo vệ quyền */}
       <Route
         path="/admin"

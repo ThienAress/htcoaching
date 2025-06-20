@@ -24,20 +24,19 @@ const AdminLogin = () => {
       );
       const user = userCredential.user;
 
-      const docRef = doc(db, "users", user.uid);
+      const docRef = doc(db, "admin", user.uid);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
         const data = docSnap.data();
 
         if (data.role === "admin") {
-          // ✅ chuyển hướng vào admin dashboard
           navigate("/admin/orders");
         } else {
           setError("Tài khoản không có quyền truy cập admin.");
         }
       } else {
-        setError("Không tìm thấy thông tin người dùng trong Firestore.");
+        setError("Không tìm thấy thông tin người dùng trong 'admin'.");
       }
     } catch (err) {
       console.error("Login failed:", err);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Select } from "antd";
 import { db } from "../../firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import dayjs from "dayjs";
 
 function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -62,7 +63,10 @@ function UsersPage() {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (date) => date?.toDate().toLocaleString(),
+      render: (date) =>
+        date?.toDate
+          ? dayjs(date.toDate()).format("DD/MM/YYYY HH:mm:ss")
+          : "Chưa có",
     },
   ];
 

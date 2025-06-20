@@ -1,3 +1,4 @@
+// User.jsx - Hiển thị thông tin người dùng và xử lý avatar (đầy đủ, sửa lỗi hiển thị Google account)
 import { useState, useEffect } from "react";
 import { useUser } from "../../UserContent/UserContext";
 import { signOut, updateProfile } from "firebase/auth";
@@ -11,22 +12,29 @@ const User = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [photoURL, setPhotoURL] = useState("");
+  const [photoURL, setPhotoURL] = useState("/default-avatar.png");
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       if (!user) return;
 
-      if (user.providerData[0]?.providerId === "password") {
-        const docSnap = await getDoc(doc(db, "usersSignin", user.uid));
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setDisplayName(data.username);
-          setPhotoURL(data.photoURL || user.photoURL || "/default-avatar.png");
+      try {
+        const isGoogle = user.providerData[0]?.providerId === "google.com";
+        const isPassword = user.providerData[0]?.providerId === "password";
+
+        if (isPassword) {
+          const userDoc = await getDoc(doc(db, "usersSignin", user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            setDisplayName(data.username || "Người dùng");
+            setPhotoURL(data.photoURL || "/default-avatar.png");
+          }
+        } else if (isGoogle) {
+          setDisplayName(user.displayName || "Người dùng");
+          setPhotoURL(user.photoURL || "/default-avatar.png");
         }
-      } else {
-        setDisplayName(user.displayName || "Người dùng");
-        setPhotoURL(user.photoURL || "/default-avatar.png");
+      } catch (error) {
+        console.error("Lỗi khi tải thông tin người dùng:", error);
       }
     };
 

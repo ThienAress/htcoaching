@@ -231,6 +231,10 @@ body.popup-active {
   background: #2980b9;
 }
 
+.payment-container .payment-discount {
+  color: red;
+}
+
 @keyframes fadeIn {
   from {
     transform: scale(0.8);

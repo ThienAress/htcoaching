@@ -19,14 +19,22 @@ function PaymentPage() {
   const formData = state?.formData;
   const selectedPackage = state?.selectedPackage;
   const planMode = state?.planMode;
+  const originalPrice = state?.originalPrice || 0;
+  const discount = state?.discount || 0;
+  const total = state?.total || originalPrice;
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
+    if (!formData || !selectedPackage || !planMode) {
+      navigate("/", { replace: true });
+    }
+  }, [formData, selectedPackage, planMode, navigate]);
+
+  useEffect(() => {
     if (showSuccess) {
       document.body.classList.add("popup-active");
-
       const countdownInterval = setInterval(() => {
         setCountdown((prev) => {
           if (prev === 1) {
@@ -42,11 +50,9 @@ function PaymentPage() {
         document.body.classList.remove("popup-active");
       };
     }
-  }, [showSuccess]);
+  }, [showSuccess, navigate]);
 
-  if (!formData || !selectedPackage || !planMode) {
-    return <p>Thiếu thông tin thanh toán hoặc gói tập.</p>;
-  }
+  if (!formData || !selectedPackage || !planMode) return null;
 
   const handleConfirmPayment = async () => {
     try {
@@ -64,8 +70,10 @@ function PaymentPage() {
         schedule: formData.schedule,
         note: formData.note,
         packageTitle: selectedPackage.title,
-        packagePrice: selectedPackage.price,
         planMode,
+        originalPrice,
+        discount,
+        total,
         timestamp: Timestamp.now(),
         status: "pending",
       });
@@ -102,7 +110,7 @@ function PaymentPage() {
               <strong>Số tài khoản:</strong> 10001167831
             </p>
             <p>
-              <strong>Số tiền:</strong> {selectedPackage.price}
+              <strong>Số tiền:</strong> {total.toLocaleString()}đ
             </p>
             <p>
               <strong>Nội dung:</strong> {formData.name} +{" "}
@@ -110,7 +118,7 @@ function PaymentPage() {
             </p>
           </div>
           <div className="payment-instructions">
-            <h3>HƯỚNG DẪN THANH TOÁN</h3>
+            <h3>Hướng dẫn thanh toán</h3>
             <ul>
               <li>
                 <strong>Bước 1:</strong> Mở ví điện tử/Ngân hàng
@@ -165,23 +173,35 @@ function PaymentPage() {
           </div>
 
           <div className="order-details">
-            <h4>CHI TIẾT ĐƠN HÀNG</h4>
+            <h4>Chi tiết đơn hàng</h4>
             <table>
               <tbody>
                 <tr>
                   <td>
-                    <strong>SẢN PHẨM</strong>
+                    <strong>Sản phẩm</strong>
                   </td>
                   <td className="text-right">
-                    <strong>TỔNG</strong>
+                    <strong>Tổng</strong>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     {planMode} ({selectedPackage.title})
                   </td>
-                  <td className="text-right">{selectedPackage.price}</td>
+                  <td className="text-right">
+                    {originalPrice.toLocaleString()}đ
+                  </td>
                 </tr>
+                {discount > 0 && (
+                  <tr>
+                    <td>
+                      <span className="payment-discount">Giảm giá 15%</span>
+                    </td>
+                    <td className="text-right payment-discount">
+                      -{discount.toLocaleString()}đ
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td>
                     <strong>Phương thức thanh toán:</strong>
@@ -193,7 +213,7 @@ function PaymentPage() {
                     <strong>Tổng cộng:</strong>
                   </td>
                   <td className="text-right" style={{ fontWeight: "bold" }}>
-                    {selectedPackage.price}
+                    {total.toLocaleString()}đ
                   </td>
                 </tr>
               </tbody>
@@ -215,7 +235,8 @@ function PaymentPage() {
             </h3>
             <p>
               Tư vấn viên sẽ liên hệ với mình trong thời gian sớm nhất
-              <br /> Hệ thống sẽ tự động quay về trang chủ trong:{" "}
+              <br />
+              Hệ thống sẽ tự động quay về trang chủ trong:{" "}
               <strong>{countdown}s</strong>.
             </p>
           </div>

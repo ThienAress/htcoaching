@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./RegisterPage.css";
 import FooterMinimal from "../../components/Footer/FooterMinimal";
 import HeaderMinimal from "../../components/Header/HeaderMinimal";
@@ -11,6 +11,9 @@ function RegisterPage() {
   const navigate = useNavigate();
   const selectedPackage = state?.selectedPackage;
   const planMode = state?.planMode;
+  const originalPrice = state?.originalPrice || 0;
+  const discount = state?.discount || 0;
+  const total = state?.total || 0;
   const { user } = useUser();
 
   const [formData, setFormData] = useState({
@@ -24,6 +27,14 @@ function RegisterPage() {
 
   const [errors, setErrors] = useState({});
   const [newSchedule, setNewSchedule] = useState({ day: "", time: "" });
+
+  useEffect(() => {
+    if (!selectedPackage || !planMode) {
+      navigate("/", { replace: true });
+    }
+  }, [selectedPackage, planMode, navigate]);
+
+  if (!selectedPackage || !planMode) return null;
 
   const validateForm = () => {
     const newErrors = {};
@@ -42,7 +53,6 @@ function RegisterPage() {
     if (formData.schedule.length === 0) {
       newErrors.schedule = "Vui lòng thêm ít nhất 1 thời gian tập luyện.";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -74,12 +84,12 @@ function RegisterPage() {
         },
         selectedPackage,
         planMode,
+        originalPrice,
+        discount,
+        total,
       },
     });
   };
-
-  if (!selectedPackage || !planMode)
-    return <p>Không có gói tập nào được chọn.</p>;
 
   const timeOptions = Array.from({ length: 17 }, (_, i) => {
     const hour = 7 + i;
@@ -139,7 +149,7 @@ function RegisterPage() {
               <option>WAYSTATION TRƯƠNG VĂN HẢI</option>
               <option>WAYSTATION HIỆP BÌNH</option>
               <option>WAYSTATION QL13</option>
-              <option>Chung Cư Flora Novia</option>
+              <option>Chung CƯ Flora Novia</option>
             </select>
 
             <label>Thời gian tập luyện của bạn *</label>
@@ -189,7 +199,7 @@ function RegisterPage() {
                   onClick={() => handleRemoveSchedule(i)}
                   className="remove-btn"
                 >
-                  <i class="fa-solid fa-xmark"></i>
+                  <i className="fa-solid fa-xmark"></i>
                 </button>
               </div>
             ))}
@@ -200,7 +210,7 @@ function RegisterPage() {
             <label>Thông tin bổ sung</label>
             <textarea
               rows={4}
-              placeholder="Ghi chú bắt buộc (ví dụ: địa điểm mong muốn, để lại link fb or zalo để bên mình tiện trao đổi nha...)"
+              placeholder="Ghi chú bắt buộc (ví dụ: địa điểm mong muốn, để lại link fb, zalo hoặc sđt để bên mình tiện trao đổi nha...)"
               value={formData.note}
               onChange={(e) =>
                 setFormData({ ...formData, note: e.target.value })
@@ -223,10 +233,18 @@ function RegisterPage() {
                 {planMode} ({selectedPackage.title})
               </strong>
             </p>
-            <p>Tạm tính: {selectedPackage.price}</p>
+            <p>Tạm tính: {originalPrice.toLocaleString()}đ</p>
+            {discount > 0 && (
+              <p>
+                Giảm giá 15%:{" "}
+                <span className="register-discount">
+                  -{discount.toLocaleString()}đ
+                </span>
+              </p>
+            )}
             <hr />
             <p>
-              <strong>Tổng cộng: {selectedPackage.price}</strong>
+              <strong>Tổng cộng: {total.toLocaleString()}đ</strong>
             </p>
             <p>Thanh toán chuyển khoản</p>
           </div>
