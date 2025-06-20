@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
@@ -65,34 +75,64 @@ const SignUp = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const isUsernameTaken = async (username) => {
+    const lowerUsername = username.toLowerCase();
+    const q = query(
+      collection(db, "usersSignin"),
+      where("username", "==", lowerUsername)
+    );
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     try {
+      const usernameExists = await isUsernameTaken(formData.username);
+      if (usernameExists) {
+        setErrors((prev) => ({
+          ...prev,
+          username: "Tài khoản đã tồn tại, vui lòng chọn tên khác",
+        }));
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         formData.email,
         formData.password
       );
 
+      // Gửi email xác minh
+      await sendEmailVerification(userCredential.user);
+
+      // Lưu thông tin vào Firestore
       await setDoc(doc(db, "usersSignin", userCredential.user.uid), {
         uid: userCredential.user.uid,
         name: formData.fullName,
-        username: formData.username,
+        username: formData.username.toLowerCase(),
+        displayUsername: formData.username,
         email: formData.email,
         createdAt: new Date(),
       });
 
+      alert(
+        "Đăng ký thành công! Vui lòng kiểm tra email để xác minh trước khi đăng nhập."
+      );
       navigate("/login");
     } catch (error) {
-      alert("Đăng ký thất bại: " + error.message);
+      if (error.code === "auth/email-already-in-use") {
+        alert("Email đã tồn tại, vui lòng chuyển sang email khác.");
+      } else {
+        alert("Đăng ký thất bại: " + error.message);
+      }
     }
   };
 
   return (
     <div className="signup-page">
-      {/* Background Slideshow */}
       <div className="signup-backgrounds">
         {backgrounds.map((bg, index) => (
           <div
@@ -103,11 +143,8 @@ const SignUp = () => {
         ))}
       </div>
 
-      {/* Overlay */}
       <div className="signup-overlay">
-        {/* Signup Container */}
         <div className="signup-container">
-          {/* Header */}
           <header className="signup-header">
             <a href="/" className="logo-link">
               <img
@@ -124,7 +161,6 @@ const SignUp = () => {
             </p>
           </header>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="signup-form">
             {[
               { id: "fullName", label: "Họ và tên", type: "text" },
@@ -166,7 +202,6 @@ const SignUp = () => {
             </button>
           </form>
 
-          {/* Footer */}
           <footer className="signup-footer">
             <p className="login-link">
               Đã có tài khoản? <a href="/login">Đăng nhập ngay</a>

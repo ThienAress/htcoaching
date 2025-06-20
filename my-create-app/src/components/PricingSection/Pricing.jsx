@@ -13,20 +13,23 @@ function Pricing() {
   const { user } = useUser();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showTrialWarning, setShowTrialWarning] = useState(false);
-  const [hasOrderedBefore, setHasOrderedBefore] = useState(false);
+  const [hasUsedTrial, setHasUsedTrial] = useState(false);
 
   useEffect(() => {
-    const checkUserOrders = async () => {
+    const checkTrialUsage = async () => {
       if (user) {
-        const q = query(collection(db, "orders"), where("uid", "==", user.uid));
+        const q = query(
+          collection(db, "orders"),
+          where("uid", "==", user.uid),
+          where("planMode", "==", "Trải nghiệm")
+        );
         const snapshot = await getDocs(q);
         if (!snapshot.empty) {
-          setHasOrderedBefore(true);
+          setHasUsedTrial(true);
         }
       }
     };
-
-    checkUserOrders();
+    checkTrialUsage();
   }, [user]);
 
   const handleRegister = async (plan) => {
@@ -34,7 +37,8 @@ function Pricing() {
       mode === "trial" ? "Trải nghiệm" : mode === "1-1" ? "1-1" : "Online";
 
     const priceNumber = parseInt(plan.price.replace(/\D/g, ""));
-    const discount = !hasOrderedBefore ? Math.floor(priceNumber * 0.15) : 0;
+    const discount =
+      planMode !== "Trải nghiệm" ? Math.floor(priceNumber * 0.15) : 0;
     const total = priceNumber - discount;
 
     if (!user) {
@@ -42,18 +46,9 @@ function Pricing() {
       return;
     }
 
-    if (plan.title === "Trail") {
-      const q = query(
-        collection(db, "orders"),
-        where("uid", "==", user.uid),
-        where("planMode", "==", planMode)
-      );
-      const snapshot = await getDocs(q);
-
-      if (!snapshot.empty) {
-        setShowTrialWarning(true);
-        return;
-      }
+    if (planMode === "Trải nghiệm" && hasUsedTrial) {
+      setShowTrialWarning(true);
+      return;
     }
 
     navigate("/register", {
@@ -236,6 +231,7 @@ function Pricing() {
         <Modal
           open={showLoginModal}
           onCancel={() => setShowLoginModal(false)}
+          closable={false}
           onOk={() => {
             setShowLoginModal(false);
             navigate("/login");
@@ -304,19 +300,6 @@ function Pricing() {
               Để đăng ký gói tập và nhận{" "}
               <strong style={{ color: "#ff4d00" }}>ưu đãi 15%</strong>, vui lòng
               đăng nhập tài khoản.
-            </p>
-            <p style={{ margin: 0 }}>
-              Chưa có tài khoản?{" "}
-              <a
-                href="/register"
-                style={{
-                  color: "#ff4d00",
-                  fontWeight: 600,
-                  textDecoration: "underline",
-                }}
-              >
-                Đăng ký ngay
-              </a>
             </p>
           </div>
         </Modal>

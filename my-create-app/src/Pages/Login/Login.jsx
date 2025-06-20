@@ -43,7 +43,10 @@ const Login = () => {
 
     try {
       const usersRef = collection(db, "usersSignin");
-      const q = query(usersRef, where("username", "==", username));
+      const q = query(
+        usersRef,
+        where("username", "==", username.toLowerCase())
+      );
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
@@ -54,7 +57,20 @@ const Login = () => {
       const userData = querySnapshot.docs[0].data();
       const email = userData.email;
 
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      if (!userCredential.user.emailVerified) {
+        setErrors({
+          username: "",
+          password: "Tài khoản chưa xác minh email. Vui lòng kiểm tra hộp thư.",
+        });
+        return;
+      }
+
       navigate("/");
     } catch {
       setErrors({ username: "", password: "Mật khẩu không đúng" });
@@ -169,6 +185,9 @@ const Login = () => {
           </div>
 
           <div className="login-footer">
+            <p>
+              <a href="/forgot-password">Quên mật khẩu?</a>
+            </p>
             <p>
               Bạn là người mới? <a href="/signup">Đăng kí ngay</a>
             </p>

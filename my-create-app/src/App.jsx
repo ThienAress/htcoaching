@@ -24,6 +24,7 @@ import UsersPage from "./Pages/Admin/UsersPage";
 import ContactsPage from "./Pages/Admin/ContactsPage";
 import ProtectedAdminRoute from "./Pages/Admin/ProtectedAdminRoute";
 import PromotionPopup from "./Pages/PromotionPopup/PromotionPopup";
+import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 
 function App() {
   return (
@@ -53,6 +54,9 @@ function App() {
 
       {/* Trang signup */}
       <Route path="/signup" element={<SingUp />} />
+
+      {/* Trang Forgot Password */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
 
       {/* Trang register */}
       <Route path="/register" element={<RegisterPage />} />
