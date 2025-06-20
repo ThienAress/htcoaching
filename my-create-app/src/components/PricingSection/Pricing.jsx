@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Pricing.css";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../UserContent/UserContext";
-import { Modal, Button } from "antd"; // Thêm Button vào import
+import { Modal, Button } from "antd";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { FireOutlined, ExclamationCircleFilled } from "@ant-design/icons";
@@ -13,13 +13,28 @@ function Pricing() {
   const { user } = useUser();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showTrialWarning, setShowTrialWarning] = useState(false);
+  const [hasOrderedBefore, setHasOrderedBefore] = useState(false);
+
+  useEffect(() => {
+    const checkUserOrders = async () => {
+      if (user) {
+        const q = query(collection(db, "orders"), where("uid", "==", user.uid));
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          setHasOrderedBefore(true);
+        }
+      }
+    };
+
+    checkUserOrders();
+  }, [user]);
 
   const handleRegister = async (plan) => {
     const planMode =
       mode === "trial" ? "Trải nghiệm" : mode === "1-1" ? "1-1" : "Online";
 
     const priceNumber = parseInt(plan.price.replace(/\D/g, ""));
-    const discount = Math.floor(priceNumber * 0.15);
+    const discount = !hasOrderedBefore ? Math.floor(priceNumber * 0.15) : 0;
     const total = priceNumber - discount;
 
     if (!user) {

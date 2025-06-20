@@ -1,4 +1,3 @@
-// UserContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { getDoc, doc, setDoc } from "firebase/firestore";
@@ -13,23 +12,31 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const uid = firebaseUser.uid;
+      if (!firebaseUser) {
+        setUser(null);
+        setUserRole(null);
+        setLoading(false);
+        return;
+      }
 
-        try {
-          const adminRef = doc(db, "admin", uid);
-          const adminSnap = await getDoc(adminRef);
+      const uid = firebaseUser.uid;
 
-          if (adminSnap.exists()) {
-            const data = adminSnap.data();
-            console.log("✅ Admin đăng nhập:", data);
-            setUser(firebaseUser);
-            setUserRole(data.role || "admin");
-          } else {
-            console.warn("⚠️ Không tìm thấy user trong 'admin' → tạo mới");
+      try {
+        // Kiểm tra admin
+        const adminRef = doc(db, "admin", uid);
+        const adminSnap = await getDoc(adminRef);
 
-            const newAdmin = {
-              uid: firebaseUser.uid,
+        if (adminSnap.exists()) {
+          setUser(firebaseUser);
+          setUserRole("admin");
+        } else {
+          // Nếu không phải admin → lưu thông tin vào usersSignin nếu chưa có
+          const userRef = doc(db, "usersSignin", uid);
+          const userSnap = await getDoc(userRef);
+
+          if (!userSnap.exists()) {
+            const newUser = {
+              uid,
               name:
                 firebaseUser.displayName ||
                 firebaseUser.email?.split("@")[0] ||
@@ -37,24 +44,21 @@ export const UserProvider = ({ children }) => {
               email: firebaseUser.email || "",
               photoURL: firebaseUser.photoURL || "",
               createdAt: new Date(),
-              role: "admin",
+              role: "user",
             };
-
-            await setDoc(adminRef, newAdmin);
-            setUser(firebaseUser);
-            setUserRole("admin");
+            await setDoc(userRef, newUser);
           }
-        } catch (error) {
-          console.error("❌ Lỗi khi lấy hoặc tạo admin từ Firestore:", error);
-          setUser(firebaseUser);
-          setUserRole(null);
-        }
-      } else {
-        setUser(null);
-        setUserRole(null);
-      }
 
-      setLoading(false);
+          setUser(firebaseUser);
+          setUserRole("user");
+        }
+      } catch (error) {
+        console.error("❌ Lỗi khi xử lý user:", error);
+        setUser(firebaseUser);
+        setUserRole(null); // fallback
+      } finally {
+        setLoading(false);
+      }
     });
 
     return () => unsubscribe();

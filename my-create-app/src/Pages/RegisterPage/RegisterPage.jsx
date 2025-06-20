@@ -19,7 +19,7 @@ function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    email: "",
+    email: user?.email || "",
     note: "",
     location: "WAYSTATION DÂN CHỦ",
     schedule: [],

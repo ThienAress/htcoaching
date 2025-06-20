@@ -1,12 +1,19 @@
+// src/Pages/Admin/ProtectedAdminRoute.jsx
 import { Navigate } from "react-router-dom";
-import { useAdminCheck } from "../../hook/useAdminCheck";
+import { useUser } from "../../UserContent/UserContext";
 
 const ProtectedAdminRoute = ({ children }) => {
-  const { isAdmin, loading } = useAdminCheck();
+  const { user, userRole, loading } = useUser();
 
-  if (loading) return <div>Đang kiểm tra quyền truy cập...</div>;
+  if (loading) {
+    return <div>Đang kiểm tra quyền truy cập...</div>;
+  }
 
-  return isAdmin ? children : <Navigate to="/" replace />;
+  if (!user || userRole !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedAdminRoute;
