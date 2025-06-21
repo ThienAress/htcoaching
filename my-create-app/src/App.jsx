@@ -25,6 +25,7 @@ import ContactsPage from "./Pages/Admin/ContactsPage";
 import ProtectedAdminRoute from "./Pages/Admin/ProtectedAdminRoute";
 import PromotionPopup from "./Pages/PromotionPopup/PromotionPopup";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
+import MealPlane from "./Pages/MealPlan/MealPlan";
 
 function App() {
   return (
@@ -66,6 +67,9 @@ function App() {
 
       {/* Trang calculator */}
       <Route path="/tdee-calculator" element={<TdeeCalculator />} />
+
+      {/* Trang mealplan */}
+      <Route path="/mealplan" element={<MealPlane />} />
 
       {/* Trang club */}
       <Route path="/club" element={<Club />} />

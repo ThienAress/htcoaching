@@ -37,6 +37,13 @@ const Login = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  // ✅ Xử lý redirect sau đăng nhập thành công
+  const handleLoginRedirect = () => {
+    const returnUrl = localStorage.getItem("returnUrl") || "/";
+    localStorage.removeItem("returnUrl");
+    navigate(returnUrl);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = input;
@@ -71,7 +78,7 @@ const Login = () => {
         return;
       }
 
-      navigate("/");
+      handleLoginRedirect(); // ✅ Điều hướng sau khi đăng nhập
     } catch {
       setErrors({ username: "", password: "Mật khẩu không đúng" });
     }
@@ -97,7 +104,7 @@ const Login = () => {
         });
       }
 
-      navigate("/");
+      handleLoginRedirect(); // ✅ Điều hướng sau đăng nhập Google
     } catch (error) {
       console.error("Google login failed:", error);
       alert("Đăng nhập Google thất bại. Vui lòng thử lại.");

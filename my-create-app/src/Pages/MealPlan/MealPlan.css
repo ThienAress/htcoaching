@@ -1,0 +1,57 @@
+.meal-container {
+  padding: 40px 20px;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.meal-title {
+  text-align: center;
+  font-size: 2.5rem !important;
+  margin-bottom: 32px;
+  font-weight: 600;
+}
+
+.meal-icon {
+  margin-right: 10px;
+}
+
+.meal-label {
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.meal-select {
+  width: 100%;
+  font-size: 16px;
+}
+
+.meal-option {
+  font-size: 16px;
+}
+
+.macro-summary {
+  margin-top: 12px;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.meal-table {
+  margin-top: 32px;
+}
+
+.meal-button {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.meal-action {
+  padding: 10px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+.meal-text {
+  font-weight: 500;
+}
