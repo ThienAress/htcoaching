@@ -26,6 +26,8 @@ import ProtectedAdminRoute from "./Pages/Admin/ProtectedAdminRoute";
 import PromotionPopup from "./Pages/PromotionPopup/PromotionPopup";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import MealPlane from "./Pages/MealPlan/MealPlan";
+import FoodAdmin from "./Pages/Admin/FoodAdmin";
+import FoodSuggestionsAdmin from "./Pages/Admin/FoodSuggestionsAdmin";
 
 function App() {
   return (
@@ -74,7 +76,7 @@ function App() {
       {/* Trang club */}
       <Route path="/club" element={<Club />} />
 
-      {/* Login Admin */}
+      {/* Login admin */}
       <Route path="/admin-login" element={<AdminLogin />} />
 
       {/* Trang admin có bảo vệ quyền */}
@@ -89,6 +91,8 @@ function App() {
         <Route path="orders" element={<OrdersPage />} />
         <Route path="users" element={<UsersPage />} />
         <Route path="contacts" element={<ContactsPage />} />
+        <Route path="foods" element={<FoodAdmin />} />
+        <Route path="food-suggestions" element={<FoodSuggestionsAdmin />} />
       </Route>
     </Routes>
   );

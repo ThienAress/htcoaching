@@ -5,6 +5,7 @@ import {
   UserOutlined,
   FileTextOutlined,
   ContactsOutlined,
+  AppleOutlined,
 } from "@ant-design/icons";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -45,6 +46,16 @@ const AdminLayout = () => {
       key: "contacts",
       icon: <ContactsOutlined />,
       label: <NavLink to="/admin/contacts">Liên hệ</NavLink>,
+    },
+    {
+      key: "foods",
+      icon: <AppleOutlined />, // hoặc ForkOutlined cũng được
+      label: <NavLink to="/admin/foods">Thực phẩm</NavLink>,
+    },
+    {
+      key: "food-suggestions",
+      icon: <AppleOutlined />,
+      label: <NavLink to="/admin/food-suggestions">Góp ý thực phẩm</NavLink>,
     },
     {
       key: "logout",

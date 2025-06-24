@@ -14,31 +14,35 @@ function Pricing() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showTrialWarning, setShowTrialWarning] = useState(false);
   const [hasUsedTrial, setHasUsedTrial] = useState(false);
+  const [hasOrderedBefore, setHasOrderedBefore] = useState(false);
 
   useEffect(() => {
-    const checkTrialUsage = async () => {
+    const checkOrders = async () => {
       if (user) {
-        const q = query(
+        const qOrders = query(
           collection(db, "orders"),
-          where("uid", "==", user.uid),
-          where("planMode", "==", "Trải nghiệm")
+          where("uid", "==", user.uid)
         );
-        const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
-          setHasUsedTrial(true);
-        }
+        const snapshot = await getDocs(qOrders);
+
+        setHasOrderedBefore(!snapshot.empty);
+
+        const trial = snapshot.docs.find(
+          (doc) => doc.data().planMode === "Trải nghiệm"
+        );
+        setHasUsedTrial(!!trial);
       }
     };
-    checkTrialUsage();
+    checkOrders();
   }, [user]);
 
-  const handleRegister = async (plan) => {
+  const handleRegister = (plan) => {
     const planMode =
       mode === "trial" ? "Trải nghiệm" : mode === "1-1" ? "1-1" : "Online";
 
     const priceNumber = parseInt(plan.price.replace(/\D/g, ""));
-    const discount =
-      planMode !== "Trải nghiệm" ? Math.floor(priceNumber * 0.15) : 0;
+    const applyDiscount = !hasOrderedBefore && planMode !== "Trải nghiệm";
+    const discount = applyDiscount ? Math.floor(priceNumber * 0.15) : 0;
     const total = priceNumber - discount;
 
     if (!user) {
@@ -195,6 +199,7 @@ function Pricing() {
             TRẢI NGHIỆM
           </button>
         </div>
+
         <div className="pricing-grid">
           {(mode === "trial" ? [trialPlan] : plans).map((plan, index) => (
             <div

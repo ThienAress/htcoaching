@@ -16,19 +16,23 @@ const GymPromotionPopup = () => {
         setVisible(true);
         setTimeout(() => setFadeIn(true), 50);
         sessionStorage.setItem("promo_shown", "true");
-      }, 1500); // Hiển thị sau 1.5 giây
+      }, 1500);
 
-      return () => clearTimeout(showTimer);
+      return () => {
+        clearTimeout(showTimer);
+      };
     }
   }, []);
 
-  const handleClose = () => {
+  const handleClose = (scrollToPricing = false) => {
     setFadeIn(false);
     setTimeout(() => {
       setVisible(false);
-      const pricingSection = document.getElementById("pricing");
-      if (pricingSection) {
-        pricingSection.scrollIntoView({ behavior: "smooth" });
+      if (scrollToPricing) {
+        const pricingSection = document.getElementById("pricing");
+        if (pricingSection) {
+          pricingSection.scrollIntoView({ behavior: "smooth" });
+        }
       }
     }, 300);
   };
@@ -39,7 +43,7 @@ const GymPromotionPopup = () => {
       footer={null}
       closable={false}
       centered
-      onCancel={handleClose}
+      onCancel={() => handleClose(false)}
       styles={{
         content: {
           background: "transparent",
@@ -62,7 +66,6 @@ const GymPromotionPopup = () => {
         },
       }}
     >
-      {/* Background mờ */}
       <div
         style={{
           position: "absolute",
@@ -77,8 +80,6 @@ const GymPromotionPopup = () => {
           zIndex: 0,
         }}
       />
-
-      {/* Nội dung popup */}
       <div style={{ position: "relative", zIndex: 1 }}>
         <GiftOutlined
           style={{
@@ -90,7 +91,6 @@ const GymPromotionPopup = () => {
             transition: "transform 0.3s",
           }}
         />
-
         <Title
           level={3}
           style={{
@@ -105,7 +105,6 @@ const GymPromotionPopup = () => {
           Khuyến mãi độc quyền{" "}
           <span style={{ color: "#ffcc00" }}>"CÓ 1 KHÔNG 2"</span>
         </Title>
-
         <Paragraph
           style={{
             fontSize: 16,
@@ -120,7 +119,6 @@ const GymPromotionPopup = () => {
           <strong style={{ color: "#00ff88" }}>giảm 15%</strong> cho mọi gói
           tập.
         </Paragraph>
-
         <Paragraph
           style={{
             fontSize: 16,
@@ -138,7 +136,6 @@ const GymPromotionPopup = () => {
           />
           Nhanh tay trải nghiệm – cơ hội không thể bỏ lỡ!
         </Paragraph>
-
         <Button
           type="primary"
           size="large"
@@ -155,7 +152,7 @@ const GymPromotionPopup = () => {
             transform: fadeIn ? "translateY(0)" : "translateY(20px)",
             transition: "all 0.3s 0.4s",
           }}
-          onClick={handleClose}
+          onClick={() => handleClose(true)}
         >
           Tập ngay!
         </Button>
