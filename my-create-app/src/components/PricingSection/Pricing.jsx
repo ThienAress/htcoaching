@@ -3,7 +3,14 @@ import "./Pricing.css";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../UserContent/UserContext";
 import { Modal, Button } from "antd";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  getDocs,
+  query,
+  collection,
+  where,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { FireOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 
@@ -36,7 +43,7 @@ function Pricing() {
     checkOrders();
   }, [user]);
 
-  const handleRegister = (plan) => {
+  const handleRegister = async (plan) => {
     const planMode =
       mode === "trial" ? "Trải nghiệm" : mode === "1-1" ? "1-1" : "Online";
 
@@ -55,9 +62,56 @@ function Pricing() {
       return;
     }
 
+    // 👇 Truy vấn đơn hàng mới nhất để lấy lại thông tin khách hàng nếu đã mua
+    const ordersRef = collection(db, "orders");
+    const q = query(
+      ordersRef,
+      where("uid", "==", user.uid),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    );
+    const snap = await getDocs(q);
+
+    if (!snap.empty) {
+      const lastOrder = snap.docs[0].data();
+
+      //  Nếu cùng loại gói thì xử lý cộng dồn
+      const isSamePlanMode = lastOrder.planMode === planMode;
+
+      navigate("/payment", {
+        state: {
+          selectedPackage: {
+            ...plan,
+            totalSessions: Number(plan.totalSessions),
+          },
+          planMode,
+          originalPrice: priceNumber,
+          discount,
+          total,
+          reuseInfo: {
+            name: lastOrder.name,
+            phone: lastOrder.phone,
+            email: lastOrder.email,
+            location: lastOrder.location,
+            note: lastOrder.note || "",
+            reusedFromOrderId: snap.docs[0].id,
+            oldRemainingSessions: isSamePlanMode
+              ? Number(lastOrder.remainingSessions || 0)
+              : 0,
+            allowMerge: isSamePlanMode,
+          },
+        },
+      });
+      return;
+    }
+
+    // 👇 Nếu chưa có đơn hàng nào ➝ tiếp tục đăng ký như bình thường
     navigate("/register", {
       state: {
-        selectedPackage: plan,
+        selectedPackage: {
+          ...plan,
+          totalSessions: Number(plan.totalSessions),
+        },
         planMode,
         originalPrice: priceNumber,
         discount,
@@ -77,6 +131,7 @@ function Pricing() {
         "Tư vấn dinh dưỡng cơ bản",
       ],
       buttonClass: "pricing-outline-btn",
+      totalSessions: 24,
     },
     {
       title: "Nâng cao",
@@ -89,6 +144,7 @@ function Pricing() {
       ],
       featured: true,
       buttonClass: "pricing-primary-btn",
+      totalSessions: 48,
     },
     {
       title: "VIP",
@@ -100,6 +156,7 @@ function Pricing() {
         "Tư vấn dinh dưỡng chuyên sâu",
       ],
       buttonClass: "pricing-outline-btn",
+      totalSessions: 72,
     },
   ];
 
@@ -114,6 +171,7 @@ function Pricing() {
         "Hỗ trợ qua Zalo",
       ],
       buttonClass: "pricing-outline-btn",
+      totalSessions: 24,
     },
     {
       title: "Nâng cao",
@@ -126,6 +184,7 @@ function Pricing() {
       ],
       featured: true,
       buttonClass: "pricing-primary-btn",
+      totalSessions: 48,
     },
     {
       title: "VIP",
@@ -137,11 +196,12 @@ function Pricing() {
         "Hỗ trợ 24/7",
       ],
       buttonClass: "pricing-outline-btn",
+      totalSessions: 72,
     },
   ];
 
   const trialPlan = {
-    title: "Trail",
+    title: "Trial",
     price: "6.000.000đ",
     features: [
       "1 buổi tập 1-1 hoặc 3 ngày tập online",
@@ -150,6 +210,7 @@ function Pricing() {
       "Hỗ trợ PT trong suốt thời gian dùng thử",
     ],
     buttonClass: "pricing-outline-btn",
+    totalSessions: 1,
   };
 
   const plans = mode === "online" ? onlinePlans : oneOnOnePlans;
@@ -220,6 +281,9 @@ function Pricing() {
                     <li key={i}>{feature}</li>
                   ))}
                 </ul>
+              </div>
+              <div className="pricing-sessions">
+                <span>Tổng số buổi: {plan.totalSessions}</span>
               </div>
               <button
                 onClick={() => handleRegister(plan)}

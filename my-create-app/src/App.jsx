@@ -28,6 +28,7 @@ import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import MealPlane from "./Pages/MealPlan/MealPlan";
 import FoodAdmin from "./Pages/Admin/FoodAdmin";
 import FoodSuggestionsAdmin from "./Pages/Admin/FoodSuggestionsAdmin";
+import Checkin from "./Pages/Checkins/Checkin";
 
 function App() {
   return (
@@ -75,6 +76,9 @@ function App() {
 
       {/* Trang club */}
       <Route path="/club" element={<Club />} />
+
+      {/* Trang Checkin */}
+      <Route path="/checkin" element={<Checkin />} />
 
       {/* Login admin */}
       <Route path="/admin-login" element={<AdminLogin />} />

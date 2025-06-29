@@ -96,7 +96,8 @@
   box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3);
 }
 
-.upload-btn {
+.upload-btn,
+.btn-checkin {
   display: block;
   background: var(--primary-color);
   color: white;
@@ -110,6 +111,11 @@
   transition: var(--transition);
 }
 
-.upload-btn:hover {
+.upload-btn:hover,
+.btn-checkin:hover {
   background: #e64d00;
+}
+
+.btn-checkin {
+  width: 100%;
 }

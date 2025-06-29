@@ -5,18 +5,24 @@ import FooterMinimal from "../../components/Footer/FooterMinimal";
 import HeaderMinimal from "../../components/Header/HeaderMinimal";
 import ChatIcon from "../../components/ChatIcons/ChatIcons";
 import {
-  collection,
   doc,
   setDoc,
-  getDocs,
   Timestamp,
+  getDocs,
+  query,
+  collection,
+  where,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 
 function PaymentPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const formData = state?.formData;
+
+  const [formData, setFormData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const selectedPackage = state?.selectedPackage;
   const planMode = state?.planMode;
   const originalPrice = state?.originalPrice || 0;
@@ -25,42 +31,107 @@ function PaymentPage() {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [countdown, setCountdown] = useState(5);
+  const [countdownInterval, setCountdownInterval] = useState(null);
+
+  // Xử lý tự động điền thông tin từ các nguồn khác nhau
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      if (state?.reuseInfo) {
+        setFormData({
+          uid: state.reuseInfo.uid || null,
+          name: state.reuseInfo.name,
+          phone: state.reuseInfo.phone,
+          email: state.reuseInfo.email,
+          location: state.reuseInfo.location,
+          schedule: state.reuseInfo.schedule || [],
+          note: state.reuseInfo.note || "",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (state?.formData) {
+        setFormData(state.formData);
+        setIsLoading(false);
+        return;
+      }
+
+      if (state?.phone) {
+        try {
+          const q = query(
+            collection(db, "orders"),
+            where("phone", "==", state.phone),
+            orderBy("createdAt", "desc"),
+            limit(1)
+          );
+          const snapshot = await getDocs(q);
+          if (!snapshot.empty) {
+            const order = snapshot.docs[0].data();
+            setFormData({
+              uid: order.uid,
+              name: order.name,
+              phone: order.phone,
+              email: order.email,
+              location: order.location,
+              schedule: order.schedule,
+              note: order.note || "",
+            });
+          }
+        } catch (error) {
+          console.error("Lỗi khi lấy dữ liệu đơn hàng:", error);
+        }
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, [state]);
 
   useEffect(() => {
-    if (!formData || !selectedPackage || !planMode) {
+    if (!selectedPackage || !planMode) {
       navigate("/", { replace: true });
+      return;
     }
-  }, [formData, selectedPackage, planMode, navigate]);
+  }, [selectedPackage, planMode, navigate]);
 
   useEffect(() => {
     if (showSuccess) {
       document.body.classList.add("popup-active");
-      const countdownInterval = setInterval(() => {
-        setCountdown((prev) => {
-          if (prev === 1) {
-            clearInterval(countdownInterval);
-            navigate("/");
-          }
-          return prev - 1;
-        });
+      const interval = setInterval(() => {
+        setCountdown((prev) => prev - 1);
       }, 1000);
 
-      return () => {
-        clearInterval(countdownInterval);
-        document.body.classList.remove("popup-active");
-      };
+      setCountdownInterval(interval);
     }
-  }, [showSuccess, navigate]);
 
-  if (!formData || !selectedPackage || !planMode) return null;
+    return () => {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
+      document.body.classList.remove("popup-active");
+    };
+  }, [showSuccess]);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+      }
+      navigate("/");
+    }
+  }, [countdown, countdownInterval, navigate]);
 
   const handleConfirmPayment = async () => {
     try {
-      const ordersRef = collection(db, "orders");
-      const snapshot = await getDocs(ordersRef);
-      const donHangCount = snapshot.size;
-      const newId = `don_hang_${donHangCount + 1}`;
+      if (!formData) return;
 
+      const totalSessions = Number(selectedPackage.totalSessions) || 0;
+
+      // LUÔN TẠO ĐƠN HÀNG MỚI
+      const newId = `don_hang_${Date.now()}`;
       await setDoc(doc(db, "orders", newId), {
         uid: formData.uid || null,
         name: formData.name,
@@ -74,8 +145,10 @@ function PaymentPage() {
         originalPrice,
         discount,
         total,
-        timestamp: Timestamp.now(),
+        totalSessions: totalSessions,
+        remainingSessions: totalSessions,
         status: "pending",
+        createdAt: Timestamp.now(),
       });
 
       setShowSuccess(true);
@@ -84,6 +157,15 @@ function PaymentPage() {
       alert("Đã có lỗi khi xác nhận thanh toán.");
     }
   };
+
+  if (isLoading || !formData || !selectedPackage || !planMode) {
+    return (
+      <div className="loading-overlay">
+        <div className="loading-spinner"></div>
+        <p>Đang tải thông tin đơn hàng...</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -214,6 +296,14 @@ function PaymentPage() {
                   </td>
                   <td className="text-right" style={{ fontWeight: "bold" }}>
                     {total.toLocaleString()}đ
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Số buổi tập:</strong>
+                  </td>
+                  <td className="text-right">
+                    {selectedPackage.totalSessions} buổi
                   </td>
                 </tr>
               </tbody>

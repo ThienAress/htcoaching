@@ -1,14 +1,16 @@
-// User.jsx - Hiển thị thông tin người dùng và xử lý avatar (đầy đủ, sửa lỗi hiển thị Google account)
 import { useState, useEffect } from "react";
 import { useUser } from "../../UserContent/UserContext";
 import { signOut, updateProfile } from "firebase/auth";
 import { auth, db, storage } from "../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+
 import "./User.css";
 
 const User = () => {
   const { user } = useUser();
+  const navigate = useNavigate(); // Khởi tạo navigate để chuyển hướng
   const [isOpen, setIsOpen] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -73,6 +75,11 @@ const User = () => {
     }
   };
 
+  // Chuyển hướng đến trang check-in
+  const handleCheckinRedirect = () => {
+    navigate("/checkin"); // Điều hướng đến trang check-in
+  };
+
   return (
     <div className="user-control">
       {user ? (
@@ -102,6 +109,16 @@ const User = () => {
                   hidden
                 />
               </label>
+
+              {/* Nút Check-in buổi tập */}
+              <button
+                type="primary"
+                className="btn-checkin"
+                onClick={handleCheckinRedirect} // Chuyển hướng khi nhấn nút
+              >
+                Check-in buổi tập
+              </button>
+
               <button className="logout-btn" onClick={handleLogout}>
                 Đăng xuất
               </button>
