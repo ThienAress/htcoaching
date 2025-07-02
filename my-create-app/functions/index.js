@@ -1,14 +1,15 @@
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
+const moment = require("moment-timezone");
 admin.initializeApp();
 
 // Cấu hình gmail gửi mail
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "hoangthiengym99@gmail.com", // Thay bằng email gửi
-    pass: "qnch ycbd bqal kwiv", // Mật khẩu ứng dụng Gmail
+    user: "hoangthiengym99@gmail.com",
+    pass: "qnch ycbd bqal kwiv",
   },
 });
 
@@ -24,12 +25,15 @@ exports.sendCheckinMail = onDocumentCreated(
         return null;
       }
 
-      // Định dạng ngày tập
+      // Định dạng ngày tập với múi giờ Việt Nam
       let dateStr = "Không xác định";
       try {
         if (data.date) {
           const dateValue = data.date.toDate ? data.date.toDate() : data.date;
-          dateStr = dateValue.toLocaleString("vi-VN");
+          // Sử dụng moment-timezone để chuyển sang giờ Việt Nam
+          dateStr = moment(dateValue)
+            .tz("Asia/Ho_Chi_Minh")
+            .format("DD/MM/YYYY HH:mm");
         }
       } catch (e) {
         console.error("Lỗi định dạng ngày tháng:", e);
@@ -68,7 +72,7 @@ exports.sendCheckinMail = onDocumentCreated(
           }!</h3>
           <p>Bạn vừa được admin HTCoaching book lịch tập:</p>
           <ul style="list-style-type: none; padding: 0;">
-            <li style="margin-bottom: 10px;"><b>📅 Ngày tập:</b> ${dateStr}</li>
+            <li style="margin-bottom: 10px;"><b>📅 Ngày tập:</b> ${dateStr} (Giờ Việt Nam)</li>
             <li style="margin-bottom: 10px;"><b>💪 Nhóm cơ:</b> ${musclesText}</li>
             <li style="margin-bottom: 10px;"><b>📝 Ghi chú:</b> ${
               data.note || "Không có"

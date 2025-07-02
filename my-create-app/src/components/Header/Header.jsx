@@ -107,16 +107,13 @@ function Header() {
               </li>
             )}
           </ul>
-
           <div className="mobile-user">
             <User onToggle={() => setMenuOpen(false)} />
           </div>
         </nav>
-
         <div className="desktop-user">
           <User />
         </div>
-
         <div
           className="menu-toggle"
           onClick={() => setMenuOpen(!menuOpen)}
