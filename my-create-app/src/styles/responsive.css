@@ -1,8 +1,6 @@
 /* =============== SMALL MOBILE (0-480px) =============== */
 @media (max-width: 480px) {
-  .hero,
-  .hero-swiper,
-  .swiper-slide {
+  .hero {
     height: 100vh;
     min-height: 450px;
   }
@@ -508,9 +506,7 @@
     height: 50px;
   }
 
-  .hero,
-  .hero-swiper,
-  .swiper-slide {
+  .hero {
     height: 80vh;
     min-height: 580px;
   }
@@ -675,9 +671,7 @@
     height: 55px;
   }
 
-  .hero,
-  .hero-swiper,
-  .swiper-slide {
+  .hero {
     height: 85vh;
     min-height: 640px;
   }
