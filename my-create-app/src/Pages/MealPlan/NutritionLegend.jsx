@@ -103,7 +103,8 @@ const NutritionLegend = () => (
       <span style={{ color: "#111111", fontSize: "0.9em", fontWeight: "500" }}>
         <span style={{ marginRight: "8px", fontSize: "1.2em" }}>ℹ️</span>
         Lưu ý: Trong carb hoặc fat vẫn có protein nên bạn có thể giảm 1 ít
-        protein đi để đúng macro hơn nha tương tự carb và fat
+        protein đi để đúng macro hơn nha tương tự carb và fat,{" "}
+        <strong>tất cả thực phẩm đều được tính ở dạng sống bạn nhé.</strong>
       </span>
     </div>
   </div>

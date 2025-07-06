@@ -80,6 +80,10 @@ const User = () => {
     navigate("/checkin"); // Điều hướng đến trang check-in
   };
 
+  const handleExercisesRedirect = () => {
+    navigate("/exercises");
+  };
+
   return (
     <div className="user-control">
       {user ? (
@@ -109,6 +113,14 @@ const User = () => {
                   hidden
                 />
               </label>
+              {/* ⭐️ Nút Hệ thống bài tập */}
+              <button
+                type="button"
+                className="btn-checkin"
+                onClick={handleExercisesRedirect}
+              >
+                Hệ thống bài tập
+              </button>
 
               {/* Nút Check-in buổi tập */}
               <button

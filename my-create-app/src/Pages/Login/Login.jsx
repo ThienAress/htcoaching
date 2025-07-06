@@ -10,6 +10,7 @@ import {
   getDocs,
   doc,
   setDoc,
+  getDoc,
 } from "firebase/firestore";
 
 const Login = () => {
@@ -89,12 +90,12 @@ const Login = () => {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
+      // Chỉ lấy đúng document với id = user.uid
       const userRef = doc(db, "usersSignin", user.uid);
-      const q = await getDocs(
-        query(collection(db, "usersSignin"), where("uid", "==", user.uid))
-      );
+      const userSnap = await getDoc(userRef);
 
-      if (q.empty) {
+      if (!userSnap.exists()) {
+        // Nếu chưa có, tạo mới document cho user này
         await setDoc(userRef, {
           uid: user.uid,
           name: user.displayName,

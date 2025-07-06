@@ -22,13 +22,16 @@ import AdminLayout from "./Pages/Admin/AdminLayout";
 import OrdersPage from "./Pages/Admin/OrdersPage";
 import UsersPage from "./Pages/Admin/UsersPage";
 import ContactsPage from "./Pages/Admin/ContactsPage";
+import FoodAdmin from "./Pages/Admin/FoodAdmin";
+import ExercisesAdmin from "./Pages/Admin/ExerciseAdmin";
+import ExerciseSuggestionsAdmin from "./Pages/Admin/ExerciseSuggestionsAdmin";
 import ProtectedAdminRoute from "./Pages/Admin/ProtectedAdminRoute";
 import PromotionPopup from "./Pages/PromotionPopup/PromotionPopup";
 import ForgotPassword from "./Pages/ForgotPassword/ForgotPassword";
 import MealPlane from "./Pages/MealPlan/MealPlan";
-import FoodAdmin from "./Pages/Admin/FoodAdmin";
 import FoodSuggestionsAdmin from "./Pages/Admin/FoodSuggestionsAdmin";
 import CheckinPage from "./Pages/Checkins/CheckinPage";
+import ExercisesPage from "./Pages/ExercisesPage/ExercisesPage";
 
 function App() {
   return (
@@ -80,9 +83,11 @@ function App() {
       {/* Trang Checkin */}
       <Route path="/checkin" element={<CheckinPage />} />
 
-      {/* Login admin */}
-      <Route path="/admin-login" element={<AdminLogin />} />
+      {/* Login exercises */}
+      <Route path="/exercises" element={<ExercisesPage />} />
 
+      {/* Amin login */}
+      <Route path="/admin-login" element={<AdminLogin />} />
       {/* Trang admin có bảo vệ quyền */}
       <Route
         path="/admin"
@@ -97,6 +102,11 @@ function App() {
         <Route path="contacts" element={<ContactsPage />} />
         <Route path="foods" element={<FoodAdmin />} />
         <Route path="food-suggestions" element={<FoodSuggestionsAdmin />} />
+        <Route path="exercises" element={<ExercisesAdmin />} />
+        <Route
+          path="exercise-suggestions"
+          element={<ExerciseSuggestionsAdmin />}
+        />
       </Route>
     </Routes>
   );

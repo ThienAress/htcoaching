@@ -8,7 +8,7 @@ function Classes() {
           CHƯƠNG TRÌNH ĐÀO TẠO TRỰC TIẾP
         </h2>
         <p className="classes-subtitle desc" data-aos="fade-down">
-          Cùng tôi chinh phục mục tiêu thể chất với 3 bộ môn đặc trưng
+          Cùng mình chinh phục mục tiêu thể chất với 3 bộ môn đặc trưng
         </p>
         <div className="classes-grid" data-aos="flip-down">
           <ClassCard
