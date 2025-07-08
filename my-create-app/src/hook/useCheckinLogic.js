@@ -57,10 +57,20 @@ const useCheckinLogic = () => {
     const fetchCustomers = async () => {
       try {
         setLoading(true);
-        const q = query(
-          collection(db, "orders"),
-          where("status", "==", "approved")
-        );
+        let q;
+        if (isAdmin) {
+          q = query(
+            collection(db, "orders"),
+            where("status", "==", "approved")
+          );
+        } else {
+          if (!user?.uid) return setLoading(false);
+          q = query(
+            collection(db, "orders"),
+            where("status", "==", "approved"),
+            where("uid", "==", user.uid)
+          );
+        }
         const querySnapshot = await getDocs(q);
 
         const customersMap = new Map();
@@ -70,7 +80,7 @@ const useCheckinLogic = () => {
           const phone = data.phone;
           const total = Math.max(0, Number(data.totalSessions) || 0);
           const remaining = Math.max(0, Number(data.remainingSessions) || 0);
-          const used = Math.max(0, total - remaining);
+          const used = total - remaining;
 
           if (!customersMap.has(phone)) {
             customersMap.set(phone, {
@@ -78,7 +88,7 @@ const useCheckinLogic = () => {
               ...data,
               totalSessions: total,
               remainingSessions: remaining,
-              usedSessions: used,
+              usedSessions: Math.max(0, used),
               orders: [
                 {
                   id: docu.id,
@@ -87,6 +97,7 @@ const useCheckinLogic = () => {
                   packageTitle: data.packageTitle,
                   planMode: data.planMode,
                   createdAt: data.createdAt,
+                  uid: data.uid || "",
                 },
               ],
             });
@@ -94,11 +105,7 @@ const useCheckinLogic = () => {
             const existingCustomer = customersMap.get(phone);
             existingCustomer.totalSessions += total;
             existingCustomer.remainingSessions += remaining;
-            existingCustomer.usedSessions = Math.max(
-              0,
-              existingCustomer.totalSessions -
-                existingCustomer.remainingSessions
-            );
+            existingCustomer.usedSessions += used;
             existingCustomer.orders.push({
               id: docu.id,
               totalSessions: total,
@@ -106,6 +113,7 @@ const useCheckinLogic = () => {
               packageTitle: data.packageTitle,
               planMode: data.planMode,
               createdAt: data.createdAt,
+              uid: data.uid || "",
             });
           }
         });
@@ -134,27 +142,51 @@ const useCheckinLogic = () => {
     };
     fetchCustomers();
     // eslint-disable-next-line
-  }, []);
+  }, [user, isAdmin]);
 
   // Tự động tải lịch sử khi có sẵn dữ liệu khách hàng
   useEffect(() => {
-    if (!initialLoad && selectedCustomer) {
+    if (!initialLoad && (isAdmin ? selectedCustomer : user?.uid)) {
       fetchCheckinHistory();
     }
     // eslint-disable-next-line
-  }, [selectedCustomer, initialLoad]);
+  }, [selectedCustomer, initialLoad, user, isAdmin]);
 
-  // Fetch lịch sử checkin khi chọn khách hàng
+  // Fetch lịch sử checkin
   const fetchCheckinHistory = async () => {
-    if (!selectedCustomer) return;
-
     try {
       setHistoryLoading(true);
-      const q = query(
-        collection(db, "checkins"),
-        where("customerId", "==", selectedCustomer),
-        orderBy("date", "desc")
-      );
+      let q;
+      let targetUid = "";
+
+      if (isAdmin && selectedCustomer) {
+        // Admin xem lịch sử của khách được chọn
+        const thisCustomer = customers.find((c) => c.key === selectedCustomer);
+        if (!thisCustomer?.uid) {
+          setCheckinHistory([]);
+          setHistoryLoading(false);
+          return;
+        }
+        targetUid = thisCustomer.uid;
+        q = query(
+          collection(db, "checkins"),
+          where("customerId", "==", targetUid),
+          orderBy("date", "desc")
+        );
+      } else if (user?.uid) {
+        // User chỉ xem lịch sử của chính mình
+        targetUid = user.uid;
+        q = query(
+          collection(db, "checkins"),
+          where("customerId", "==", targetUid),
+          orderBy("date", "desc")
+        );
+      } else {
+        setCheckinHistory([]);
+        setHistoryLoading(false);
+        return;
+      }
+
       const snapshot = await getDocs(q);
 
       const historyData = snapshot.docs.map((docu) => {
@@ -220,44 +252,64 @@ const useCheckinLogic = () => {
       setLoading(true);
       const customer = customers.find((c) => c.key === selectedCustomer);
 
-      // Sắp xếp đơn hàng theo thứ tự cũ nhất đến mới nhất
+      // Sắp xếp đơn hàng theo thứ tự cũ nhất đến mới nhất (FIFO)
       const sortedOrders = [...customer.orders].sort(
         (a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0)
       );
 
-      // Tìm đơn hàng có buổi còn lại để trừ
-      const orderToUpdate = sortedOrders.find(
-        (order) => order.remainingSessions > 0
-      );
+      // Tìm đơn hàng có buổi còn lại để trừ (theo thứ tự cũ nhất)
+      let orderToUpdate = null;
+      for (let i = 0; i < sortedOrders.length; i++) {
+        if (sortedOrders[i].remainingSessions > 0) {
+          orderToUpdate = sortedOrders[i];
+          break;
+        }
+      }
+
+      // Nếu không tìm thấy, thử tìm một đơn hàng bất kỳ có totalSessions > 0
+      if (!orderToUpdate) {
+        orderToUpdate = sortedOrders.find((order) => order.totalSessions > 0);
+      }
 
       if (!orderToUpdate) {
         message.error("Không tìm thấy đơn hàng hợp lệ để trừ buổi");
         return;
       }
 
-      // Cập nhật số buổi còn lại của đơn hàng cụ thể
-      const newOrderRemaining = orderToUpdate.remainingSessions - 1;
+      // Tính toán lại số buổi còn lại
+      const newOrderRemaining = Math.max(
+        0,
+        orderToUpdate.remainingSessions - 1
+      );
+      const newTotalRemaining = customer.remainingSessions - 1;
+      const newUsedSessions = customer.usedSessions + 1;
+
+      // Cập nhật Firestore
       await updateDoc(doc(db, "orders", orderToUpdate.id), {
         remainingSessions: newOrderRemaining,
         lastCheckin: dayjs(date).toDate(),
         updatedAt: dayjs().toDate(),
       });
 
-      // Cập nhật local state cho đơn hàng cụ thể
-      orderToUpdate.remainingSessions = newOrderRemaining;
+      // Lấy UID của khách hàng
+      let targetUid = "";
+      if (isAdmin) {
+        targetUid = orderToUpdate.uid || customerData.uid || "";
+      } else {
+        targetUid = user?.uid || "";
+      }
 
-      // Tính toán lại tổng số buổi còn lại của tất cả đơn hàng
-      const newTotalRemaining = sortedOrders.reduce(
-        (sum, order) => sum + order.remainingSessions,
-        0
-      );
-
-      // Tính toán lại số buổi đã dùng
-      const newUsedSessions = customer.totalSessions - newTotalRemaining;
+      if (!targetUid) {
+        message.error(
+          "Không xác định được UID khách hàng, vui lòng kiểm tra lại!"
+        );
+        setLoading(false);
+        return;
+      }
 
       // Tạo bản ghi checkin
       await addDoc(collection(db, "checkins"), {
-        customerId: selectedCustomer,
+        customerId: targetUid,
         customerName: customerData.name,
         date: dayjs(date).toDate(),
         muscles: selectedMuscles,
@@ -269,10 +321,13 @@ const useCheckinLogic = () => {
         photoURL: customerData.photoURL || "",
         createdAt: dayjs().toDate(),
         email: customerData.email,
+        uid: targetUid,
       });
 
+      // Cập nhật state
       setRemainingSessions(newTotalRemaining);
 
+      // Cập nhật danh sách khách hàng
       setCustomers((prev) =>
         prev.map((c) =>
           c.key === selectedCustomer
@@ -280,20 +335,29 @@ const useCheckinLogic = () => {
                 ...c,
                 remainingSessions: newTotalRemaining,
                 usedSessions: newUsedSessions,
-                orders: sortedOrders,
+                orders: c.orders.map((order) =>
+                  order.id === orderToUpdate.id
+                    ? { ...order, remainingSessions: newOrderRemaining }
+                    : order
+                ),
               }
             : c
         )
       );
 
-      setCustomerData({
-        ...customerData,
+      // Cập nhật customerData hiện tại
+      setCustomerData((prev) => ({
+        ...prev,
         remainingSessions: newTotalRemaining,
         usedSessions: newUsedSessions,
-        orders: sortedOrders,
-      });
+        orders: prev.orders.map((order) =>
+          order.id === orderToUpdate.id
+            ? { ...order, remainingSessions: newOrderRemaining }
+            : order
+        ),
+      }));
 
-      // Thêm checkin mới vào cuối danh sách
+      // Thêm checkin mới vào lịch sử
       const newCheckin = {
         id: `temp_${Date.now()}`,
         customerName: customerData.name,
@@ -303,12 +367,13 @@ const useCheckinLogic = () => {
         remainingSessions: newTotalRemaining,
         photoURL: customerData.photoURL || "",
       };
-      setCheckinHistory((prev) => [...prev, newCheckin]);
+      setCheckinHistory((prev) => [newCheckin, ...prev]);
 
       message.success(`Check-in thành công cho ${customerData.name}`);
       setSelectedMuscles([]);
       setNote("");
 
+      // Tải lại lịch sử sau 1 giây
       setTimeout(fetchCheckinHistory, 1000);
     } catch (error) {
       console.error("Lỗi khi check-in:", error);

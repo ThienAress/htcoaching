@@ -16,6 +16,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+import { getAuth } from "firebase/auth";
 
 function PaymentPage() {
   const { state } = useLocation();
@@ -128,12 +129,18 @@ function PaymentPage() {
     try {
       if (!formData) return;
 
-      const totalSessions = Number(selectedPackage.totalSessions) || 0;
+      // Lấy uid user hiện tại từ Firebase Auth
+      const auth = getAuth();
+      const myUid = auth.currentUser?.uid || formData.uid || null;
+      if (!myUid) {
+        alert("Không xác định được tài khoản, vui lòng đăng nhập lại.");
+        return;
+      }
 
-      // LUÔN TẠO ĐƠN HÀNG MỚI
+      const totalSessions = Number(selectedPackage.totalSessions) || 0;
       const newId = `don_hang_${Date.now()}`;
       await setDoc(doc(db, "orders", newId), {
-        uid: formData.uid || null,
+        uid: myUid,
         name: formData.name,
         phone: formData.phone,
         email: formData.email,

@@ -76,9 +76,9 @@ export default function ExerciseSections({
                   style={{ width: "100%", textAlign: "center" }}
                   placeholder={
                     col === "sets"
-                      ? "Số sets"
+                      ? "Số hiệp"
                       : col === "reps"
-                      ? "Số reps"
+                      ? "Số cái"
                       : col === "tempo"
                       ? "Nhịp độ"
                       : "Thời gian"
@@ -99,7 +99,7 @@ export default function ExerciseSections({
                   onChange={(e) =>
                     handleExerciseChange(record._id, "tips", e.target.value)
                   }
-                  placeholder="hướng dẫn của Coach"
+                  placeholder="Hướng dẫn của Coach"
                 />
               ),
             };
