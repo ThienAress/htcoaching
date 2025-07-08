@@ -179,7 +179,7 @@ export default function ExerciseSections({
           background: "transparent",
           border: "none",
         }}
-        bodyStyle={{ padding: 24, background: "transparent" }}
+        styles={{ padding: 24, background: "transparent" }}
       >
         <div
           style={{

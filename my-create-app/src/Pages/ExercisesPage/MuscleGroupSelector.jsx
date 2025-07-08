@@ -18,7 +18,7 @@ export default function MuscleGroupSelector({
         boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
         background: "#fff",
       }}
-      bodyStyle={{ padding: 24 }}
+      styles={{ padding: 24 }}
     >
       <Row gutter={[16, 16]}>
         {muscleGroups.map((group) => (
@@ -40,7 +40,7 @@ export default function MuscleGroupSelector({
                 flexDirection: "column",
                 justifyContent: "center",
               }}
-              bodyStyle={{ padding: "16px 8px" }}
+              styles={{ padding: "16px 8px" }}
             >
               <Text
                 strong

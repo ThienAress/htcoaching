@@ -1,9 +1,9 @@
 // src/Pages/ExercisesPage/ExerciseListModal.jsx
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Modal, Table, Select, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
-const { Search } = Input;
 
 export default function ExerciseListModal({
   open,
@@ -30,6 +30,49 @@ export default function ExerciseListModal({
   const checkIsMobile = () => {
     setIsMobile(window.innerWidth < 768);
   };
+
+  // Hàm tìm kiếm với debounce
+  const performSearch = useCallback(
+    (value) => {
+      if (!value) {
+        setFilteredExercises(allExercises);
+        return;
+      }
+
+      if (searchType === "name") {
+        setFilteredExercises(
+          allExercises.filter((ex) =>
+            ex.name.toLowerCase().includes(value.toLowerCase())
+          )
+        );
+      } else {
+        setFilteredExercises(
+          allExercises.filter(
+            (ex) =>
+              ex.muscleGroup &&
+              ex.muscleGroup.toLowerCase().includes(value.toLowerCase())
+          )
+        );
+      }
+    },
+    [allExercises, searchType, setFilteredExercises]
+  );
+
+  // Debounce cho tìm kiếm (300ms)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      performSearch(searchValue);
+    }, 300);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchValue, performSearch]);
+
+  // Xử lý khi thay đổi loại tìm kiếm
+  useEffect(() => {
+    performSearch(searchValue);
+  }, [searchType]);
 
   const getColumns = () => {
     return [
@@ -70,31 +113,6 @@ export default function ExerciseListModal({
           text ? text : <span style={{ color: "#bbb" }}>Không có mô tả</span>,
       },
     ];
-  };
-
-  const handleSearch = (value) => {
-    setSearchValue(value);
-
-    if (!value) {
-      setFilteredExercises(allExercises);
-      return;
-    }
-
-    if (searchType === "name") {
-      setFilteredExercises(
-        allExercises.filter((ex) =>
-          ex.name.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredExercises(
-        allExercises.filter(
-          (ex) =>
-            ex.muscleGroup &&
-            ex.muscleGroup.toLowerCase().includes(value.toLowerCase())
-        )
-      );
-    }
   };
 
   // Styles
@@ -156,7 +174,7 @@ export default function ExerciseListModal({
       modalRender={(modal) => {
         return <div ref={modalRef}>{modal}</div>;
       }}
-      bodyStyle={
+      styles={
         isMobile
           ? mobileStyles.body
           : {
@@ -182,15 +200,14 @@ export default function ExerciseListModal({
           <Option value="muscle">Nhóm cơ</Option>
         </Select>
 
-        <Search
+        <Input
           placeholder={`Tìm theo ${
             searchType === "name" ? "tên bài tập" : "nhóm cơ"
           }`}
           allowClear
-          enterButton
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          onSearch={handleSearch}
+          prefix={<SearchOutlined />}
           style={{ width: "100%" }}
         />
       </div>

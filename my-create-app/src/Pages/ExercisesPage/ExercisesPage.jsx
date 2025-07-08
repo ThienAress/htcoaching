@@ -95,7 +95,7 @@ export default function ExercisesPage() {
             boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
             background: "#fff",
           }}
-          bodyStyle={{ padding: 24 }}
+          styles={{ padding: 24 }}
         >
           {/* Tiêu đề + nút xem danh sách bài tập */}
           <div

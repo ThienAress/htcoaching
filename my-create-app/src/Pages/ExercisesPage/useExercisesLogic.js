@@ -17,7 +17,7 @@ export default function useExercisesLogic() {
   // Lấy dữ liệu exercise từ backend
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/exercises")
+      .get("https://htcoaching-backend-1.onrender.com/api/exercises")
       .then((res) => {
         setExerciseOptions(res.data);
         setFilteredExercises(res.data);

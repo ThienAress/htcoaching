@@ -9,7 +9,9 @@ export const useFoodDatabase = () => {
     const fetchFoods = async () => {
       setIsLoadingFoods(true);
       try {
-        const response = await fetch("http://localhost:5000/api/foods");
+        const response = await fetch(
+          "https://htcoaching-backend-1.onrender.com/api/foods"
+        );
         const data = await response.json();
         const processed = data.map((food) => ({
           ...food,
