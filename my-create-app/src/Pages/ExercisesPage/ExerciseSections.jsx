@@ -1,9 +1,7 @@
-// src/Pages/ExercisesPage/ExerciseSections.jsx
-
 import React from "react";
 import { Card, Typography, Button, Table, Input, Select } from "antd";
 import { CloseOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { muscleGroups, workoutSections } from "./constants";
+import { workoutSections } from "./constants";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -18,6 +16,7 @@ export default function ExerciseSections({
   toggleMuscleGroup,
   formatDate,
   isMobile,
+  getMuscleGroupById,
 }) {
   const renderWorkoutSection = (section, muscleGroupId) => {
     const sectionExercises = workoutData.filter(
@@ -133,8 +132,7 @@ export default function ExerciseSections({
             padding: "12px 16px",
             borderRadius: 4,
             borderLeft: `4px solid ${
-              muscleGroups.find((g) => g.id === muscleGroupId)?.color ||
-              "#1890ff"
+              getMuscleGroupById(muscleGroupId)?.color || "#1890ff"
             }`,
             background: "#fff",
             gap: isMobile ? 8 : 0,
@@ -167,7 +165,7 @@ export default function ExerciseSections({
   };
 
   const renderSelectedMuscleGroup = (groupId) => {
-    const group = muscleGroups.find((g) => g.id === groupId);
+    const group = getMuscleGroupById(groupId);
     if (!group) return null;
     return (
       <Card

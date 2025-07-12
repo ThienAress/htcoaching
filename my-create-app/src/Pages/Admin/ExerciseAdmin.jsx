@@ -3,6 +3,7 @@ import { Table, Button, Form, Input, message, Popconfirm, Divider } from "antd";
 import axios from "axios";
 
 const { TextArea } = Input;
+const EXERCISES_API = "https://htcoaching-backend-1.onrender.com/api/exercises";
 
 const ExerciseAdmin = () => {
   const [exercises, setExercises] = useState([]);
@@ -18,7 +19,7 @@ const ExerciseAdmin = () => {
   const fetchExercises = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/exercises");
+      const res = await axios.get(EXERCISES_API);
       setExercises(res.data);
     } catch (err) {
       console.error("Lỗi lấy bài tập:", err);
@@ -31,10 +32,7 @@ const ExerciseAdmin = () => {
   // Thêm 1 bài tập
   const handleAddExercise = async (values) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/exercises",
-        values
-      );
+      const res = await axios.post(EXERCISES_API, values);
       setExercises([...exercises, res.data.exercise]);
       message.success("Đã thêm bài tập mới");
       form.resetFields();
@@ -65,9 +63,7 @@ const ExerciseAdmin = () => {
     }
 
     try {
-      const promises = newExercises.map((ex) =>
-        axios.post("http://localhost:5000/api/exercises", ex)
-      );
+      const promises = newExercises.map((ex) => axios.post(EXERCISES_API, ex));
       const responses = await Promise.all(promises);
       const added = responses.map((res) => res.data.exercise);
       setExercises([...exercises, ...added]);
@@ -82,7 +78,7 @@ const ExerciseAdmin = () => {
   // Xoá bài tập
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/exercises/${id}`);
+      await axios.delete(`${EXERCISES_API}/${id}`);
       setExercises(exercises.filter((item) => item._id !== id));
       if (isBatchEditing) {
         setEditableData(editableData.filter((item) => item._id !== id));
@@ -112,7 +108,7 @@ const ExerciseAdmin = () => {
     try {
       setLoading(true);
       const promises = editableData.map((row) =>
-        axios.put(`http://localhost:5000/api/exercises/${row._id}`, row)
+        axios.put(`${EXERCISES_API}/${row._id}`, row)
       );
       await Promise.all(promises);
       setExercises(editableData); // update UI luôn

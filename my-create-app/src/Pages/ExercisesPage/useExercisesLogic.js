@@ -1,5 +1,3 @@
-// src/Pages/ExercisesPage/useExercisesLogic.js
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PptxGenJS from "pptxgenjs";
@@ -13,6 +11,11 @@ export default function useExercisesLogic() {
   const [showExerciseList, setShowExerciseList] = useState(false);
   const [filteredExercises, setFilteredExercises] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // State cho custom group
+  const [showCustomGroupModal, setShowCustomGroupModal] = useState(false);
+  const [tempSelectedGroups, setTempSelectedGroups] = useState([]);
+  const [customGroups, setCustomGroups] = useState([]);
 
   // Lấy dữ liệu exercise từ backend
   useEffect(() => {
@@ -34,11 +37,72 @@ export default function useExercisesLogic() {
 
   // Các handler
   const toggleMuscleGroup = (groupId) => {
+    if (groupId === "custom") {
+      handleCustomGroupSelection();
+      return;
+    }
+
     setSelectedMuscleGroups((prev) =>
       prev.includes(groupId)
         ? prev.filter((id) => id !== groupId)
         : [...prev, groupId]
     );
+  };
+
+  const handleCustomGroupSelection = () => {
+    setTempSelectedGroups([...selectedMuscleGroups]);
+    setShowCustomGroupModal(true);
+  };
+
+  const handleCreateCustomGroup = () => {
+    if (tempSelectedGroups.length === 0) {
+      alert("Vui lòng chọn ít nhất một nhóm cơ");
+      return;
+    }
+
+    // Tạo ID cho custom group
+    const customId = tempSelectedGroups.join("_");
+
+    // Tạo tên cho custom group
+    const groupName =
+      tempSelectedGroups
+        .map((id) => {
+          const group = muscleGroups.find((g) => g.id === id);
+          return group ? group.name.replace(" DAY", "") : id;
+        })
+        .join(" && ") + " DAY";
+
+    // Lấy màu từ nhóm đầu tiên
+    const firstGroup = muscleGroups.find((g) => g.id === tempSelectedGroups[0]);
+    const customColor = firstGroup ? firstGroup.color : "#13c2c2";
+
+    // Tạo custom group object
+    const newCustomGroup = {
+      id: customId,
+      name: groupName,
+      color: customColor,
+    };
+
+    // Thêm vào danh sách customGroups
+    setCustomGroups((prev) => [...prev, newCustomGroup]);
+
+    // Thêm customId vào selectedMuscleGroups
+    setSelectedMuscleGroups((prev) => [...prev, customId]);
+
+    // Đóng modal
+    setShowCustomGroupModal(false);
+  };
+
+  const getMuscleGroupById = (groupId) => {
+    // Tìm trong muscleGroups mặc định
+    const defaultGroup = muscleGroups.find((g) => g.id === groupId);
+    if (defaultGroup) return defaultGroup;
+
+    // Tìm trong customGroups
+    const customGroup = customGroups.find((g) => g.id === groupId);
+    if (customGroup) return customGroup;
+
+    return { id: groupId, name: groupId, color: "#666666" };
   };
 
   const handleAddExercise = (sectionId, muscleGroupId) => {
@@ -94,7 +158,7 @@ export default function useExercisesLogic() {
   // Chuẩn bị dữ liệu xuất PPTX
   const buildWorkoutPlanForExport = () => {
     return selectedMuscleGroups.map((groupId) => {
-      const group = muscleGroups.find((g) => g.id === groupId);
+      const group = getMuscleGroupById(groupId);
       return {
         muscleGroup: group ? group.name : groupId,
         date: new Date().toLocaleDateString("vi-VN"),
@@ -227,9 +291,8 @@ export default function useExercisesLogic() {
       workoutPlan.forEach((day) => {
         let slide = pptx.addSlide({ masterName: "MASTER_SLIDE" });
         let isFirstSlide = true;
-        const groupColor =
-          muscleGroups.find((g) => g.name === day.muscleGroup)?.color ||
-          "#1890ff";
+        const group = getMuscleGroupById(day.muscleGroup);
+        const groupColor = group?.color || "#1890ff";
         const lightGroupColor = hexToRgba(groupColor, 0.1);
 
         slide.addText(`${day.muscleGroup}`, {
@@ -345,5 +408,12 @@ export default function useExercisesLogic() {
     handleExerciseChange,
     handleExportPPTX,
     formatDate,
+    showCustomGroupModal,
+    setShowCustomGroupModal,
+    tempSelectedGroups,
+    setTempSelectedGroups,
+    handleCreateCustomGroup,
+    getMuscleGroupById,
+    customGroups,
   };
 }

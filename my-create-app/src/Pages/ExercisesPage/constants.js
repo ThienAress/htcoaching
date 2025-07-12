@@ -4,6 +4,7 @@ export const muscleGroups = [
   { id: "back", name: "BACK DAY", color: "#52c41a" },
   { id: "leg", name: "LEG DAY", color: "#1890ff" },
   { id: "cardio", name: "CARDIO", color: "#722ed1" },
+  { id: "custom", name: "CHỌN NHÓM CƠ", color: "#13c2c2" },
 ];
 
 export const workoutSections = [

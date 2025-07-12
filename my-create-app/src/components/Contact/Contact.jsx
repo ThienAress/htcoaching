@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Contact.css";
 import { db } from "../../firebase";
-import { collection, getDocs, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -15,6 +15,7 @@ function Contact() {
   const [errors, setErrors] = useState({});
   const [showSuccess, setShowSuccess] = useState(false);
   const [countdown, setCountdown] = useState(5);
+
   // Ngăn cuộn và đóng popup sau 5s
   useEffect(() => {
     let timer;
@@ -22,7 +23,7 @@ function Contact() {
 
     if (showSuccess) {
       document.body.style.overflow = "hidden";
-      setCountdown(5); // reset đếm ngược về 5
+      setCountdown(5);
 
       interval = setInterval(() => {
         setCountdown((prev) => prev - 1);
@@ -54,6 +55,24 @@ function Contact() {
     }
     if (!formData.social) {
       newErrors.social = "Vui lòng nhập Facebook/Zalo";
+    } else if (formData.social.length > 50) {
+      newErrors.social = "Tối đa 50 ký tự";
+    } else if (
+      /<|>|script|"|'|`|onerror|onload|alert|\(|\)/i.test(formData.social)
+    ) {
+      newErrors.social = "Thông tin không hợp lệ";
+    } else if (
+      /bong|casino|bet|ku\d+|cmd368|w88|fun88|fifa|letou|cacuoc|1xbet|dafabet|188bet|m88|baccarat|xoso|xổ\s*số|danh\s*bai|game\s*bai/i.test(
+        formData.social
+      )
+    ) {
+      newErrors.social = "Không chấp nhận link cá cược/bài bạc!";
+    } else if (
+      !/^https:\/\/(www\.facebook\.com\/[A-Za-z0-9.]+|zalo\.me\/\d{8,15})$/.test(
+        formData.social
+      )
+    ) {
+      newErrors.social = "Chỉ cho phép link Facebook hoặc Zalo hợp lệ!";
     }
     if (!formData.package) {
       newErrors.package = "Vui lòng chọn gói tập quan tâm";
@@ -68,23 +87,11 @@ function Contact() {
     if (!validateForm()) return;
 
     try {
-      const snapshot = await getDocs(collection(db, "lien_he"));
+      // Tạo ID ngẫu nhiên không cần truy vấn Firestore trước
+      const randomId = Math.random().toString(36).substring(2, 15);
+      const newId = `lienhe_khachhang_${Date.now()}_${randomId}`;
 
-      // Lọc các document có id bắt đầu bằng 'lienhe_khachhang_'
-      const existingIds = snapshot.docs
-        .map((doc) => doc.data().id)
-        .filter((id) => /^lienhe_khachhang_\d+$/.test(id));
-
-      // Lấy số thứ tự lớn nhất
-      const maxNumber = existingIds.reduce((max, id) => {
-        const num = parseInt(id.split("_").pop(), 10);
-        return isNaN(num) ? max : Math.max(max, num);
-      }, 0);
-
-      // Tạo id mới
-      const newId = `lienhe_khachhang_${maxNumber + 1}`;
-
-      // Ghi dữ liệu với ID tuỳ chỉnh (setDoc thay cho addDoc)
+      // Ghi dữ liệu với ID tự tạo
       await setDoc(doc(db, "lien_he", newId), {
         ...formData,
         id: newId,
@@ -106,6 +113,7 @@ function Contact() {
       alert("Đã có lỗi xảy ra, vui lòng thử lại!");
     }
   };
+
   return (
     <section id="contact" className="contact">
       <div className="container">

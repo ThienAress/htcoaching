@@ -12,7 +12,7 @@ import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ChatIcons from "./components/ChatIcons/ChatIcons";
 import Login from "./Pages/Login/Login";
-import SingUp from "./Pages/SignUp/SignUp";
+
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import PaymentPage from "./Pages/PaymentPage/PaymentPage";
 import TdeeCalculator from "./Pages/TdeeCalculator/TdeeCalculator";
@@ -58,9 +58,6 @@ function App() {
       />
       {/* Trang login */}
       <Route path="/login" element={<Login />} />
-
-      {/* Trang signup */}
-      <Route path="/signup" element={<SingUp />} />
 
       {/* Trang Forgot Password */}
       <Route path="/forgot-password" element={<ForgotPassword />} />

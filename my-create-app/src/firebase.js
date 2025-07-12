@@ -10,6 +10,8 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -40,4 +42,6 @@ export {
   signOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
 };

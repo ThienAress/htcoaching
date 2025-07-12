@@ -1,10 +1,27 @@
-// CustomerInfoCard.js
 import React from "react";
-import { Tag, Image } from "antd";
+import { Tag, Image, Select } from "antd";
 import dayjs from "dayjs";
+const { Option } = Select;
 
 const CustomerInfoCard = ({ customerData, isAdmin, loading, user }) => {
-  if (!customerData && !isAdmin && !loading)
+  // State để chọn loại gói nếu muốn thao tác (ví dụ filter checkin, KHÔNG ảnh hưởng hiển thị các gói bên dưới)
+  const [selectedPlanMode, setSelectedPlanMode] = React.useState("all");
+
+  // Lấy ra tất cả các planMode duy nhất từ đơn hàng
+  const planModes = React.useMemo(
+    () =>
+      Array.from(
+        new Set(
+          (customerData?.orders || []).map(
+            (order) => order.planMode || "Không xác định"
+          )
+        )
+      ),
+    [customerData?.orders]
+  );
+
+  // Trường hợp không có dữ liệu
+  if ((!customerData || !customerData.orders) && !isAdmin && !loading)
     return (
       <div
         style={{
@@ -33,7 +50,7 @@ const CustomerInfoCard = ({ customerData, isAdmin, loading, user }) => {
       </div>
     );
 
-  if (!customerData) return null;
+  if (!customerData || !customerData.orders) return null;
 
   return (
     <div
@@ -44,9 +61,10 @@ const CustomerInfoCard = ({ customerData, isAdmin, loading, user }) => {
         marginBottom: 24,
         border: "1px solid #e8e8e8",
         boxShadow:
-          "0 1px 2px -2px rgba(0, 0, 0, 0.08), 0 3px 6px 0 rgba(0, 0, 0, 0.06), 0 5px 12px 4px rgba(0, 0, 0, 0.04)",
+          "0 1px 2px -2px rgba(0,0,0,0.08), 0 3px 6px 0 rgba(0,0,0,0.06), 0 5px 12px 4px rgba(0,0,0,0.04)",
       }}
     >
+      {/* Thông tin cơ bản */}
       <div
         style={{
           display: "flex",
@@ -96,130 +114,116 @@ const CustomerInfoCard = ({ customerData, isAdmin, loading, user }) => {
                 {customerData.email}
               </p>
             </div>
-            <div style={{ minWidth: 200 }}>
-              <p style={{ marginBottom: 8, color: "#595959" }}>
-                <strong style={{ color: "#262626", marginRight: 4 }}>
-                  Gói tập:
-                </strong>{" "}
-                <Tag color="#1890ff" style={{ fontWeight: 500 }}>
-                  {customerData.packageTitle}
-                </Tag>
-              </p>
-              <p style={{ marginBottom: 8, color: "#595959" }}>
-                <strong style={{ color: "#262626", marginRight: 4 }}>
-                  Loại:
-                </strong>{" "}
-                <Tag
-                  color={
-                    customerData.planMode === "1-1" ? "#1890ff" : "#fa8c16"
-                  }
-                  style={{ fontWeight: 500 }}
-                >
-                  {customerData.planMode}
-                </Tag>
-              </p>
-              <p style={{ marginBottom: 0, color: "#595959" }}>
-                <strong style={{ color: "#262626", marginRight: 4 }}>
-                  Phòng tập:
-                </strong>{" "}
-                {customerData.location}
-              </p>
-            </div>
-            <div style={{ minWidth: 200 }}>
-              <p style={{ marginBottom: 8, color: "#595959" }}>
-                <strong style={{ color: "#262626", marginRight: 4 }}>
-                  Tổng buổi:{" "}
-                </strong>{" "}
-                {customerData.totalSessions}
-              </p>
-              <p style={{ marginBottom: 8, color: "#595959" }}>
-                <strong style={{ color: "#262626", marginRight: 4 }}>
-                  Đã dùng:{" "}
-                </strong>{" "}
-                {customerData.usedSessions}
-              </p>
-              <p style={{ marginBottom: 0, color: "#595959" }}>
-                <strong style={{ color: "#262626", marginRight: 4 }}>
-                  Còn lại:{" "}
-                </strong>
-                <Tag
-                  color={
-                    customerData.remainingSessions > 5
-                      ? "#52c41a"
-                      : customerData.remainingSessions > 0
-                      ? "#fa8c16"
-                      : "#ff4d4f"
-                  }
-                  style={{ fontWeight: 500 }}
-                >
-                  {customerData.remainingSessions}
-                </Tag>
-              </p>
-            </div>
+            {/* Có thể bỏ 2 block dưới nếu không cần tổng số buổi cộng dồn */}
           </div>
         </div>
       </div>
 
-      {customerData.orders?.length > 0 && (
-        <div style={{ marginTop: 24 }}>
-          <h4
-            style={{
-              fontSize: 16,
-              color: "#262626",
-              marginBottom: 16,
-              fontWeight: 500,
-            }}
-          >
-            Chi tiết các gói tập:
-          </h4>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
-            {customerData.orders.map((order, index) => (
-              <div
-                key={index}
-                style={{
-                  border: "1px solid #e8e8e8",
-                  borderRadius: 8,
-                  padding: 16,
-                  minWidth: 220,
-                  backgroundColor:
-                    order.remainingSessions > 0 ? "#f6ffed" : "#fff1f0",
-                  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03)",
-                }}
-              >
-                <p
-                  style={{ marginBottom: 8, fontWeight: 500, color: "#262626" }}
-                >
-                  <span style={{ color: "#1890ff" }}>Gói {index + 1}:</span>{" "}
-                  {order.packageTitle}
-                </p>
-                <p style={{ marginBottom: 4, color: "#595959" }}>
-                  <strong style={{ color: "#262626", marginRight: 4 }}>
-                    Số buổi:
-                  </strong>{" "}
-                  {order.totalSessions}
-                </p>
-                <p style={{ marginBottom: 4, color: "#595959" }}>
-                  <strong style={{ color: "#262626", marginRight: 4 }}>
-                    Còn lại:
-                  </strong>
-                  <Tag
-                    color={order.remainingSessions > 0 ? "#52c41a" : "#ff4d4f"}
-                    style={{ marginLeft: 4, fontWeight: 500 }}
+      {/* Ô select loại gói để thao tác riêng biệt */}
+      <div style={{ marginTop: 24 }}>
+        <h4
+          style={{
+            fontSize: 16,
+            color: "#262626",
+            marginBottom: 8,
+            fontWeight: 500,
+          }}
+        >
+          Chọn loại gói tập:
+        </h4>
+        <Select
+          value={selectedPlanMode}
+          onChange={setSelectedPlanMode}
+          style={{ width: 220, marginBottom: 16 }}
+        >
+          <Option value="all">Tất cả các loại gói</Option>
+          {planModes.map((mode) => (
+            <Option key={mode} value={mode}>
+              {mode === "1-1"
+                ? "Gói 1-1"
+                : mode === "online"
+                ? "Gói Online"
+                : mode}
+            </Option>
+          ))}
+        </Select>
+      </div>
+
+      {/* Luôn luôn hiển thị đầy đủ từng gói KH đã mua, không gộp */}
+      <div style={{ marginTop: 8 }}>
+        <h4
+          style={{
+            fontSize: 16,
+            color: "#262626",
+            marginBottom: 8,
+            fontWeight: 500,
+          }}
+        >
+          Chi tiết các gói tập:
+        </h4>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
+          {(customerData.orders || []).map((order, idx) => (
+            <div
+              key={order.id || idx}
+              style={{
+                border: "1px solid #e8e8e8",
+                borderRadius: 8,
+                padding: 16,
+                minWidth: 220,
+                backgroundColor:
+                  order.remainingSessions > 0 ? "#f6ffed" : "#fff1f0",
+                boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03)",
+              }}
+            >
+              <p style={{ marginBottom: 8, fontWeight: 500, color: "#262626" }}>
+                <span style={{ color: "#1890ff" }}>Gói {idx + 1}:</span>{" "}
+                {order.packageTitle}
+                {order.planMode && (
+                  <span
+                    style={{
+                      marginLeft: 6,
+                      fontWeight: 500,
+                      color: "#888",
+                    }}
                   >
-                    {order.remainingSessions}
-                  </Tag>
-                </p>
-                <p style={{ marginBottom: 0, color: "#8c8c8c", fontSize: 12 }}>
-                  {order.createdAt?.toDate
-                    ? dayjs(order.createdAt.toDate()).format("DD/MM/YYYY")
-                    : "N/A"}
-                </p>
-              </div>
-            ))}
-          </div>
+                    (
+                    {order.planMode === "1-1"
+                      ? "1-1"
+                      : order.planMode === "online"
+                      ? "Online"
+                      : order.planMode}
+                    )
+                  </span>
+                )}
+              </p>
+              <p style={{ marginBottom: 4, color: "#595959" }}>
+                <strong style={{ color: "#262626", marginRight: 4 }}>
+                  Số buổi:
+                </strong>{" "}
+                {order.totalSessions}
+              </p>
+              <p style={{ marginBottom: 4, color: "#595959" }}>
+                <strong style={{ color: "#262626", marginRight: 4 }}>
+                  Còn lại:
+                </strong>
+                <Tag
+                  color={order.remainingSessions > 0 ? "#52c41a" : "#ff4d4f"}
+                  style={{ marginLeft: 4, fontWeight: 500 }}
+                >
+                  {order.remainingSessions}
+                </Tag>
+              </p>
+              <p style={{ marginBottom: 0, color: "#8c8c8c", fontSize: 12 }}>
+                {order.createdAt?.toDate
+                  ? dayjs(order.createdAt.toDate()).format("DD/MM/YYYY")
+                  : "N/A"}
+              </p>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };
+
 export default CustomerInfoCard;

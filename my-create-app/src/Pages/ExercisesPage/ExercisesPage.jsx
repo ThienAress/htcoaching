@@ -136,9 +136,14 @@ export default function ExercisesPage() {
           </div>
           {/* Danh sách nhóm cơ */}
           <MuscleGroupSelector
-            muscleGroups={logic.muscleGroups}
+            muscleGroups={[...logic.muscleGroups, ...logic.customGroups]}
             selected={logic.selectedMuscleGroups}
             onToggle={logic.toggleMuscleGroup}
+            showCustomGroupModal={logic.showCustomGroupModal}
+            setShowCustomGroupModal={logic.setShowCustomGroupModal}
+            tempSelectedGroups={logic.tempSelectedGroups}
+            setTempSelectedGroups={logic.setTempSelectedGroups}
+            handleCreateCustomGroup={logic.handleCreateCustomGroup}
           />
         </Card>
 
@@ -154,6 +159,7 @@ export default function ExercisesPage() {
             toggleMuscleGroup={logic.toggleMuscleGroup}
             formatDate={logic.formatDate}
             isMobile={logic.isMobile}
+            getMuscleGroupById={logic.getMuscleGroupById}
           />
         )}
         {/* Giải thích lịch tập */}

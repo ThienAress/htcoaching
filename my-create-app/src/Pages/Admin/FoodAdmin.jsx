@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 
 const { TextArea } = Input;
+const FOODS_API = "https://htcoaching-backend-1.onrender.com/api/foods";
 
 const FoodAdmin = () => {
   const [foods, setFoods] = useState([]);
@@ -22,7 +23,7 @@ const FoodAdmin = () => {
   const fetchFoods = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/foods");
+      const res = await axios.get(FOODS_API);
       setFoods(res.data);
     } catch (err) {
       console.error("Lỗi lấy dữ liệu:", err);
@@ -34,7 +35,7 @@ const FoodAdmin = () => {
 
   const handleAddFood = async (values) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/foods", values);
+      const res = await axios.post(FOODS_API, values);
       setFoods([...foods, res.data.food]);
       message.success("Đã thêm thực phẩm mới");
       form.resetFields();
@@ -65,9 +66,7 @@ const FoodAdmin = () => {
     }
 
     try {
-      const promises = newFoods.map((food) =>
-        axios.post("http://localhost:5000/api/foods", food)
-      );
+      const promises = newFoods.map((food) => axios.post(FOODS_API, food));
       const responses = await Promise.all(promises);
       const added = responses.map((res) => res.data.food);
       setFoods([...foods, ...added]);
@@ -81,7 +80,7 @@ const FoodAdmin = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/foods/${id}`);
+      await axios.delete(`${FOODS_API}/${id}`);
       setFoods(foods.filter((item) => item._id !== id));
       message.success("Đã xoá thực phẩm");
     } catch (err) {

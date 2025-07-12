@@ -33,6 +33,9 @@ const useCheckinLogic = () => {
   const [historyLoading, setHistoryLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
 
+  // >>> Thêm state allOrders
+  const [allOrders, setAllOrders] = useState([]);
+
   // Lưu selectedCustomer vào sessionStorage
   useEffect(() => {
     if (selectedCustomer) {
@@ -73,19 +76,24 @@ const useCheckinLogic = () => {
         }
         const querySnapshot = await getDocs(q);
 
+        // ==== GOM THEO phone + planMode ====
         const customersMap = new Map();
 
         querySnapshot.docs.forEach((docu) => {
           const data = docu.data();
           const phone = data.phone;
+          const planMode = data.planMode || "default";
+          const key = `${phone}_${planMode}`;
+
           const total = Math.max(0, Number(data.totalSessions) || 0);
           const remaining = Math.max(0, Number(data.remainingSessions) || 0);
           const used = total - remaining;
 
-          if (!customersMap.has(phone)) {
-            customersMap.set(phone, {
-              key: docu.id,
+          if (!customersMap.has(key)) {
+            customersMap.set(key, {
+              key: docu.id + "_" + planMode,
               ...data,
+              planMode: planMode,
               totalSessions: total,
               remainingSessions: remaining,
               usedSessions: Math.max(0, used),
@@ -102,7 +110,7 @@ const useCheckinLogic = () => {
               ],
             });
           } else {
-            const existingCustomer = customersMap.get(phone);
+            const existingCustomer = customersMap.get(key);
             existingCustomer.totalSessions += total;
             existingCustomer.remainingSessions += remaining;
             existingCustomer.usedSessions += used;
@@ -120,6 +128,19 @@ const useCheckinLogic = () => {
 
         const customersList = Array.from(customersMap.values());
         setCustomers(customersList);
+
+        // >>> Tạo mảng allOrders: mỗi đơn là 1 phần tử (dù cùng KH, cùng hay khác planMode)
+        const flatOrders = [];
+        customersList.forEach((customer) => {
+          (customer.orders || []).forEach((order) => {
+            flatOrders.push({
+              ...customer,
+              ...order,
+              orders: undefined, // tránh loop khi truyền vào component
+            });
+          });
+        });
+        setAllOrders(flatOrders);
 
         // Khôi phục selectedCustomer từ sessionStorage
         const savedCustomer = sessionStorage.getItem(
@@ -143,6 +164,8 @@ const useCheckinLogic = () => {
     fetchCustomers();
     // eslint-disable-next-line
   }, [user, isAdmin]);
+
+  // ... Các useEffect và logic khác giữ nguyên
 
   // Tự động tải lịch sử khi có sẵn dữ liệu khách hàng
   useEffect(() => {
@@ -230,7 +253,6 @@ const useCheckinLogic = () => {
       setRemainingSessions(0);
     }
   }, [selectedCustomer, customers]);
-
   // Xử lý checkin
   const handleCheckin = async () => {
     if (!selectedCustomer || !date || selectedMuscles.length === 0) {
@@ -404,6 +426,7 @@ const useCheckinLogic = () => {
     isAdmin,
     handleCheckin,
     muscleOptions,
+    allOrders, // <--- mảng flatten mọi đơn (dùng cho display all packages)
   };
 };
 
