@@ -61,13 +61,13 @@ function Footer() {
             <h3>Chương trình đào tạo</h3>
             <ul>
               <li>
-                <a href="#">Personal Training</a>
+                <a href="#classes">Personal Training</a>
               </li>
               <li>
-                <a href="#">Cardio & HIIT</a>
+                <a href="#classes">Cardio & HIIT</a>
               </li>
               <li>
-                <a href="#">Boxing</a>
+                <a href="#classes">Boxing</a>
               </li>
             </ul>
           </div>

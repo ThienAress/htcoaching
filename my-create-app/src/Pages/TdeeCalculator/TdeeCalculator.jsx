@@ -263,8 +263,8 @@ const TdeeCalculator = () => {
                     <div className="tdee-info-section">
                       <h3>3. Lịch ăn cụ thể sẽ như thế nào?</h3>
                       <p>
-                        Sau khi đã tính được <strong>macros</strong> của mình,
-                        bạn có muốn tôi
+                        Sau khi đã tính được <strong>macros</strong>, bạn có
+                        muốn mình
                         <strong> gợi ý luôn lịch ăn hàng ngày </strong>dựa trên
                         thông số đó không? Nhấn vào nút dưới để nhận thực đơn
                         mẫu phù hợp với những thực phẩm đa dang hỗ trợ mục tiêu

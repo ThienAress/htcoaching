@@ -124,6 +124,7 @@ function Pricing() {
     {
       title: "Cơ bản",
       price: "4.800.000đ",
+      durationText: "/8tuần",
       features: [
         "Tập 1 kèm 1",
         "Giáo án cá nhân hóa",
@@ -139,6 +140,7 @@ function Pricing() {
     {
       title: "Nâng cao",
       price: "12.000.000đ",
+      durationText: "/16tuần",
       features: [
         "Tập 1 kèm 1",
         "Giáo án cá nhân hóa",
@@ -155,6 +157,7 @@ function Pricing() {
     {
       title: "VIP",
       price: "21.600.000đ",
+      durationText: "/24tuần",
       features: [
         "Tập 1 kèm 1",
         "Giáo án cá nhân hóa",
@@ -173,6 +176,7 @@ function Pricing() {
     {
       title: "Cơ bản",
       price: "8.400.000đ",
+      durationText: "/8tuần",
       features: [
         "Tập 1 kèm 1",
         "Giáo án cá nhân hóa",
@@ -189,6 +193,7 @@ function Pricing() {
     {
       title: "Nâng cao",
       price: "19.200.000đ",
+      durationText: "/16tuần",
       features: [
         "Tập 1 kèm 1",
         "Giáo án cá nhân hóa",
@@ -207,6 +212,7 @@ function Pricing() {
     {
       title: "VIP",
       price: "32.400.000đ",
+      durationText: "/24tuần",
       features: [
         "Tập 1 kèm 1",
         "Giáo án cá nhân hóa",
@@ -227,6 +233,7 @@ function Pricing() {
   const trialPlan = {
     title: "Trial",
     price: "6.000.000đ",
+    durationText: "/4tuần",
     features: [
       "Tập 1 kèm 1",
       "Giáo án cá nhân hóa",
@@ -299,7 +306,7 @@ function Pricing() {
                 <h3>{plan.title}</h3>
                 <div className="price">
                   <span>{plan.price}</span>
-                  <span>/tháng</span>
+                  <span>{plan.durationText || "/tháng"}</span>
                 </div>
               </div>
               <div className="pricing-features">
