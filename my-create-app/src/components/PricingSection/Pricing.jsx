@@ -12,7 +12,11 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { FireOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  FireOutlined,
+  ExclamationCircleFilled,
+  GiftOutlined,
+} from "@ant-design/icons";
 
 function Pricing() {
   const navigate = useNavigate();
@@ -22,6 +26,8 @@ function Pricing() {
   const [showTrialWarning, setShowTrialWarning] = useState(false);
   const [hasUsedTrial, setHasUsedTrial] = useState(false);
   const [hasOrderedBefore, setHasOrderedBefore] = useState(false);
+  const [giftModalVisible, setGiftModalVisible] = useState(false);
+  const [selectedGifts, setSelectedGifts] = useState([]);
 
   useEffect(() => {
     const checkOrders = async () => {
@@ -120,6 +126,11 @@ function Pricing() {
     });
   };
 
+  const showGiftModal = (gifts) => {
+    setSelectedGifts(gifts);
+    setGiftModalVisible(true);
+  };
+
   const onlinePlans = [
     {
       title: "Cơ bản",
@@ -134,6 +145,7 @@ function Pricing() {
         "Hỗ trợ căng cơ phục hồi sau tập",
         "Cam kết kết quả 100%",
       ],
+      gifts: [],
       buttonClass: "pricing-outline-btn",
       totalSessions: 24,
     },
@@ -150,6 +162,7 @@ function Pricing() {
         "Hỗ trợ căng cơ phục hồi sau tập",
         "Cam kết kết quả 100%",
       ],
+      gifts: [],
       featured: true,
       buttonClass: "pricing-primary-btn",
       totalSessions: 48,
@@ -167,6 +180,7 @@ function Pricing() {
         "Hỗ trợ căng cơ phục hồi sau tập",
         "Cam kết kết quả 100%",
       ],
+      gifts: [],
       buttonClass: "pricing-outline-btn",
       totalSessions: 72,
     },
@@ -185,8 +199,8 @@ function Pricing() {
         "Sử dụng Notion để lưu trữ bài tập, tiến độ một cách thông minh",
         "Hỗ trợ căng cơ phục hồi sau tập",
         "Cam kết kết quả 100%",
-        "Tặng Shaker Bình Lắc Cao Cấp 600ml",
       ],
+      gifts: ["Shaker Bình Lắc Cao Cấp 600ml"],
       buttonClass: "pricing-outline-btn",
       totalSessions: 24,
     },
@@ -202,9 +216,8 @@ function Pricing() {
         "Sử dụng Notion để lưu trữ bài tập, tiến độ một cách thông minh",
         "Hỗ trợ căng cơ phục hồi sau tập",
         "Cam kết kết quả 100%",
-        "Tặng Shaker Bình Lắc Cao Cấp 600ml",
-        "Tặng 2 bánh Biscotti 300g",
       ],
+      gifts: ["Shaker Bình Lắc Cao Cấp 600ml", "2 bánh Biscotti 300g"],
       featured: true,
       buttonClass: "pricing-primary-btn",
       totalSessions: 48,
@@ -221,9 +234,11 @@ function Pricing() {
         "Sử dụng Notion để lưu trữ bài tập, tiến độ một cách thông minh",
         "Hỗ trợ căng cơ phục hồi sau tập",
         "Cam kết kết quả 100%",
-        "Tặng Whey Protein Isolate cao cấp ",
-        "Tặng Shaker Bình Lắc Cao Cấp 600ml",
-        "Tặng 2 bánh Biscotti 300g",
+      ],
+      gifts: [
+        "Whey Protein Isolate cao cấp",
+        "Shaker Bình Lắc Cao Cấp 600ml",
+        "2 bánh Biscotti 300g",
       ],
       buttonClass: "pricing-outline-btn",
       totalSessions: 72,
@@ -243,6 +258,7 @@ function Pricing() {
       "Hỗ trợ căng cơ phục hồi sau tập",
       "Cam kết kết quả 100%",
     ],
+    gifts: [],
     buttonClass: "pricing-outline-btn",
     totalSessions: 12,
   };
@@ -316,6 +332,17 @@ function Pricing() {
                   ))}
                 </ul>
               </div>
+
+              {/* Phần quà tặng tóm tắt */}
+              {plan.gifts && plan.gifts.length > 0 && (
+                <div
+                  className="pricing-gift-summary"
+                  onClick={() => showGiftModal(plan.gifts)}
+                >
+                  <span className="gift-icon">🎁</span> QUÀ TẶNG ĐẶC BIỆT
+                </div>
+              )}
+
               <div className="pricing-sessions">
                 <span>Tổng số buổi: {plan.totalSessions}</span>
               </div>
@@ -465,6 +492,30 @@ function Pricing() {
             <p style={{ color: "#555" }}>
               Mỗi tài khoản chỉ được sử dụng gói Trải nghiệm một lần.
             </p>
+          </div>
+        </Modal>
+
+        {/* Modal quà tặng */}
+        <Modal
+          open={giftModalVisible}
+          onCancel={() => setGiftModalVisible(false)}
+          footer={null}
+          centered
+          closable={true}
+          className="gift-modal"
+        >
+          <div className="gift-modal-content">
+            <h3 className="gift-modal-title">
+              <span className="gift-icon-large">🎁</span> QUÀ TẶNG ĐẶC BIỆT
+            </h3>
+            <div className="gift-list">
+              {selectedGifts.map((gift, index) => (
+                <div key={index} className="gift-item">
+                  <div className="gift-bullet">✓</div>
+                  <div className="gift-text">{gift}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </Modal>
       </div>

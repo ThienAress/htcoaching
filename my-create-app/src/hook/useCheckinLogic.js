@@ -15,7 +15,7 @@ import { useUser } from "../UserContent/UserContext";
 import { message } from "antd";
 
 const SELECTED_CUSTOMER_SESSION_KEY = "selected_customer";
-const muscleOptions = ["Ngực", "Lưng", "Chân", "Vai", "Tay", "Bụng"];
+const muscleOptions = ["Ngực", "Lưng", "Chân", "Vai", "Tay", "Bụng", "Cardio"];
 
 const useCheckinLogic = () => {
   const { userRole, user } = useUser();

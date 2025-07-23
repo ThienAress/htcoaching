@@ -15,6 +15,10 @@ function RegisterPage() {
   const discount = state?.discount || 0;
   const total = state?.total || 0;
   const { user } = useUser();
+  const [isNoteFocused, setIsNoteFocused] = useState(false);
+  const [isNoteHintHovered, setIsNoteHintHovered] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [newSchedule, setNewSchedule] = useState({ day: "", time: "" });
 
   const [formData, setFormData] = useState({
     name: "",
@@ -25,8 +29,142 @@ function RegisterPage() {
     schedule: [],
   });
 
-  const [errors, setErrors] = useState({});
-  const [newSchedule, setNewSchedule] = useState({ day: "", time: "" });
+  const containsProhibitedContent = (text) => {
+    const badWords = [
+      // 🔞 Tục tĩu, khiêu dâm, chửi thề
+      "địt",
+      "dit",
+      "đụ",
+      "du",
+      "đụ má",
+      "đụ mẹ",
+      "đm",
+      "dm",
+      "dmm",
+      "dcm",
+      "cặc",
+      "cak",
+      "cac",
+      "cạc",
+      "lồn",
+      "lon",
+      "loz",
+      "l",
+      "buồi",
+      "buoi",
+      "bùi",
+      "bui",
+      "chim",
+      "bướm",
+      "buom",
+      "bú",
+      "bu",
+      "bú lol",
+      "bú l",
+      "ăn cặc",
+      "ăn l",
+      "ăn buồi",
+      "đéo",
+      "deo",
+      "đếch",
+      "dek",
+      "vl",
+      "vkl",
+      "cl",
+      "vcl",
+      "cc",
+      "shit",
+      "fuck",
+      "fml",
+      "diss",
+      "bitch",
+      "bóp vú",
+      "nứng",
+      "nứng lồn",
+      "nứng vl",
+      "chịch",
+      "chich",
+      "xoạc",
+      "xoc",
+      "rape",
+      "hiếp",
+      "hiếp dâm",
+      "gạ tình",
+      "gạ gẫm",
+      "sex",
+      "sexy",
+      "69",
+      "xxx",
+      "jav",
+      "phim sex",
+      "phim jav",
+      "trai gọi",
+      "gái gọi",
+      "gái mại dâm",
+      "bán dâm",
+      "đi khách",
+
+      // 🎰 Link cá cược, nhà cái, cờ bạc
+      "bong",
+      "casino",
+      "bet",
+      "ku",
+      "cmd368",
+      "w88",
+      "fun88",
+      "fifa",
+      "letou",
+      "cacuoc",
+      "1xbet",
+      "dafabet",
+      "188bet",
+      "m88",
+      "baccarat",
+      "xoso",
+      "xổ số",
+      "danh bai",
+      "game bai",
+      "rakhoi",
+      "choi casino",
+      "vn88",
+      "bong88",
+      "new88",
+      "nhacaionline",
+      "nhà cái",
+
+      // 🧨 Viết tắt lách luật / tiếng lóng phổ biến
+      "fck",
+      "f u",
+      "dmml",
+      "dmvl",
+      "ml",
+      "ccmm",
+      "đkm",
+      "bố mày",
+      "mẹ mày",
+      "con đĩ",
+      "con chó",
+      "thằng chó",
+      "clgt",
+      "clmm",
+      "sv",
+      "óc chó",
+      "súc vật",
+      "não chó",
+    ];
+
+    const scriptRegex = /<script.*?>.*?<\/script>/gis;
+    const domainRegex =
+      /(https?:\/\/)?[a-z0-9.-]*(rakhoi|sv388|win88|cmd368|fun88|go88|f8bet|esball|ae888|123win|789win|hi88|okvip|new88|w88|m88|b52|uw88|nổhũ|bàiđổithưởng|cáđộ|cá cược)[^\s]*/gi;
+
+    const lowered = text.toLowerCase();
+
+    return (
+      badWords.some((word) => lowered.includes(word)) ||
+      domainRegex.test(lowered) ||
+      scriptRegex.test(text)
+    );
+  };
 
   useEffect(() => {
     if (!selectedPackage || !planMode) {
@@ -49,6 +187,8 @@ function RegisterPage() {
     }
     if (!formData.note.trim() || formData.note.length < 8) {
       newErrors.note = "Thông tin bổ sung phải có ít nhất 8 ký tự";
+    } else if (containsProhibitedContent(formData.note)) {
+      newErrors.note = "Thông tin chứa từ ngữ hoặc nội dung không phù hợp!";
     }
     if (formData.schedule.length === 0) {
       newErrors.schedule = "Vui lòng thêm ít nhất 1 thời gian tập luyện.";
@@ -215,9 +355,31 @@ function RegisterPage() {
               onChange={(e) =>
                 setFormData({ ...formData, note: e.target.value })
               }
+              onFocus={() => setIsNoteFocused(true)}
+              onBlur={() => {
+                setTimeout(() => {
+                  if (!isNoteHintHovered) {
+                    setIsNoteFocused(false);
+                  }
+                }, 100);
+              }}
             />
             {errors.note && <span className="error">{errors.note}</span>}
-
+            {(isNoteFocused || isNoteHintHovered) && (
+              <small
+                className="hint"
+                onMouseEnter={() => setIsNoteHintHovered(true)}
+                onMouseLeave={() => setIsNoteHintHovered(false)}
+              >
+                VD: Link Facebook như của mình sau:{" "}
+                <span className="example">
+                  https://www.facebook.com/thienvo123456
+                </span>
+                , hoặc copy mẫu Zalo:{" "}
+                <span className="example">https://zalo.me/0934215227</span> và
+                đổi số điện thoại của bạn.
+              </small>
+            )}
             <button type="submit" className="order-button">
               ĐẶT HÀNG
             </button>

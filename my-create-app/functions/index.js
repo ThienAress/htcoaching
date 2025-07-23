@@ -79,7 +79,7 @@ exports.sendCheckinMail = onDocumentCreated(
             }</li>
             <li style="margin-bottom: 10px;"><b>✅ Buổi còn lại:</b> ${remainingSessions}</li>
           </ul>
-          <p>Nếu có thắc mắc, vui lòng liên hệ lại trung tâm.</p>
+          <p>Nếu có thắc mắc, vui lòng liên hệ admin HTCoaching.</p>
           <p>Chúc bạn tập luyện hiệu quả!</p>
           <hr style="border: 0; border-top: 1px solid #eee;">
           <p style="font-size: 0.9em; color: #777;">HTCoaching - Phát triển thể chất toàn diện</p>
